@@ -1,0 +1,370 @@
+/* Teacher dashboard: toolbar, tabs, stats, roster, assignments, accounts, setup */
+.teacher-screen .page-title-row {
+  margin-bottom: 6px;
+}
+.teacher-toolbar {
+  display: flex;
+  align-items: end;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+.teacher-toolbar label,
+.section-heading label,
+.filters label,
+.account-edit label {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  color: var(--muted);
+  font-size: 11px;
+  font-weight: 700;
+}
+.teacher-toolbar select,
+.section-heading select,
+.filters select,
+.account-edit input,
+.filters input {
+  color: var(--text);
+  background: var(--surface);
+  border: 1px solid var(--border-strong);
+  border-radius: 8px;
+  padding: 9px 12px;
+  min-height: 38px;
+  min-width: 185px;
+}
+.teacher-tabs {
+  margin-bottom: 20px;
+  gap: 8px;
+}
+.teacher-tabs button {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+.section-banner {
+  display: flex;
+  justify-content: space-between;
+  gap: 15px;
+  align-items: center;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  padding: 17px 20px;
+  margin-bottom: 16px;
+  border-radius: 11px;
+}
+.section-banner h2 {
+  margin: 0;
+}
+.section-banner h2 span {
+  font-size: 13px;
+  font-weight: 400;
+}
+.section-banner .eyebrow {
+  margin: 0 0 4px;
+}
+.stat-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  margin-bottom: 18px;
+}
+.stat-card {
+  display: flex;
+  flex-direction: column;
+  background: var(--surface);
+  padding: 18px 20px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  gap: 5px;
+}
+.stat-card strong {
+  font-size: 29px;
+  line-height: 1.15;
+}
+.stat-card span {
+  font-size: 12px;
+  color: var(--muted);
+}
+.panel {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 21px;
+  margin-bottom: 17px;
+}
+.panel > h2 {
+  margin-bottom: 8px;
+}
+.panel > p {
+  font-size: 13px;
+}
+.section-heading {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+.section-heading h2 {
+  margin: 0 0 4px;
+}
+.section-heading p {
+  font-size: 12px;
+  color: var(--muted);
+  margin: 0;
+}
+.section-heading select {
+  min-width: 190px;
+}
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  font-size: 12px;
+}
+.data-table th,
+.data-table td {
+  padding: 13px 11px;
+  border-top: 1px solid var(--border);
+  vertical-align: middle;
+}
+.data-table thead th {
+  border-top: 0;
+  color: var(--muted);
+  font-weight: 600;
+  font-size: 11px;
+  white-space: nowrap;
+}
+.data-table tbody th {
+  font-weight: 600;
+  color: var(--text);
+}
+.data-table tbody th small {
+  display: block;
+  font-size: 11px;
+  font-weight: 400;
+  color: var(--muted);
+  padding-top: 3px;
+}
+.data-table tbody tr:hover:not(.expansion-row) {
+  background: var(--surface-2);
+}
+.roster-table {
+  min-width: 720px;
+}
+.student-name-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  background: transparent;
+  border: 0;
+  color: var(--text);
+  padding: 0;
+  text-align: left;
+  font-size: 12px;
+  font-weight: 650;
+}
+.student-name-button:hover {
+  color: var(--accent);
+}
+.roster-table .selected-row {
+  background: color-mix(in srgb, var(--accent) 8%, var(--surface-2));
+}
+.expansion-row td {
+  padding: 0 !important;
+  border-top: 0;
+  border-bottom: 2px solid var(--border-strong);
+}
+.expanded-student {
+  padding: 20px 23px;
+  background: var(--surface-2);
+  min-width: 0;
+}
+.expanded-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: start;
+  gap: 15px;
+  flex-wrap: wrap;
+}
+.expanded-header h3 {
+  font-size: 17px;
+  margin-bottom: 4px;
+}
+.expanded-header p {
+  font-size: 12px;
+}
+.mini-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 10px 0 16px;
+}
+.mini-stats span {
+  display: flex;
+  gap: 5px;
+  align-items: center;
+  border-radius: 6px;
+  padding: 7px 10px;
+  background: var(--surface);
+  color: var(--soft);
+  font-size: 11px;
+}
+.mini-stats strong {
+  color: var(--text);
+  font-size: 15px;
+}
+.assignment-table {
+  min-width: 650px;
+}
+.small-link {
+  border: 1px solid var(--border-strong);
+  background: var(--surface);
+  border-radius: 6px;
+  padding: 5px 10px;
+  font-size: 11px;
+  white-space: nowrap;
+}
+.receipt-preview td {
+  padding: 16px 20px !important;
+  background: var(--code-bg);
+}
+.receipt-preview td p {
+  margin: 7px 0 0;
+  font-size: 12px;
+}
+.filters {
+  display: flex;
+  align-items: end;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin: 0 0 18px;
+}
+.filters label:first-child {
+  flex: 1;
+  min-width: 220px;
+}
+.filters label:first-child svg {
+  display: none;
+}
+.filters input {
+  width: 100%;
+}
+.info-text {
+  font-size: 12px;
+  padding: 9px 13px;
+  background: var(--surface-2);
+  border-radius: 7px;
+}
+.account-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 12px;
+}
+.account-card {
+  border: 1px solid var(--border);
+  background: var(--surface-2);
+  border-radius: 10px;
+  padding: 16px;
+  min-width: 0;
+}
+.account-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.avatar {
+  width: 37px;
+  height: 37px;
+  flex: none;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: color-mix(in srgb, var(--accent) 18%, var(--surface));
+  color: var(--accent);
+  font-weight: 800;
+}
+.account-identity {
+  flex: 1;
+  min-width: 0;
+}
+.account-identity h3 {
+  font-size: 13px;
+  overflow-wrap: anywhere;
+  margin: 0;
+}
+.account-identity small {
+  color: var(--muted);
+}
+.account-footer {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin-top: 14px;
+}
+.account-edit {
+  display: grid;
+  gap: 12px;
+  border-top: 1px solid var(--border);
+  margin-top: 16px;
+  padding-top: 14px;
+}
+.account-edit label {
+  font-size: 11px;
+}
+.account-edit input {
+  min-width: 0;
+  width: 100%;
+}
+.account-edit .btn {
+  justify-self: start;
+}
+.setup-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+  gap: 12px;
+  margin-top: 24px;
+}
+.setup-card {
+  border: 1px solid var(--border);
+  padding: 20px;
+  border-radius: 8px;
+  background: var(--surface-2);
+}
+.setup-card h3 {
+  margin: 0 0 12px;
+}
+.setup-card span {
+  color: var(--muted);
+  font-size: 12px;
+}
+@media (max-width: 600px) {
+  .stat-grid {
+    gap: 6px;
+  }
+  .stat-card {
+    padding: 12px 10px;
+  }
+  .stat-card strong {
+    font-size: 22px;
+  }
+  .stat-card span {
+    font-size: 10px;
+  }
+  .panel {
+    padding: 14px;
+  }
+  .section-banner {
+    align-items: start;
+    flex-direction: column;
+  }
+  .teacher-tabs button {
+    padding: 11px 9px;
+    font-size: 10px;
+  }
+  .expanded-student {
+    padding: 12px;
+  }
+}

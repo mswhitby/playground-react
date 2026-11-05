@@ -1,0 +1,8 @@
+/* Global stylesheet entry. Order matters: tokens → base → shared → feature styles. */
+@import "./tokens.css";
+@import "./base.css";
+@import "./layout.css";
+@import "./ui.css";
+@import "./home.css";
+@import "./course.css";
+@import "./teacher.css";

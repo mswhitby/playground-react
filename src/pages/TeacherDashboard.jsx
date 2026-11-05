@@ -11,8 +11,9 @@ import TeacherTabs from "../components/teacher/TeacherTabs.jsx";
 import ClassOverview from "../components/teacher/ClassOverview.jsx";
 import AccountsTab from "../components/teacher/AccountsTab.jsx";
 import SectionSetup from "../components/teacher/SectionSetup.jsx";
+import JournalInbox from "../components/teacher/JournalInbox.jsx";
 
-export default function TeacherDashboard({ students, setStudents }) {
+export default function TeacherDashboard({ students, setStudents, journalSubmissions }) {
   const [tab, setTab] = useSaved("designlab:teacher-tab", "overview");
   const [sectionId, setSectionId] = useSaved("designlab:section", "p1");
   const [sort, setSort] = useSaved("designlab:sort", "last");
@@ -69,6 +70,7 @@ export default function TeacherDashboard({ students, setStudents }) {
           setExpanded={setExpanded}
         />
       )}
+      {tab === "journals" && <JournalInbox section={currentSection} students={sectionStudents} submissions={journalSubmissions} />}
       {tab === "accounts" && (
         <AccountsTab students={students} sort={sort} setSort={setSort} patchStudent={patchStudent} />
       )}

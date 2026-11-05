@@ -1,0 +1,41 @@
+{
+  "schemaVersion": 1,
+  "id": "count-matches",
+  "title": "Count Matching Events",
+  "summary": "Count how often a particular event code appears.",
+  "difficulty": "Easy",
+  "points": 10,
+  "tags": [
+    "arrays",
+    "loops",
+    "comparisons"
+  ],
+  "prerequisites": [
+    "functions",
+    "loops",
+    "arrays"
+  ],
+  "suggestedCourses": [
+    "computer-science-1",
+    "game-programming",
+    "mobile-app-dev",
+    "uil"
+  ],
+  "languages": [
+    "python",
+    "java",
+    "javascript",
+    "csharp"
+  ],
+  "path": "problems/count-matches",
+  "signature": {
+    "python": "count_matches",
+    "java": "countMatches",
+    "javascript": "countMatches",
+    "csharp": "CountMatches"
+  },
+  "constraints": [
+    "0 ≤ event count ≤ 200",
+    "-1000 ≤ codes and target ≤ 1000"
+  ]
+}

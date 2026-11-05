@@ -1,0 +1,42 @@
+{
+  "challengeId": "longest-win-streak",
+  "cases": [
+    {
+      "input": [
+        [
+          true,
+          true,
+          false,
+          true,
+          true,
+          true
+        ]
+      ],
+      "expected": 3
+    },
+    {
+      "input": [
+        [
+          false,
+          false
+        ]
+      ],
+      "expected": 0
+    },
+    {
+      "input": [
+        []
+      ],
+      "expected": 0
+    },
+    {
+      "input": [
+        [
+          true,
+          true
+        ]
+      ],
+      "expected": 2
+    }
+  ]
+}

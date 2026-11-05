@@ -1,0 +1,33 @@
+{
+  "challengeId": "attendance-percent",
+  "cases": [
+    {
+      "input": [
+        18,
+        20
+      ],
+      "expected": 90
+    },
+    {
+      "input": [
+        2,
+        3
+      ],
+      "expected": 66
+    },
+    {
+      "input": [
+        0,
+        30
+      ],
+      "expected": 0
+    },
+    {
+      "input": [
+        7,
+        7
+      ],
+      "expected": 100
+    }
+  ]
+}

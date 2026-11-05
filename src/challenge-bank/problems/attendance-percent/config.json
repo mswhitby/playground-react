@@ -1,0 +1,41 @@
+{
+  "schemaVersion": 1,
+  "id": "attendance-percent",
+  "title": "Attendance Percentage",
+  "summary": "Convert an attendance fraction into a whole-number percentage.",
+  "difficulty": "Easy",
+  "points": 10,
+  "tags": [
+    "arithmetic",
+    "integer-division",
+    "functions"
+  ],
+  "prerequisites": [
+    "variables",
+    "functions",
+    "arithmetic"
+  ],
+  "suggestedCourses": [
+    "computer-science-1",
+    "game-programming",
+    "mobile-app-dev",
+    "uil"
+  ],
+  "languages": [
+    "python",
+    "java",
+    "javascript",
+    "csharp"
+  ],
+  "path": "problems/attendance-percent",
+  "signature": {
+    "python": "attendance_percent",
+    "java": "attendancePercent",
+    "javascript": "attendancePercent",
+    "csharp": "AttendancePercent"
+  },
+  "constraints": [
+    "1 ≤ total ≤ 10000",
+    "0 ≤ present ≤ total"
+  ]
+}

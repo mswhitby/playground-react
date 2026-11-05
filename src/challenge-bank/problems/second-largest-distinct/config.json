@@ -1,0 +1,42 @@
+{
+  "schemaVersion": 1,
+  "id": "second-largest-distinct",
+  "title": "Second Largest Distinct Value",
+  "summary": "Return the second-highest unique integer in a collection.",
+  "difficulty": "Medium",
+  "points": 20,
+  "tags": [
+    "arrays",
+    "comparisons",
+    "distinct-values"
+  ],
+  "prerequisites": [
+    "functions",
+    "loops",
+    "arrays",
+    "conditionals"
+  ],
+  "suggestedCourses": [
+    "computer-science-1",
+    "game-programming",
+    "mobile-app-dev",
+    "uil"
+  ],
+  "languages": [
+    "python",
+    "java",
+    "javascript",
+    "csharp"
+  ],
+  "path": "problems/second-largest-distinct",
+  "signature": {
+    "python": "second_largest_distinct",
+    "java": "secondLargestDistinct",
+    "javascript": "secondLargestDistinct",
+    "csharp": "SecondLargestDistinct"
+  },
+  "constraints": [
+    "0 ≤ array length ≤ 500",
+    "-100000 ≤ each value ≤ 100000"
+  ]
+}

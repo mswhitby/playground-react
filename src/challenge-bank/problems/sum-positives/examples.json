@@ -1,0 +1,33 @@
+{
+  "challengeId": "sum-positives",
+  "cases": [
+    {
+      "input": [
+        [
+          -3,
+          6,
+          0,
+          2,
+          -1
+        ]
+      ],
+      "expected": 8
+    },
+    {
+      "input": [
+        [
+          -5,
+          0,
+          -1
+        ]
+      ],
+      "expected": 0
+    },
+    {
+      "input": [
+        []
+      ],
+      "expected": 0
+    }
+  ]
+}

@@ -1,0 +1,29 @@
+{
+  "challengeId": "temperature-alert",
+  "cases": [
+    {
+      "input": [
+        32
+      ],
+      "expected": "Freeze"
+    },
+    {
+      "input": [
+        90
+      ],
+      "expected": "Heat"
+    },
+    {
+      "input": [
+        72
+      ],
+      "expected": "Normal"
+    },
+    {
+      "input": [
+        -5
+      ],
+      "expected": "Freeze"
+    }
+  ]
+}

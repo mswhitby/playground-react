@@ -1,0 +1,38 @@
+{
+  "schemaVersion": 1,
+  "id": "temperature-alert",
+  "title": "Temperature Alert",
+  "summary": "Choose a status label based on a temperature reading.",
+  "difficulty": "Very Easy",
+  "points": 5,
+  "tags": [
+    "conditionals",
+    "comparisons",
+    "functions"
+  ],
+  "prerequisites": [
+    "functions",
+    "conditionals"
+  ],
+  "suggestedCourses": [
+    "computer-science-1",
+    "game-programming",
+    "uil"
+  ],
+  "languages": [
+    "python",
+    "java",
+    "javascript",
+    "csharp"
+  ],
+  "path": "problems/temperature-alert",
+  "signature": {
+    "python": "temperature_alert",
+    "java": "temperatureAlert",
+    "javascript": "temperatureAlert",
+    "csharp": "TemperatureAlert"
+  },
+  "constraints": [
+    "-100 ≤ degrees ≤ 150"
+  ]
+}

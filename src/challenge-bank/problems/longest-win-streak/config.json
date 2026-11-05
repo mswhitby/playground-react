@@ -1,0 +1,41 @@
+{
+  "schemaVersion": 1,
+  "id": "longest-win-streak",
+  "title": "Longest Winning Streak",
+  "summary": "Find the longest consecutive run of winning results.",
+  "difficulty": "Medium",
+  "points": 15,
+  "tags": [
+    "arrays",
+    "loops",
+    "state"
+  ],
+  "prerequisites": [
+    "functions",
+    "loops",
+    "arrays",
+    "conditionals"
+  ],
+  "suggestedCourses": [
+    "computer-science-1",
+    "game-programming",
+    "mobile-app-dev",
+    "uil"
+  ],
+  "languages": [
+    "python",
+    "java",
+    "javascript",
+    "csharp"
+  ],
+  "path": "problems/longest-win-streak",
+  "signature": {
+    "python": "longest_win_streak",
+    "java": "longestWinStreak",
+    "javascript": "longestWinStreak",
+    "csharp": "LongestWinStreak"
+  },
+  "constraints": [
+    "0 ≤ match count ≤ 500"
+  ]
+}

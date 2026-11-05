@@ -1,0 +1,41 @@
+{
+  "schemaVersion": 1,
+  "id": "score-line",
+  "title": "Format a Score Line",
+  "summary": "Format a player score as a clear single line of text.",
+  "difficulty": "Easy",
+  "points": 10,
+  "tags": [
+    "strings",
+    "formatting",
+    "functions"
+  ],
+  "prerequisites": [
+    "variables",
+    "strings",
+    "functions"
+  ],
+  "suggestedCourses": [
+    "computer-science-1",
+    "game-programming",
+    "mobile-app-dev",
+    "uil"
+  ],
+  "languages": [
+    "python",
+    "java",
+    "javascript",
+    "csharp"
+  ],
+  "path": "problems/score-line",
+  "signature": {
+    "python": "score_line",
+    "java": "scoreLine",
+    "javascript": "scoreLine",
+    "csharp": "ScoreLine"
+  },
+  "constraints": [
+    "1 ≤ name length ≤ 50",
+    "-1000 ≤ points ≤ 1000"
+  ]
+}

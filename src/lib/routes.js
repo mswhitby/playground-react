@@ -1,4 +1,5 @@
 import { courses, getCourse } from '../data/courses.js';
+import { challengeIds } from '../data/challengeIds.js';
 
 // URLs remain the source of truth, even with localStorage UI preferences.
 const viteBase = import.meta.env?.BASE_URL || '/';
@@ -8,6 +9,8 @@ const withBase = (path) => `${basePrefix}${path}` || '/';
 export const homePath = () => withBase('/');
 export const teacherPath = () => withBase('/teacher');
 export const journalsPath = () => withBase('/journals');
+export const challengesPath = (courseId = null) => withBase(courseId ? `/challenges/course/${encodeURIComponent(courseId)}` : '/challenges');
+export const challengePath = (id) => withBase(`/challenges/${encodeURIComponent(id)}`);
 
 export function playgroundPath(courseOrId, lessonId) {
   const course = typeof courseOrId === 'string' ? getCourse(courseOrId) : courseOrId;
@@ -24,6 +27,15 @@ export function resolveRoute(pathname) {
   if (relative === '/') return { page: 'home' };
   if (relative === '/teacher') return { page: 'teacher' };
   if (relative === '/journals') return { page: 'journals' };
+  if (relative === '/challenges') return { page: 'challenges', filterCourse: null };
+  if (relative.startsWith('/challenges/')) {
+    const parts = relative.split('/').filter(Boolean);
+    try {
+      if (parts.length === 3 && parts[1] === 'course') {const courseId=decodeURIComponent(parts[2]);return getCourse(courseId)?{page:'challenges',filterCourse:courseId}:{page:'not-found'};}
+      if (parts.length === 2) {const challengeId=decodeURIComponent(parts[1]);return challengeIds.includes(challengeId)?{page:'challenge',challengeId}:{page:'not-found'};}
+    } catch{return {page:'not-found'}}
+    return {page:'not-found'};
+  }
 
   const segments = relative.split('/').filter(Boolean);
   if (segments[0] !== 'playgrounds' || ![2, 4].includes(segments.length)) return { page: 'not-found' };

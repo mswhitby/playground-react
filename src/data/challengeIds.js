@@ -1,0 +1,1 @@
+export const challengeIds = ["temperature-alert","count-matches","sum-positives","score-line","attendance-percent","longest-win-streak","confidence-total","second-largest-distinct","target-pairs","competition-ranks"];

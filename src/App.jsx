@@ -4,7 +4,7 @@ import { seedJournalSubmissions } from './data/journalSubmissions.js';
 import { getCourse } from './data/courses.js';
 import { useSaved } from './hooks/useSaved.js';
 import { cn } from './lib/cn.js';
-import { homePath, journalsPath, playgroundPath, resolveRoute, teacherPath } from './lib/routes.js';
+import { homePath, journalsPath, playgroundPath, challengesPath, challengePath, resolveRoute, teacherPath } from './lib/routes.js';
 import Topbar from './components/layout/Topbar.jsx';
 import Sidebar from './components/layout/Sidebar.jsx';
 import Footer from './components/layout/Footer.jsx';
@@ -12,6 +12,8 @@ import Home from './pages/Home.jsx';
 import CoursePage from './pages/CoursePage.jsx';
 import TeacherDashboard from './pages/TeacherDashboard.jsx';
 import Journals from './pages/Journals.jsx';
+import ChallengeBank from './pages/ChallengeBank.jsx';
+import ChallengeDetail from './pages/ChallengeDetail.jsx';
 
 export default function App() {
   // Deep links and browser Back/Forward always win over stored UI preferences.
@@ -32,7 +34,8 @@ export default function App() {
     if (route.page === 'course') setLastCourse(route.courseId);
     const label = route.page === 'course'
       ? getCourse(route.courseId)?.label
-      : route.page === 'teacher' ? 'Teacher dashboard' : route.page === 'journals' ? 'Weekly journals' : 'Your playgrounds';
+      : route.page === 'teacher' ? 'Teacher dashboard' : route.page === 'journals' ? 'Weekly journals'
+      : route.page === 'challenges' ? 'Challenge Bank' : route.page === 'challenge' ? 'Coding challenge' : 'Your playgrounds';
     document.title = `${label || 'Playground'} | Ms. Whitby's Playground — React Lab`;
   }, [route.page, route.courseId, setLastCourse]);
 
@@ -57,6 +60,7 @@ export default function App() {
   function setPage(page) {
     if (page === 'teacher') navigate(teacherPath());
     else if (page === 'journals') navigate(journalsPath());
+    else if (page === 'challenges') navigate(challengesPath());
     else if (page === 'course') openCourse(route.page === 'course' ? route.courseId : lastCourse);
     else navigate(homePath());
   }
@@ -86,14 +90,19 @@ export default function App() {
         />
         <main className="main-panel">
           {page === 'home' ? (
-            <Home openCourse={openCourse} openTeacher={() => navigate(teacherPath())} />
+            <Home openCourse={openCourse} openTeacher={() => navigate(teacherPath())} openChallenges={() => navigate(challengesPath())} />
           ) : page === 'course' ? (
             <CoursePage
               key={route.courseId}
               courseId={route.courseId}
               lessonId={route.lessonId}
               openCourse={openCourse}
+              openChallenges={(courseId) => navigate(challengesPath(courseId))}
             />
+          ) : page === 'challenges' ? (
+            <ChallengeBank filterCourse={route.filterCourse} onSelect={(id) => navigate(challengePath(id))} onBrowseCourse={(id) => navigate(challengesPath(id))} />
+          ) : page === 'challenge' ? (
+            <ChallengeDetail key={route.challengeId} challengeId={route.challengeId} onBack={() => navigate(challengesPath())} />
           ) : page === 'journals' ? (
             <Journals submissions={journalSubmissions} setSubmissions={setJournalSubmissions} />
           ) : page === 'teacher' ? (

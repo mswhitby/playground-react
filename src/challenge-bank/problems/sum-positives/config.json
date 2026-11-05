@@ -1,0 +1,41 @@
+{
+  "schemaVersion": 1,
+  "id": "sum-positives",
+  "title": "Sum Positive Values",
+  "summary": "Add only the positive values in a data set.",
+  "difficulty": "Easy",
+  "points": 10,
+  "tags": [
+    "arrays",
+    "loops",
+    "accumulators"
+  ],
+  "prerequisites": [
+    "functions",
+    "loops",
+    "arrays"
+  ],
+  "suggestedCourses": [
+    "computer-science-1",
+    "game-programming",
+    "mobile-app-dev",
+    "uil"
+  ],
+  "languages": [
+    "python",
+    "java",
+    "javascript",
+    "csharp"
+  ],
+  "path": "problems/sum-positives",
+  "signature": {
+    "python": "sum_positives",
+    "java": "sumPositives",
+    "javascript": "sumPositives",
+    "csharp": "SumPositives"
+  },
+  "constraints": [
+    "0 ≤ number count ≤ 200",
+    "-1000 ≤ each value ≤ 1000"
+  ]
+}

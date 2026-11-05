@@ -1,0 +1,47 @@
+{
+  "challengeId": "target-pairs",
+  "cases": [
+    {
+      "input": [
+        [
+          1,
+          3,
+          2,
+          2,
+          4
+        ],
+        4
+      ],
+      "expected": 2
+    },
+    {
+      "input": [
+        [
+          2,
+          2,
+          2
+        ],
+        4
+      ],
+      "expected": 3
+    },
+    {
+      "input": [
+        [
+          1,
+          2,
+          3
+        ],
+        9
+      ],
+      "expected": 0
+    },
+    {
+      "input": [
+        [],
+        1
+      ],
+      "expected": 0
+    }
+  ]
+}

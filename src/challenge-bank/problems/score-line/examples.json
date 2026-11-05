@@ -1,0 +1,26 @@
+{
+  "challengeId": "score-line",
+  "cases": [
+    {
+      "input": [
+        "Avery",
+        18
+      ],
+      "expected": "Avery: 18 points"
+    },
+    {
+      "input": [
+        "Jordan Lee",
+        0
+      ],
+      "expected": "Jordan Lee: 0 points"
+    },
+    {
+      "input": [
+        "Mia",
+        -2
+      ],
+      "expected": "Mia: -2 points"
+    }
+  ]
+}

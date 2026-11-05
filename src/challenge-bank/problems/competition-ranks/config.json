@@ -1,0 +1,42 @@
+{
+  "schemaVersion": 1,
+  "id": "competition-ranks",
+  "title": "Competition Leaderboard Ranks",
+  "summary": "Assign ranks while handling tied scores and skipped positions.",
+  "difficulty": "Hard",
+  "points": 25,
+  "tags": [
+    "arrays",
+    "sorting",
+    "ties"
+  ],
+  "prerequisites": [
+    "functions",
+    "loops",
+    "arrays",
+    "sorting"
+  ],
+  "suggestedCourses": [
+    "computer-science-1",
+    "game-programming",
+    "mobile-app-dev",
+    "uil"
+  ],
+  "languages": [
+    "python",
+    "java",
+    "javascript",
+    "csharp"
+  ],
+  "path": "problems/competition-ranks",
+  "signature": {
+    "python": "competition_ranks",
+    "java": "competitionRanks",
+    "javascript": "competitionRanks",
+    "csharp": "CompetitionRanks"
+  },
+  "constraints": [
+    "0 ≤ participant count ≤ 300",
+    "-100000 ≤ each score ≤ 100000"
+  ]
+}

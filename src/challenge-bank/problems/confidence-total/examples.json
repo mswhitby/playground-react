@@ -1,0 +1,40 @@
+{
+  "challengeId": "confidence-total",
+  "cases": [
+    {
+      "input": [
+        [
+          true,
+          false,
+          true
+        ],
+        [
+          20,
+          18,
+          15
+        ]
+      ],
+      "expected": 35
+    },
+    {
+      "input": [
+        [
+          false,
+          false
+        ],
+        [
+          5,
+          8
+        ]
+      ],
+      "expected": 0
+    },
+    {
+      "input": [
+        [],
+        []
+      ],
+      "expected": 0
+    }
+  ]
+}

@@ -1,0 +1,42 @@
+{
+  "schemaVersion": 1,
+  "id": "target-pairs",
+  "title": "Count Pairs With Target Sum",
+  "summary": "Count every pair of positions that reaches a target sum.",
+  "difficulty": "Hard",
+  "points": 25,
+  "tags": [
+    "arrays",
+    "nested-loops",
+    "counting"
+  ],
+  "prerequisites": [
+    "functions",
+    "loops",
+    "arrays",
+    "conditionals"
+  ],
+  "suggestedCourses": [
+    "computer-science-1",
+    "game-programming",
+    "mobile-app-dev",
+    "uil"
+  ],
+  "languages": [
+    "python",
+    "java",
+    "javascript",
+    "csharp"
+  ],
+  "path": "problems/target-pairs",
+  "signature": {
+    "python": "target_pairs",
+    "java": "targetPairs",
+    "javascript": "targetPairs",
+    "csharp": "TargetPairs"
+  },
+  "constraints": [
+    "0 ≤ array length ≤ 300",
+    "-1000 ≤ numbers and target ≤ 1000"
+  ]
+}

@@ -1,0 +1,42 @@
+{
+  "schemaVersion": 1,
+  "id": "confidence-total",
+  "title": "Confidence Pool Total",
+  "summary": "Compute the points earned from predictions.",
+  "difficulty": "Medium",
+  "points": 15,
+  "tags": [
+    "arrays",
+    "loops",
+    "parallel-arrays"
+  ],
+  "prerequisites": [
+    "functions",
+    "loops",
+    "arrays",
+    "conditionals"
+  ],
+  "suggestedCourses": [
+    "computer-science-1",
+    "game-programming",
+    "mobile-app-dev",
+    "uil"
+  ],
+  "languages": [
+    "python",
+    "java",
+    "javascript",
+    "csharp"
+  ],
+  "path": "problems/confidence-total",
+  "signature": {
+    "python": "confidence_total",
+    "java": "confidenceTotal",
+    "javascript": "confidenceTotal",
+    "csharp": "ConfidenceTotal"
+  },
+  "constraints": [
+    "0 ≤ array length ≤ 200",
+    "1 ≤ each weight ≤ 100"
+  ]
+}

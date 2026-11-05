@@ -1,0 +1,44 @@
+{
+  "challengeId": "second-largest-distinct",
+  "cases": [
+    {
+      "input": [
+        [
+          3,
+          1,
+          3,
+          2
+        ]
+      ],
+      "expected": 2
+    },
+    {
+      "input": [
+        [
+          5,
+          5
+        ]
+      ],
+      "expected": null
+    },
+    {
+      "input": [
+        [
+          -10,
+          -7,
+          -7,
+          -2
+        ]
+      ],
+      "expected": -7
+    },
+    {
+      "input": [
+        [
+          1
+        ]
+      ],
+      "expected": null
+    }
+  ]
+}

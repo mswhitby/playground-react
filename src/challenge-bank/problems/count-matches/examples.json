@@ -1,0 +1,35 @@
+{
+  "challengeId": "count-matches",
+  "cases": [
+    {
+      "input": [
+        [
+          2,
+          1,
+          2,
+          3,
+          2
+        ],
+        2
+      ],
+      "expected": 3
+    },
+    {
+      "input": [
+        [],
+        7
+      ],
+      "expected": 0
+    },
+    {
+      "input": [
+        [
+          3,
+          4
+        ],
+        5
+      ],
+      "expected": 0
+    }
+  ]
+}

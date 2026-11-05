@@ -26,7 +26,7 @@ export default function CourseCard({ course, onOpen }) {
       </div>
       <p className="course-description">{course.description}</p>
       <div className="course-meta">
-        <span>{count} preview {count === 1 ? "lesson" : "lessons"}</span>
+        <span>{count} sample {count === 1 ? "lesson" : "lessons"}</span>
         <span>Markdown</span>
       </div>
       <div className="course-card-footer">
@@ -40,7 +40,7 @@ export default function CourseCard({ course, onOpen }) {
             onOpen();
           }}
         >
-          <BookOpen size={15} /> Open preview <ArrowUpRight size={15} />
+          <BookOpen size={15} /> View course <ArrowUpRight size={15} />
         </a>
       </div>
     </article>

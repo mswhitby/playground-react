@@ -1,15 +1,17 @@
 import { useCallback, useEffect, useState } from 'react';
 import { seedStudents } from './data/students.js';
+import { seedJournalSubmissions } from './data/journalSubmissions.js';
 import { getCourse } from './data/courses.js';
 import { useSaved } from './hooks/useSaved.js';
 import { cn } from './lib/cn.js';
-import { homePath, playgroundPath, resolveRoute, teacherPath } from './lib/routes.js';
+import { homePath, journalsPath, playgroundPath, resolveRoute, teacherPath } from './lib/routes.js';
 import Topbar from './components/layout/Topbar.jsx';
 import Sidebar from './components/layout/Sidebar.jsx';
 import Footer from './components/layout/Footer.jsx';
 import Home from './pages/Home.jsx';
 import CoursePage from './pages/CoursePage.jsx';
 import TeacherDashboard from './pages/TeacherDashboard.jsx';
+import Journals from './pages/Journals.jsx';
 
 export default function App() {
   // Deep links and browser Back/Forward always win over stored UI preferences.
@@ -19,6 +21,7 @@ export default function App() {
   const [accent, setAccent] = useSaved('designlab:accent', 'purple');
   const [sidebarOpen, setSidebarOpen] = useSaved('designlab:sidebar', true);
   const [students, setStudents] = useSaved('designlab:students', seedStudents);
+  const [journalSubmissions, setJournalSubmissions] = useSaved('designlab:journal-submissions', seedJournalSubmissions);
 
   useEffect(() => {
     document.documentElement.dataset.theme = theme;
@@ -29,7 +32,7 @@ export default function App() {
     if (route.page === 'course') setLastCourse(route.courseId);
     const label = route.page === 'course'
       ? getCourse(route.courseId)?.label
-      : route.page === 'teacher' ? 'Teacher dashboard' : 'Your playgrounds';
+      : route.page === 'teacher' ? 'Teacher dashboard' : route.page === 'journals' ? 'Weekly journals' : 'Your playgrounds';
     document.title = `${label || 'Playground'} | Ms. Whitby's Playground — React Lab`;
   }, [route.page, route.courseId, setLastCourse]);
 
@@ -53,6 +56,7 @@ export default function App() {
 
   function setPage(page) {
     if (page === 'teacher') navigate(teacherPath());
+    else if (page === 'journals') navigate(journalsPath());
     else if (page === 'course') openCourse(route.page === 'course' ? route.courseId : lastCourse);
     else navigate(homePath());
   }
@@ -76,6 +80,7 @@ export default function App() {
           open={sidebarOpen}
           page={page}
           courseId={currentCourse}
+          lessonId={route.page === 'course' ? route.lessonId : null}
           setPage={setPage}
           openCourse={openCourse}
         />
@@ -89,8 +94,10 @@ export default function App() {
               lessonId={route.lessonId}
               openCourse={openCourse}
             />
+          ) : page === 'journals' ? (
+            <Journals submissions={journalSubmissions} setSubmissions={setJournalSubmissions} />
           ) : page === 'teacher' ? (
-            <TeacherDashboard students={students} setStudents={setStudents} />
+            <TeacherDashboard students={students} setStudents={setStudents} journalSubmissions={journalSubmissions} />
           ) : (
             <div className="main-content route-not-found">
               <div className="eyebrow">Link not found</div>

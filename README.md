@@ -108,3 +108,12 @@ The home page now uses **individually elevated, generously spaced neutral cards*
 - Change course workspace separation in `src/styles/course.css`, teacher surfaces in `src/styles/teacher.css`.
 - Existing coral/purple theme controls and saved settings remain; the default accent for *new* sessions is purple.
 - This remains a frontend-only preview. No production data or backend was changed.
+
+
+## Unit outlines, TSIA2 practice, and weekly journals (November 2026)
+
+- Every course now opens on a **course landing page**, with clickable unit cards and lesson previews. Current outlines are **fictional samples** for layout testing, not a copy of the full production curriculum. Unit metadata is in `src/data/courseUnits.js`; each lesson points to editable `src/content/<lesson-id>.md`.
+- The current course's **unit/lesson outline** appears inside the shared left sidebar between Explore and Playgrounds. On narrow screens, use the lesson selector above the workspace.
+- **TSI Math** lessons show sample multiple-choice math questions, explanations and feedback instead of a coding editor. Questions are original design examples in `src/data/tsiQuestions.js`.
+- **Weekly Journals** at `/journals` lets you change sample class/student/week, choose an essay or logic puzzle, draft text, disclose AI use, and create *local simulated* hand-ins. Open Teacher Dashboard → Journals to review them with per-section submitted/missing counts. Drafts and demo receipts persist in this browser using `localStorage` only. There is **no connection to real students, submission services, or grading**.
+- The GitHub repository remains a design-only sandbox. Changes here do not modify the separate production `mswhitby/playground` or `mswhitby/classroom` repos.

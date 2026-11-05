@@ -1,10 +1,11 @@
-import { BookOpen, ChevronDown, CircleHelp, ClipboardPenLine, House, LayoutDashboard } from 'lucide-react';
+import { BookOpen, ChevronDown, CircleHelp, ClipboardPenLine, House, LayoutDashboard, LibraryBig } from 'lucide-react';
 import { courses, getCourse } from '../../data/courses.js';
 import { lessons } from '../../data/lessons.js';
 import { cn } from '../../lib/cn.js';
 
 const MENU = [
   ['home', 'Home', House],
+  ['challenges', 'Challenge Bank', LibraryBig],
   ['journals', 'Weekly journals', ClipboardPenLine],
   ['teacher', 'Teacher dashboard', LayoutDashboard],
 ];
@@ -16,7 +17,7 @@ export default function Sidebar({ open, page, courseId, lessonId, setPage, openC
     <aside className={cn('main-sidebar', !open && 'collapsed')} aria-label="Playground navigation">
       <div className="side-title">EXPLORE</div>
       {MENU.map(([id, label, Icon]) => (
-        <button key={id} className={cn('nav-item', page === id && 'active')}
+        <button key={id} className={cn('nav-item', (page === id || (id === 'challenges' && page === 'challenge')) && 'active')}
           onClick={() => setPage(id)} title={label}>
           <Icon size={19} /><span>{label}</span>
         </button>

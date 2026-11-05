@@ -16,17 +16,17 @@ export function getChallengeStarter(id,lang){
  const def=challengeDefinitions[id];if(!def)return '';
  const [pyArgs,pyType,javaArgs,javaType,csArgs,csType,jsArgs]=def.signature;
  switch(lang){
-  case 'python':return 'def '+snake(id)+'('+pyArgs+') -> '+pyType+':\\n    # TODO: Implement this function.\\n    raise NotImplementedError("Your solution goes here")\\n';
-  case 'java':return 'public class Solution {\\n    public static '+javaType+' '+camel(id)+'('+javaArgs+') {\\n        // TODO: Implement this function.\\n        throw new UnsupportedOperationException("Your solution goes here");\\n    }\\n}\\n';
-  case 'javascript':return 'export function '+camel(id)+'('+jsArgs+') {\\n  // TODO: Implement this function.\\n  throw new Error("Your solution goes here");\\n}\\n';
-  case 'csharp':return 'using System;\\n\\npublic static class Solution {\\n    public static '+csType+' '+pascal(id)+'('+csArgs+') {\\n        // TODO: Implement this function.\\n        throw new NotImplementedException("Your solution goes here");\\n    }\\n}\\n';
+  case 'python':return 'def '+snake(id)+'('+pyArgs+') -> '+pyType+':\n    # TODO: Implement this function.\n    raise NotImplementedError("Your solution goes here")\n';
+  case 'java':return 'public class Solution {\n    public static '+javaType+' '+camel(id)+'('+javaArgs+') {\n        // TODO: Implement this function.\n        throw new UnsupportedOperationException("Your solution goes here");\n    }\n}\n';
+  case 'javascript':return 'export function '+camel(id)+'('+jsArgs+') {\n  // TODO: Implement this function.\n  throw new Error("Your solution goes here");\n}\n';
+  case 'csharp':return 'using System;\n\npublic static class Solution {\n    public static '+csType+' '+pascal(id)+'('+csArgs+') {\n        // TODO: Implement this function.\n        throw new NotImplementedException("Your solution goes here");\n    }\n}\n';
   default:return '';
  }
 }
 export function getChallengeStatement(id){
  const c=getChallenge(id),d=challengeDefinitions[id];if(!c||!d)return '';
- const examples=d.examples.map((x,i)=>'**Example '+(i+1)+'**\\n\\n\\x60\\x60\\x60json\\n'+JSON.stringify({arguments:x.input,expected:x.expected},null,2)+'\\n\\x60\\x60\\x60').join('\\n\\n');
- return '# '+c.title+'\\n\\n'+c.summary+'\\n\\n## Problem\\n\\n'+d.problem+'\\n\\n## Input and output\\n\\nImplement the supplied function and **return** the result. Do not print the answer.\\n\\n## Examples\\n\\n'+examples+'\\n\\n## Prerequisites\\n\\n'+c.prerequisites.join(', ')+'.\\n';
+ const examples=d.examples.map((x,i)=>'**Example '+(i+1)+'**\n\n\x60\x60\x60json\n'+JSON.stringify({arguments:x.input,expected:x.expected},null,2)+'\n\x60\x60\x60').join('\n\n');
+ return '# '+c.title+'\n\n'+c.summary+'\n\n## Problem\n\n'+d.problem+'\n\n## Input and output\n\nImplement the supplied function and **return** the result. Do not print the answer.\n\n## Examples\n\n'+examples+'\n\n## Prerequisites\n\n'+c.prerequisites.join(', ')+'.\n';
 }
 export function filterChallenges({query='',topic='all',difficulty='all',course='all',language='all'}={}){
  const q=query.trim().toLowerCase();

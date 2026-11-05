@@ -6,7 +6,7 @@ import { playgroundPath } from '../lib/routes.js';
 import CourseLanding from './CourseLanding.jsx';
 import LessonWorkspace from '../components/course/LessonWorkspace.jsx';
 
-export default function CoursePage({ courseId, lessonId, openCourse }) {
+export default function CoursePage({ courseId, lessonId, openCourse, openChallenges }) {
   const course = getCourse(courseId) || courses[0];
   const [copyStatus, setCopyStatus] = useState('');
   const unitIndex = course.units.findIndex((unit) => unit.lessons.includes(lessonId));
@@ -52,7 +52,7 @@ export default function CoursePage({ courseId, lessonId, openCourse }) {
               </button>}
             </nav>
           </>
-        ) : <CourseLanding course={course} openCourse={openCourse} />}
+        ) : <CourseLanding course={course} openCourse={openCourse} openChallenges={openChallenges} />}
       </div>
     </div>
   );

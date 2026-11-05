@@ -1,8 +1,9 @@
 import { courses } from "../data/courses.js";
 import CourseCard from "../components/home/CourseCard.jsx";
 import TeacherShortcut from "../components/home/TeacherShortcut.jsx";
+import { LibraryBig } from "lucide-react";
 
-export default function Home({ openCourse, openTeacher }) {
+export default function Home({ openCourse, openTeacher, openChallenges }) {
   return (
     <div className="main-content">
       <div className="welcome">
@@ -18,6 +19,7 @@ export default function Home({ openCourse, openTeacher }) {
           <CourseCard key={c.id} course={c} onOpen={() => openCourse(c.id)} />
         ))}
       </div>
+      <button type="button" className="wide-shortcut challenge-bank-shortcut" onClick={openChallenges}><LibraryBig size={23}/><span><strong>Shared Challenge Bank</strong><small>Practice one problem in Python, Java, JavaScript, or C#.</small></span><span aria-hidden="true">→</span></button>
       <TeacherShortcut onClick={openTeacher} />
     </div>
   );

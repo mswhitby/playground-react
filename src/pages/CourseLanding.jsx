@@ -1,8 +1,8 @@
-import { ArrowUpRight, BookOpen, ChevronRight, Layers3 } from 'lucide-react';
+import { ArrowUpRight, BookOpen, ChevronRight, Layers3, LibraryBig } from 'lucide-react';
 import { lessons } from '../data/lessons.js';
-import { playgroundPath } from '../lib/routes.js';
+import { challengesPath, playgroundPath } from '../lib/routes.js';
 
-export default function CourseLanding({ course, openCourse }) {
+export default function CourseLanding({ course, openCourse, openChallenges }) {
   return (
     <div className="course-landing" style={{ '--course-color': course.color }}>
       <header className="course-hero surface-card">
@@ -44,6 +44,10 @@ export default function CourseLanding({ course, openCourse }) {
           </section>
         ))}
       </div>
+      <section className="course-challenges-shelf surface-card">
+        <div><div className="eyebrow">Shared practice library</div><h2>Related programming challenges</h2><p>Browse reusable problems suited to this course. Review each challenge's prerequisites before recommending it to students.</p></div>
+        <a href={challengesPath(course.id)} className="btn" onClick={event => { if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return; event.preventDefault(); openChallenges(course.id); }}><LibraryBig size={16}/> Browse challenges</a>
+      </section>
       <p className="hint">These are representative course outlines for experimenting with layout. They are not the full curriculum from the production course repositories.</p>
     </div>
   );

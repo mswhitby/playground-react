@@ -368,3 +368,15 @@
     padding: 12px;
   }
 }
+
+/* Use the same floating card depth on the teacher dashboard. */
+.section-banner, .stat-card, .panel, .account-card, .setup-card {
+  border-radius: 16px;
+  border-color: var(--border);
+  box-shadow: var(--card-shadow);
+}
+.stat-grid, .account-grid, .setup-grid { gap: 18px; }
+.stat-card { min-height: 112px; }
+.account-card, .setup-card { background: var(--surface); }
+.stat-card strong { color: var(--text); }
+@media (max-width: 600px) { .stat-grid { gap: 10px; } .account-grid, .setup-grid { gap: 12px; } }

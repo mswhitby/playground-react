@@ -2,7 +2,7 @@ import { Moon, Sun } from "lucide-react";
 import { cn } from "../../lib/cn.js";
 
 const ACCENTS = [
-  { id: "coral", label: "Coral", color: "#ff4d3d" },
+  { id: "coral", label: "Coral", color: "#ff6b59" },
   { id: "purple", label: "Purple", color: "#a78bfa" },
 ];
 

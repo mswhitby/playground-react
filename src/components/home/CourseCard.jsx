@@ -1,13 +1,23 @@
-import { BookOpen } from "lucide-react";
+import { ArrowUpRight, BookOpen, Calculator, Code2, Gamepad2, Rocket, Smartphone, Trophy } from "lucide-react";
 import { playgroundPath } from "../../lib/routes.js";
+
+const COURSE_ICONS = {
+  "computer-science-1": Code2,
+  "game-programming": Gamepad2,
+  "mobile-app-dev": Smartphone,
+  uil: Trophy,
+  "tsi-math": Calculator,
+  capstone: Rocket,
+};
 
 export default function CourseCard({ course, onOpen }) {
   const count = course.lessons.length;
+  const CourseIcon = COURSE_ICONS[course.id] || Code2;
   return (
-    <article className="course-card">
+    <article className="course-card" style={{ "--course-color": course.color }}>
       <div className="course-card-heading">
-        <span className="course-glyph" style={{ background: course.color }}>
-          {course.glyph}
+        <span className="course-glyph" aria-hidden="true">
+          <CourseIcon size={24} strokeWidth={2.2} />
         </span>
         <div>
           <h2>{course.label}</h2>
@@ -16,23 +26,23 @@ export default function CourseCard({ course, onOpen }) {
       </div>
       <p className="course-description">{course.description}</p>
       <div className="course-meta">
-        <span>
-          {count} preview {count === 1 ? "lesson" : "lessons"}
-        </span>
+        <span>{count} preview {count === 1 ? "lesson" : "lessons"}</span>
         <span>Markdown</span>
       </div>
-      <a
-        className="btn primary"
-        href={playgroundPath(course)}
-        onClick={(event) => {
-          // Keep normal link behaviors: open in a new tab, copy address, etc.
-          if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
-          event.preventDefault();
-          onOpen();
-        }}
-      >
-        <BookOpen size={16} /> Open preview
-      </a>
+      <div className="course-card-footer">
+        <span className="course-color-bar" aria-hidden="true" />
+        <a
+          className="course-open-link"
+          href={playgroundPath(course)}
+          onClick={(event) => {
+            if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+            event.preventDefault();
+            onOpen();
+          }}
+        >
+          <BookOpen size={15} /> Open preview <ArrowUpRight size={15} />
+        </a>
+      </div>
     </article>
   );
 }

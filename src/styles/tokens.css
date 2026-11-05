@@ -1,62 +1,64 @@
-/* Design tokens: colors, fonts and theme/accent variants.
-   Based on current Playground tokens (Nov 2026); independent of production's 72 KB visual.css. */
+/* Vibrant course categories on distinctly separated neutral surfaces.
+   Course accents communicate identity; success/warning keep their own semantic colors. */
 :root {
-  font-family:
-    Inter,
-    -apple-system,
-    BlinkMacSystemFont,
-    "Segoe UI",
-    Arial,
-    sans-serif;
+  font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
   font-size: 14px;
   line-height: 1.5;
   color-scheme: dark;
-  --bg: #0a0a0b;
-  --bar: #0f0f11;
-  --surface: #121214;
-  --surface-2: #1a1a1d;
-  --code-bg: #0c0c0e;
-  --text: #ededef;
-  --soft: #b4b4bb;
-  --muted: #8b8b94;
-  --border: rgba(255, 255, 255, 0.09);
-  --border-strong: rgba(255, 255, 255, 0.18);
-  --accent: #ff4d3d;
-  --on-accent: #0a0a0b;
-  --pass: #4ade80;
-  --pass-bg: rgba(74, 222, 128, 0.12);
-  --warn: #fbbf24;
-  --warn-bg: rgba(251, 191, 36, 0.1);
-  --shadow: 0 12px 32px rgba(0, 0, 0, 0.3);
+  --bg: #101012;
+  --bar: #17171b;
+  --surface: #242429;
+  --surface-2: #2d2d33;
+  --code-bg: #17171b;
+  --text: #f5f5f7;
+  --soft: #c4c4ce;
+  --muted: #a1a1ae;
+  --border: #38383f;
+  --border-strong: #505059;
+  --accent: #a78bfa;
+  --on-accent: #101012;
+  --pass: #34d26b;
+  --pass-bg: rgba(52, 210, 107, 0.13);
+  --warn: #ffae24;
+  --warn-bg: rgba(255, 174, 36, 0.12);
+  --shadow: 0 8px 26px rgba(0, 0, 0, 0.18);
+  --card-shadow: 0 6px 20px rgba(0, 0, 0, 0.16);
   --mono: ui-monospace, SFMono-Regular, Consolas, "Liberation Mono", monospace;
+}
+:root[data-accent="coral"] {
+  --accent: #ff6b59;
+  --on-accent: #101012;
 }
 :root[data-accent="purple"] {
   --accent: #a78bfa;
-  --on-accent: #0a0a0b;
+  --on-accent: #101012;
 }
 :root[data-theme="light"] {
   color-scheme: light;
-  --bg: #fafafa;
-  --bar: #fff;
-  --surface: #fff;
-  --surface-2: #f4f4f5;
-  --code-bg: #fff;
-  --text: #151519;
-  --soft: #404047;
-  --muted: #686870;
-  --border: rgba(0, 0, 0, 0.09);
-  --border-strong: rgba(0, 0, 0, 0.18);
-  --pass: #15803d;
-  --pass-bg: #e3f6e9;
-  --warn: #a16207;
-  --warn-bg: #fbf0d9;
-  --shadow: 0 10px 25px rgba(0, 0, 0, 0.06);
+  --bg: #f0f1f5;
+  --bar: #ffffff;
+  --surface: #ffffff;
+  --surface-2: #f7f8fa;
+  --code-bg: #f8f9fc;
+  --text: #20212a;
+  --soft: #4f5362;
+  --muted: #676b79;
+  --border: #e3e4ea;
+  --border-strong: #cdd0d9;
+  --accent: #6d28d9;
+  --on-accent: #ffffff;
+  --pass: #168140;
+  --pass-bg: #e0f6e9;
+  --warn: #a05b00;
+  --warn-bg: #fff1dc;
+  --shadow: 0 10px 25px rgba(32, 33, 42, 0.06);
+  --card-shadow: 0 5px 18px rgba(32, 33, 42, 0.055);
 }
 :root[data-theme="light"][data-accent="coral"] {
-  --accent: #d42a18;
-  --on-accent: #fff;
+  --accent: #d73527;
+  --on-accent: #ffffff;
 }
 :root[data-theme="light"][data-accent="purple"] {
   --accent: #6d28d9;
-  --on-accent: #fff;
+  --on-accent: #ffffff;
 }

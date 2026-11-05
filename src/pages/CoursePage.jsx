@@ -23,7 +23,7 @@ export default function CoursePage({ courseId, lessonId, openCourse }) {
   }
 
   return (
-    <div className="course-layout">
+    <div className="course-layout" style={{ "--course-color": course.color }}>
       <CourseNavigation
         course={course}
         selectedLesson={selectedLesson}

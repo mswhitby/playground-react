@@ -16,7 +16,7 @@ export default function App() {
   const [route, setRoute] = useState(() => resolveRoute(window.location.pathname));
   const [lastCourse, setLastCourse] = useSaved('designlab:course', 'computer-science-1');
   const [theme, setTheme] = useSaved('designlab:theme', 'dark');
-  const [accent, setAccent] = useSaved('designlab:accent', 'coral');
+  const [accent, setAccent] = useSaved('designlab:accent', 'purple');
   const [sidebarOpen, setSidebarOpen] = useSaved('designlab:sidebar', true);
   const [students, setStudents] = useSaved('designlab:students', seedStudents);
 

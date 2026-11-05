@@ -97,3 +97,14 @@ The design tokens and visual direction were taken from the current Playground so
 Use the **Reset sample records** button in Teacher Dashboard to restore fictional students. To clear *all* saved interface state (including Markdown source previews, editor drafts, theme, sizes), clear storage for `http://127.0.0.1:5173` in your browser's site settings.
 
 **Build verification note:** The refactored components were bundled and rendered in a headless browser and compared screen-by-screen against the original single-file version (desktop, tablet and phone widths, both themes, all tabs) with identical results. A full `vite build` was not run in the preparation environment because npm registry access was unavailable; run `npm install` followed by `npm run dev` on your local computer.
+
+## Vibrant category-card themes (November 2026)
+
+The home page now uses **individually elevated, generously spaced neutral cards** rather than a grouped list. Both light and dark modes use a quieter page background and more distinct card surfaces. Course icons, thin bars, and active course navigation convey category identity with vivid indigo, magenta, cyan, orange, green, and pink. The course accent also carries into the lesson header and selected lesson. Grading success and warning colors remain universal and separate from course category colors.
+
+- Change surface contrast and accent shades in `src/styles/tokens.css` (light and dark modes).
+- Change course category identity in `src/data/courses.js`; CSS consumes each `course.color` using `--course-color`.
+- Change card spacing, icon tiles and accent bars in `src/styles/home.css`.
+- Change course workspace separation in `src/styles/course.css`, teacher surfaces in `src/styles/teacher.css`.
+- Existing coral/purple theme controls and saved settings remain; the default accent for *new* sessions is purple.
+- This remains a frontend-only preview. No production data or backend was changed.

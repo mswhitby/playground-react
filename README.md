@@ -117,3 +117,11 @@ The home page now uses **individually elevated, generously spaced neutral cards*
 - **TSI Math** lessons show sample multiple-choice math questions, explanations and feedback instead of a coding editor. Questions are original design examples in `src/data/tsiQuestions.js`.
 - **Weekly Journals** at `/journals` lets you change sample class/student/week, choose an essay or logic puzzle, draft text, disclose AI use, and create *local simulated* hand-ins. Open Teacher Dashboard → Journals to review them with per-section submitted/missing counts. Drafts and demo receipts persist in this browser using `localStorage` only. There is **no connection to real students, submission services, or grading**.
 - The GitHub repository remains a design-only sandbox. Changes here do not modify the separate production `mswhitby/playground` or `mswhitby/classroom` repos.
+
+## Shared Challenge Bank design preview (November 2026)
+
+The global **Challenge Bank** is available under Explore. Ten original reusable problems have stable language-independent IDs, search, course/topic/difficulty/language filters, and alphabetical sorting. Course landing pages link to filtered views of the **same** bank, not duplicated challenge content. The challenge workspace has Markdown instructions, visible examples, adjustable editor and console panes, and language-specific starter functions for **Python, Java, JavaScript and C#**. Separate local drafts are kept per problem and language.
+
+**Source:** Private `mswhitby/challenges`, with a student-facing metadata snapshot in `src/challenge-bank/catalog.json` and authored statement/example and starter-template preview data in `src/data/challengeDefinitions.js`. The design lab is not a live private-repository sync. To publish from the private challenge repository, copy only student-facing files during the build using a read-only GitHub App or fine-grained token stored in GitHub Actions secrets. Never send a secret to a browser, and never publish hidden tests or solutions.
+
+**Simulation notice:** Run and Check display published examples but do **not** execute a student's code. Save and Demo submit store copies in that browser only and do **not** produce verified grades or teacher submissions. Course matching does not establish prerequisite readiness; the teacher should verify prerequisites before recommending challenges.

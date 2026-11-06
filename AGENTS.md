@@ -1,13 +1,17 @@
-# Ms. Whitby's Playground — agent instructions
+# React Design Lab — companion instructions
+
+**Canonical project:** `mswhitby/playground`. The source-of-truth agent instructions and cross-chat project state live at `mswhitby/playground/AGENTS.md` and `mswhitby/playground/docs/HANDOFF.md`. **Read those first.** This repository (`mswhitby/playground-react`) is a temporary frontend preview/design sandbox; it is not the real Playground backend, identity service, or production application.
+
+## React-lab-specific guidance
 
 This repository is the **independent React Design Lab**, not the live student application.
 
 ## Start here in every new coding session
 
-1. Read [docs/HANDOFF.md](docs/HANDOFF.md) for the current objective, latest pull request, repository map, design decisions, constraints and next steps.
+1. Read the **canonical** `mswhitby/playground/AGENTS.md` and `mswhitby/playground/docs/HANDOFF.md` first, then this repository's [docs/HANDOFF.md](docs/HANDOFF.md) for React-lab-specific progress.
 2. Confirm current GitHub branch, PR, CI and deployment status; timestamps/SHAs in the handoff are historical snapshots, not guarantees of current state.
 3. Inspect the relevant source files before changing code. Prefer continuing the current review PR unless the user requests a separate branch.
-4. Before ending a substantial task, **update docs/HANDOFF.md** with what changed, PR/branch, tests, preview deployment, decisions and the exact next step. Keep the handoff on `main` available to new chats when practical. Never claim that a file was written, merged or deployed without verifying it.
+4. After substantial work, **update the canonical `mswhitby/playground/docs/HANDOFF.md` first**, even if the changes were only in React. Also update this repo's local `docs/HANDOFF.md` with React-specific details. Never claim a file was written, merged or deployed without verifying.
 
 ## Repositories and boundaries
 
@@ -37,4 +41,4 @@ This repository is the **independent React Design Lab**, not the live student ap
 - Prefer readable Markdown documentation. Keep long names, original published order, responsive wrapping and course themes intact.
 - For a new **ordinary ChatGPT** project chat, the user or project instructions should explicitly request reading these GitHub files. Codex can automatically read root `AGENTS.md` when operating inside this repository; ordinary chat does not automatically ingest a GitHub repo.
 
-**Current work and next action:** read `docs/HANDOFF.md`.
+**Current work and next action:** start at `mswhitby/playground/docs/HANDOFF.md` (canonical), then read this repo's `docs/HANDOFF.md`.

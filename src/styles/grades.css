@@ -1,0 +1,38 @@
+/* Student grades and weekly performance; all figures are sample scores in the React lab. */
+.grades-screen {max-width:1360px;}
+.grades-heading {display:flex;justify-content:space-between;align-items:end;flex-wrap:wrap;gap:16px;margin-bottom:13px;}
+.grades-heading h1 {font-size:36px;margin-bottom:7px;}
+.grades-heading p {margin:0;font-size:14px;}
+.grades-filter {display:grid;gap:6px;font-size:12px;font-weight:700;color:var(--soft);}
+.grades-filter select {border:1px solid var(--border-strong);border-radius:9px;background:var(--surface);color:var(--text);padding:10px;min-width:190px;}
+.grades-preview-note {font-size:12px;margin:0 0 23px;color:var(--muted);}
+.grades-summary {display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin-bottom:20px;}
+.grades-stat {padding:23px;display:grid;justify-items:start;gap:7px;}
+.grades-stat svg {color:var(--accent);}
+.grades-stat span,.grades-stat p {font-size:12px;color:var(--muted);}
+.grades-stat strong {font-size:31px;line-height:1.2;font-variant-numeric:tabular-nums;}
+.grades-stat strong small {font-size:18px;color:var(--muted);}
+.grades-stat p {margin:0;}
+.grades-panel {padding:24px;margin-bottom:20px;}
+.grades-panel h2 {font-size:20px;margin:0 0 18px;}
+.grades-panel > p {font-size:13px;margin:0;}
+.grades-weeks,.grades-entries,.grades-course-list {display:grid;}
+.grades-week,.grades-entry,.grades-course-row {display:flex;align-items:center;justify-content:space-between;gap:18px;padding:14px 1px;border-top:1px solid var(--border);}
+.grades-week:first-child,.grades-entry:first-child,.grades-course-row:first-child {border-top:0;}
+.grades-week > div:first-child,.grades-entry > div:first-child {display:grid;gap:5px;min-width:0;}
+.grades-week strong,.grades-entry strong,.grades-course-row strong {font-size:13px;}
+.grades-week small,.grades-entry small {display:flex;align-items:center;gap:5px;color:var(--muted);font-size:11px;}
+.grades-entry > strong {flex:none;font-variant-numeric:tabular-nums;}
+.grades-week-score {min-width:min(190px,40%);display:grid;justify-items:end;gap:8px;}
+.grades-week-score progress {width:100%;height:7px;border:0;accent-color:var(--accent);}
+.grades-course-row {justify-content:flex-start;}
+.grades-course-row strong {flex:1;}
+.grades-course-row > span:last-child {color:var(--soft);font-size:12px;}
+.grades-course-dot {display:inline-block;width:11px;height:11px;background:var(--course-color);border-radius:3px;flex:none;}
+.grades-due-meta {display:grid;justify-items:end;gap:4px;}
+.assignment-status {display:inline-flex;align-items:center;border-radius:999px;padding:3px 8px;font-size:10px;font-weight:750;background:var(--surface-2);color:var(--soft);border:1px solid var(--border);white-space:nowrap;}
+.assignment-status.completed {color:var(--pass);background:var(--pass-bg);border-color:color-mix(in srgb,var(--pass) 30%,var(--border));}
+.assignment-status.overdue {color:#f58d96;background:color-mix(in srgb,#d45265 11%,var(--surface));border-color:color-mix(in srgb,#d45265 30%,var(--border));}
+.assignment-status.assigned {color:var(--accent);background:color-mix(in srgb,var(--accent) 9%,var(--surface));border-color:color-mix(in srgb,var(--accent) 25%,var(--border));}
+@media(max-width:850px){.grades-summary{grid-template-columns:1fr;}.grades-stat{padding:18px;}.grades-stat strong{font-size:27px;}}
+@media(max-width:520px){.grades-panel{padding:15px;}.grades-heading h1{font-size:29px;}.grades-week-score{min-width:105px;}.grades-entry{align-items:start;}}

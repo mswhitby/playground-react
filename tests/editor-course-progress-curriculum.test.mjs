@@ -71,7 +71,7 @@ test('teacher Curriculum tab pulls public lesson catalog but not student records
   assert.match(tab,/\["curriculum", "Curriculum"/);
   assert.match(teacher,/<TeacherCurriculum section=\{currentSection\}/);
   assert.match(curriculum,/\/playground\/data\/computer-science-1\/course\.json/);
-  assert.match(curriculum,/normalizeImportedOutline\(result\)/);
+  assert.match(curriculum,/normalizeImportedOutline\(catalog\)/);
   assert.match(curriculum,/cache:'no-store'/);
   assert.match(curriculum,/Student records and grades are not connected/);
   assert.doesNotMatch(curriculum,/supabase|rpc\(/i);

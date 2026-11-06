@@ -193,7 +193,7 @@
 }
 .markdown-preview blockquote {
   margin: 20px 0;
-  border-left: 3px solid var(--accent);
+  border-left: 3px solid var(--course-color, var(--accent));
   padding: 3px 16px;
 }
 .markdown-source {
@@ -464,3 +464,9 @@
 .lesson-header .eyebrow,
 .lesson-header .page-title-row,
 .lesson-header .page-title-row h1 {overflow-wrap:anywhere;white-space:normal;min-width:0;}
+
+/* Learn pagination is quiet, course-colored text—not another button bar. */
+.course-layout .lesson-step-controls .step-link {padding:4px 0;border:0;background:transparent;color:var(--course-color);font-size:13px;font-weight:750;min-width:76px;text-align:left;}
+.course-layout .lesson-step-controls .step-link:last-child {text-align:right;}
+.course-layout .lesson-step-controls .step-link:hover:not(:disabled) {text-decoration:underline;}
+.course-layout .lesson-step-controls .step-link:disabled {opacity:.35;}

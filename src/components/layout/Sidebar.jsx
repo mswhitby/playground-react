@@ -2,7 +2,7 @@ import { BookOpen, ChevronDown, CircleHelp, ClipboardPenLine, House, LayoutDashb
 import { courses, getCourse } from '../../data/courses.js';
 import { lessons } from '../../data/lessons.js';
 import { cn } from '../../lib/cn.js';
-import { statusFor, dueLabel } from '../../lib/gradebook.js';
+import { statusFor } from '../../lib/gradebook.js';
 
 const MENU = [
   ['home', 'Home', House],
@@ -37,21 +37,21 @@ export default function Sidebar({ open, page, courseId, lessonId, setPage, openC
               open={unit.lessons.includes(lessonId) || (!lessonId && index === 0) ? true : undefined}>
               <summary><span className="outline-unit-number">{String(index + 1).padStart(2, '0')}</span><span>{unit.title}</span><ChevronDown size={14} /></summary>
               <div className="outline-lesson-list">
-                {unit.lessons.map((id) => (
-                  <button key={id} onClick={() => openCourse(course.id, id)} title={lessons[id].title}
-                    className={cn('outline-lesson', id === lessonId && 'selected', completedLessons.includes(id) && 'is-complete')} aria-label={lessons[id].title + (completedLessons.includes(id) ? ', completed' : '')} aria-current={id === lessonId ? 'page' : undefined}>
-                    <span className="outline-lesson-details">
-                      <span>{lessons[id].title}</span>
-                      {(() => {
-                        const activity = statusFor('lesson:'+id,{assignments,grades,completedLessons});
-                        return activity.dueDate ? <small className={`outline-due ${activity.state}`}>
-                          {activity.state==='completed'?'Completed':activity.state==='overdue'?'Overdue':'Assigned'} · {dueLabel(activity.dueDate)}
-                          {activity.grade ? ` · ${activity.grade.earned}/${activity.grade.possible} pts` : ''}
-                        </small> : null;
-                      })()}
-                    </span><span className="lesson-completion-dot" aria-hidden="true" />
-                  </button>
-                ))}
+                {unit.lessons.map(id => {
+                  const activity = statusFor('lesson:'+id,{assignments,grades,completedLessons});
+                  const state = activity.state;
+                  const statusText = state==='completed' ? 'Completed' : state==='overdue' ? 'Overdue' : state==='assigned' ? 'Assigned' : '';
+                  return (
+                    <button key={id} onClick={() => openCourse(course.id, id)}
+                      className={cn('outline-lesson', id === lessonId && 'selected')}
+                      aria-label={statusText ? `${lessons[id].title}, ${statusText.toLowerCase()}` : lessons[id].title}
+                      title={statusText ? `${lessons[id].title} · ${statusText}` : lessons[id].title}
+                      aria-current={id === lessonId ? 'page' : undefined}>
+                      <span className="outline-lesson-name">{lessons[id].title}</span>
+                      {statusText && <span className={`assignment-dot ${state}`} aria-hidden="true" />}
+                    </button>
+                  );
+                })}
               </div>
             </details>
           ))}

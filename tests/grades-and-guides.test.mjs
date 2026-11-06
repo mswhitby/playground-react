@@ -28,8 +28,8 @@ test('the published Markdown supports hint disclosure and full steps without sho
   const lesson=readFileSync(new URL('../src/content/python-variables.md',import.meta.url),'utf8');
   const parts=splitLesson(lesson,{challenge:'Build a profile'});
   assert.match(parts.solve,/## Practice: Names for changing information/);
-  assert.doesNotMatch(parts.solve,/Hint 1/);
-  assert.match(parts.learn,/<details>/);
+  assert.match(parts.solve,/<details>/);
+  assert.match(parts.solve,/Hint 1/);
   const unity=readFileSync(new URL('../src/content/unity-player-controller.md',import.meta.url),'utf8');
   const guide=guidedSteps(unity);
   assert.ok(guide.steps.length>=6);

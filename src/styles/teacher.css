@@ -380,3 +380,25 @@
 .account-card, .setup-card { background: var(--surface); }
 .stat-card strong { color: var(--text); }
 @media (max-width: 600px) { .stat-grid { gap: 10px; } .account-grid, .setup-grid { gap: 12px; } }
+
+/* Published curriculum content, distinct from sample student/grade information. */
+.curriculum-panel .section-heading h2 {display:flex;gap:9px;align-items:center;}
+.curriculum-source {font-size:11px;color:var(--soft);border:1px solid var(--border);border-radius:999px;padding:6px 11px;}
+.curriculum-explanation {font-size:12px;color:var(--muted);max-width:950px;}
+.curriculum-grid {display:grid;grid-template-columns:minmax(250px,1fr) minmax(330px,1.2fr);gap:18px;margin-top:20px;}
+.curriculum-units {max-height:630px;overflow:auto;border:1px solid var(--border);border-radius:12px;padding:8px;min-width:0;}
+.curriculum-units details {border-bottom:1px solid var(--border);}
+.curriculum-units details:last-child {border-bottom:0;}
+.curriculum-units summary {cursor:pointer;font-size:12px;font-weight:750;padding:11px 10px;overflow-wrap:anywhere;}
+.curriculum-units details > div {display:grid;gap:3px;padding:0 4px 10px 14px;}
+.curriculum-lesson {text-align:left;background:transparent;border:0;border-radius:8px;font-size:12px;line-height:1.45;color:var(--soft);padding:9px 10px;}
+.curriculum-lesson:hover {background:var(--surface-2);}
+.curriculum-lesson.selected {background:var(--surface-2);color:var(--text);box-shadow:inset 3px 0 var(--accent);}
+.curriculum-lesson-preview {border:1px solid var(--border);background:var(--surface-2);border-radius:12px;padding:22px;min-width:0;align-self:start;}
+.curriculum-lesson-preview h3 {font-size:21px;overflow-wrap:anywhere;margin:0 0 12px;}
+.curriculum-lesson-preview h4 {margin:18px 0 9px;font-size:12px;}
+.curriculum-lesson-preview p {font-size:13px;}
+.curriculum-lesson-preview pre {background:var(--code-bg);border:1px solid var(--border);border-radius:10px;padding:16px;overflow:auto;max-height:280px;font-size:12px;line-height:1.6;}
+.curriculum-meta {display:flex;gap:9px;flex-wrap:wrap;}
+.curriculum-meta span {background:var(--surface);border:1px solid var(--border);font-size:11px;border-radius:8px;padding:5px 9px;}
+@media(max-width:900px){.curriculum-grid{grid-template-columns:1fr;}.curriculum-units{max-height:360px;}}

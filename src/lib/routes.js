@@ -1,5 +1,6 @@
 import { courses, getCourse } from '../data/courses.js';
 import { challengeIds } from '../data/challengeIds.js';
+import { lessonInCourse } from './courseContent.js';
 
 // URLs remain the source of truth, even with localStorage UI preferences.
 const viteBase = import.meta.env?.BASE_URL || '/';
@@ -49,6 +50,6 @@ export function resolveRoute(pathname) {
   } catch { return { page: 'not-found' }; }
   const course = courses.find((item) => item.slug === slug);
   if (!course || (segments.length === 4 && segments[2] !== 'lessons')) return { page: 'not-found' };
-  if (lessonId && !course.lessons.includes(lessonId)) return { page: 'not-found' };
+  if (lessonId && !lessonInCourse(course,lessonId)) return { page: 'not-found' };
   return { page: 'course', courseId: course.id, lessonId: lessonId ?? null };
 }

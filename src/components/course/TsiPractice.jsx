@@ -1,17 +1,29 @@
 import { useState } from 'react';
-import { BookOpen, Calculator, CheckCircle2, RotateCcw } from 'lucide-react';
+import { Calculator, RotateCcw } from 'lucide-react';
 import { tsiQuestions } from '../../data/tsiQuestions.js';
 
-/** Original math practice questions for layout demonstration; no code editor or compiler. */
-export default function TsiPractice({ lessonId }) {
+/** Guided math question; the Learn pane shows the worked explanation. */
+export default function TsiPractice({ lessonId, onAnswerChecked }) {
   const question = tsiQuestions[lessonId];
   const [answer, setAnswer] = useState(null);
   const [checked, setChecked] = useState(false);
+  function checkAnswer() {
+    setChecked(true);
+    onAnswerChecked?.({ selected: answer, correct: answer === question.correct });
+  }
+  function retry() {
+    setAnswer(null);
+    setChecked(false);
+    onAnswerChecked?.(null);
+  }
   return (
-    <section className="tsi-practice" aria-label="TSIA2 sample practice">
-      <div className="tsi-practice-heading"><Calculator size={20}/><div><h2>TSIA2 sample practice</h2><p>One original question · visual preview only</p></div></div>
+    <section className="tsi-practice" aria-label="Math question">
+      <div className="tsi-practice-heading">
+        <Calculator size={20} />
+        <div><h2>Try this question</h2><p>Choose an answer, then review the explanation on the right.</p></div>
+      </div>
       <div className="tsi-question-card">
-        <div className="eyebrow">QUANTITATIVE REASONING · QUESTION 1</div>
+        <div className="eyebrow">Question</div>
         <h3>{question.prompt}</h3>
         <div className="tsi-answers" role="radiogroup" aria-label="Choose the correct answer">
           {question.options.map((option, i) => (
@@ -21,17 +33,14 @@ export default function TsiPractice({ lessonId }) {
             </label>
           ))}
         </div>
-        {checked && <div className="tsi-feedback" role="status">
-          <strong><CheckCircle2 size={17}/> {answer === question.correct ? 'Correct!' : 'Review the solution'}</strong>
-          <p>{question.explanation}</p>
-        </div>}
+        {checked && <p className="tsi-answer-status" role="status">
+          {answer === question.correct ? 'Correct! Read why on the right.' : 'Not quite. Review the explanation on the right.'}
+        </p>}
         <div className="tsi-buttons">
-          <button className="btn primary" disabled={answer === null || checked} onClick={() => setChecked(true)}>Check answer</button>
-          <button className="btn" onClick={() => { setAnswer(null); setChecked(false); }}><RotateCcw size={15}/> Try again</button>
+          <button className="btn primary" disabled={answer === null || checked} onClick={checkAnswer}>Check answer</button>
+          <button className="btn" onClick={retry}><RotateCcw size={15}/> Try again</button>
         </div>
       </div>
-      <div className="tsi-practice-tip"><BookOpen size={18}/><p><strong>Need a refresher?</strong> Read the Learn tab on the left, then return to this question. No coding tools are needed.</p></div>
-      <p className="hint">Sample content only. These are not official College Board TSIA2 questions, and answers are not submitted.</p>
     </section>
   );
 }

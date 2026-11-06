@@ -9,6 +9,7 @@ import SectionTitle from "../components/ui/SectionTitle.jsx";
 import TeacherToolbar from "../components/teacher/TeacherToolbar.jsx";
 import TeacherTabs from "../components/teacher/TeacherTabs.jsx";
 import ClassOverview from "../components/teacher/ClassOverview.jsx";
+import TeacherCurriculum from "../components/teacher/TeacherCurriculum.jsx";
 import AccountsTab from "../components/teacher/AccountsTab.jsx";
 import SectionSetup from "../components/teacher/SectionSetup.jsx";
 import JournalInbox from "../components/teacher/JournalInbox.jsx";
@@ -31,12 +32,11 @@ export default function TeacherDashboard({ students, setStudents, journalSubmiss
 
   return (
     <div className="main-content teacher-screen">
-      <SectionTitle eyebrow="Your classroom · Frontend mockup" actions={<Chip>Sample data only</Chip>}>
+      <SectionTitle eyebrow="Your classroom · Frontend preview" actions={<Chip>{tab === "curriculum" ? "Published CS1 content" : "Sample student data"}</Chip>}>
         Teacher dashboard
       </SectionTitle>
       <p className="page-subtitle">
-        Switch tabs, sort students, expand their assignment cards, and experiment with weekly scores.
-        Everything stays in this local browser.
+        {tab === 'curriculum' ? 'Browse the published Computer Science I course and its lessons.' : 'Explore sample sections, student records, and weekly scores. No real student information is loaded.'}
       </p>
 
       <TeacherToolbar
@@ -58,6 +58,7 @@ export default function TeacherDashboard({ students, setStudents, journalSubmiss
         }}
       />
 
+      {tab === "curriculum" && <TeacherCurriculum/>}
       {tab === "overview" && (
         <ClassOverview
           section={currentSection}

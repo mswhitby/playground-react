@@ -63,7 +63,7 @@ export default function InstructionsPane({ lessonId, task, isTsi = false, tsiAns
           </section>}
         </div>
         {isGuide && <nav className="lesson-step-controls" aria-label="Learning steps">
-          <button type="button" className="btn" disabled={page===0} onClick={()=>setStep(v=>Math.max(0,v-1))}>
+          <button type="button" className="btn primary" disabled={page===0} onClick={()=>setStep(v=>Math.max(0,v-1))}>
             <ChevronLeft size={16}/> Previous step
           </button>
           <span>Step {page+1} of {guide.steps.length}</span>

@@ -1,8 +1,12 @@
-# Ms. Whitby's Playground — working handoff
+# React Design Lab — supplemental working handoff
+
+**This file is a React-specific supplement, not the platform's master record.** Always read `mswhitby/playground/AGENTS.md` and `mswhitby/playground/docs/HANDOFF.md` first. The **actual Playground** resides in `mswhitby/playground`, and its built production artifact is served from `mswhitby/classroom/playground/`. This React repo only prototypes frontend updates at `/playground/preview/`.
+
+
 
 **Last updated:** November 6, 2026 (America/Chicago).  
 **Primary repo:** `mswhitby/playground-react`  
-**Read first:** `AGENTS.md` in this repo.  
+**Read first:** canonical `mswhitby/playground/AGENTS.md` and `mswhitby/playground/docs/HANDOFF.md`, then local `AGENTS.md`.  
 **Purpose:** A reliable start-of-chat snapshot. Re-check live GitHub state before acting; this document is not a substitute for current PR or build status.
 
 ## Where we are right now
@@ -26,7 +30,7 @@
 - Curriculum **Solution** tab is deliberately locked: answers must come from authenticated server-side storage, **never public frontend files**.
 - Accounts moved from Teacher Dashboard to a distinct **Admin Dashboard** mock; section setup is a button beside the section selector instead of a class-specific tab. Admin mock is **not role-protected** and contains **no real accounts**.
 
-## Most important NEXT WORK
+## React-lab-specific next work (after reviewing canonical handoff)
 
 **Connect React's teacher dashboard to the existing authenticated Playground student data**, safely, before wiring real assignments/solutions.
 
@@ -63,4 +67,4 @@
 
 ## Session closing checklist — UPDATE THIS FILE
 
-At the end of each material change, revise this handoff with **(a)** date, **(b)** exact repo/branch and open PR status, **(c)** what changed and what's still mock, **(d)** tests + preview deployment status (verified only), **(e)** next actionable task. Keep it concise enough for a fresh chat to consume and do not add secrets or real student information. A new chat should first request: **“Read `AGENTS.md` and `docs/HANDOFF.md` from `mswhitby/playground-react`, verify latest PR/deployment, and continue the next step.”**
+At the end of each material change, update `mswhitby/playground/docs/HANDOFF.md` **and then** revise this supplemental handoff with **(a)** date, **(b)** exact repo/branch and open PR status, **(c)** what changed and what's still mock, **(d)** tests + preview deployment status (verified only), **(e)** next actionable task. Keep it concise enough for a fresh chat to consume and do not add secrets or real student information. A new chat should first request: **“Read `AGENTS.md` and `docs/HANDOFF.md` from `mswhitby/playground/main` first, then check the React companion handoff and latest PR/deployment.”**

@@ -4,7 +4,7 @@ import { lessons } from '../data/lessons.js';
 import CourseLanding from './CourseLanding.jsx';
 import LessonWorkspace from '../components/course/LessonWorkspace.jsx';
 
-export default function CoursePage({ courseId, lessonId, openCourse, openChallenges, completedLessons = [], assignments = [], grades = [], onToggleLessonComplete }) {
+export default function CoursePage({ courseId, lessonId, openCourse, openChallenges, completedLessons = [], assignments = [], grades = [], onToggleLessonComplete, courseColors = {}, onSetCourseColor, onResetCourseColor }) {
   const course = getCourse(courseId) || courses[0];
   const unitIndex = course.units.findIndex((unit) => unit.lessons.includes(lessonId));
   const currentUnit = course.units[unitIndex];
@@ -39,7 +39,7 @@ export default function CoursePage({ courseId, lessonId, openCourse, openChallen
               </button>}
             </nav>
           </>
-        ) : <CourseLanding course={course} openCourse={openCourse} openChallenges={openChallenges} completedLessons={completedLessons} assignments={assignments} grades={grades} />}
+        ) : <CourseLanding course={course} openCourse={openCourse} openChallenges={openChallenges} completedLessons={completedLessons} assignments={assignments} grades={grades} courseColors={courseColors} onSetCourseColor={onSetCourseColor} onResetCourseColor={onResetCourseColor} />}
       </div>
     </div>
   );

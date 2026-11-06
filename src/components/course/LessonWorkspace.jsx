@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 import { lessons } from '../../data/lessons.js';
 import { useSaved } from '../../hooks/useSaved.js';
 import Splitter from '../ui/Splitter.jsx';
@@ -8,9 +8,10 @@ import CodePane from './CodePane.jsx';
 import TsiPractice from './TsiPractice.jsx';
 
 /** Unit-aware lesson layout; TSIA2 uses questions rather than the coding editor. */
-export default function LessonWorkspace({ lessonId, course, unit, unitNumber }) {
+export default function LessonWorkspace({ lessonId, course, unit, unitNumber, isCompleted = false, onToggleCompleted }) {
   const task = lessons[lessonId];
   const workspace = useRef(null);
+  const [tsiAnswer, setTsiAnswer] = useState(null);
   const [leftWidth, setLeftWidth] = useSaved('designlab:left-width', 420);
   function resizeColumns(event) {
     if (!workspace.current) return;
@@ -19,11 +20,15 @@ export default function LessonWorkspace({ lessonId, course, unit, unitNumber }) 
   }
   const isTsi = course.id === 'tsi-math';
   return <div className="lesson-screen">
-    <LessonHeader task={task} unit={unit} unitNumber={unitNumber} isTsi={isTsi}/>
+    <LessonHeader task={task} unit={unit} unitNumber={unitNumber} isTsi={isTsi} isCompleted={isCompleted} onToggleCompleted={onToggleCompleted}/>
     <div className={`workspace-grid ${isTsi ? 'tsi-workspace' : ''}`} ref={workspace} style={{ '--left-pane': `${leftWidth}px` }}>
-      <InstructionsPane lessonId={lessonId}/>
+      {isTsi
+        ? <TsiPractice lessonId={lessonId} onAnswerChecked={setTsiAnswer}/>
+        : <InstructionsPane lessonId={lessonId}/>}
       <Splitter axis="columns" onDrag={resizeColumns}/>
-      {isTsi ? <TsiPractice lessonId={lessonId}/> : <CodePane lessonId={lessonId} task={task}/>}
+      {isTsi
+        ? <InstructionsPane lessonId={lessonId} isTsi tsiAnswer={tsiAnswer}/>
+        : <CodePane lessonId={lessonId} task={task}/>} 
     </div>
   </div>;
 }

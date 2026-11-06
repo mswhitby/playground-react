@@ -4,7 +4,7 @@ import { readFileSync } from 'node:fs';
 import { statusFor, gradeFor, gradeTotals, weeklyGrades, completionIds, dueLabel } from '../src/lib/gradebook.js';
 import { assignedWork } from '../src/data/assignedWork.js';
 import { sampleGrades } from '../src/data/sampleGrades.js';
-import { splitLesson, guidedSteps } from '../src/lib/markdown.js';
+import { splitLesson, guidedSteps } from '../src/lib/lessonSections.js';
 import { gradesPath, resolveRoute } from '../src/lib/routes.js';
 
 test('Grades is a shareable route',()=>{

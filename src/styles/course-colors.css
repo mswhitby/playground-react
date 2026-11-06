@@ -1,9 +1,9 @@
 /* Course identity belongs in CSS so student components stay presentation-free. */
-[data-course="computer-science-1"] { --course-color: var(--student-course-color-computer-science-1, #6366f1); }
-[data-course="game-programming"] { --course-color: var(--student-course-color-game-programming, #c052eb); }
-[data-course="mobile-app-dev"] { --course-color: var(--student-course-color-mobile-app-dev, #27bbd2); }
-[data-course="capstone"] { --course-color: var(--student-course-color-capstone, #ff2d55); }
-[data-course="uil"] { --course-color: var(--student-course-color-uil, #ff9f0a); }
-[data-course="tsi-math"] { --course-color: var(--student-course-color-tsi-math, #30c85a); }
+[data-course="computer-science-1"] { --course-color: var(--student-course-color-computer-science-1, #6366f1); --course-on-color: var(--student-course-ink-computer-science-1, #111118); }
+[data-course="game-programming"] { --course-color: var(--student-course-color-game-programming, #c052eb); --course-on-color: var(--student-course-ink-game-programming, #111118); }
+[data-course="mobile-app-dev"] { --course-color: var(--student-course-color-mobile-app-dev, #27bbd2); --course-on-color: var(--student-course-ink-mobile-app-dev, #111118); }
+[data-course="capstone"] { --course-color: var(--student-course-color-capstone, #ff2d55); --course-on-color: var(--student-course-ink-capstone, #111118); }
+[data-course="uil"] { --course-color: var(--student-course-color-uil, #ff9f0a); --course-on-color: var(--student-course-ink-uil, #111118); }
+[data-course="tsi-math"] { --course-color: var(--student-course-color-tsi-math, #30c85a); --course-on-color: var(--student-course-ink-tsi-math, #111118); }
 
 .course-nav-item .nav-dot { background-color: var(--course-color); }

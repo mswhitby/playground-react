@@ -28,7 +28,7 @@ export default function LessonWorkspace({ lessonId, course, unit, unitNumber, is
       <Splitter axis="columns" onDrag={resizeColumns}/>
       {isTsi
         ? <InstructionsPane lessonId={lessonId} isTsi tsiAnswer={tsiAnswer}/>
-        : <CodePane lessonId={lessonId} task={task}/>} 
+        : <CodePane lessonId={lessonId} task={task}/>}
     </div>
   </div>;
 }

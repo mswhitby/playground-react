@@ -26,7 +26,6 @@ export default function App() {
   const [route, setRoute] = useState(() => resolveRoute(window.location.pathname));
   const [lastCourse, setLastCourse] = useSaved('designlab:course', 'computer-science-1');
   const [theme, setTheme] = useSaved('designlab:theme', 'dark');
-  const [accent, setAccent] = useSaved('designlab:accent', 'purple');
   const [courseColors, setCourseColors] = useSaved('designlab:course-colors', {});
   const [sidebarOpen, setSidebarOpen] = useSaved('designlab:sidebar', true);
   const [completedLessons, setCompletedLessons] = useSaved('designlab:completed-lessons', []);
@@ -40,8 +39,7 @@ export default function App() {
 
   useEffect(() => {
     document.documentElement.dataset.theme = theme;
-    document.documentElement.dataset.accent = accent;
-  }, [theme, accent]);
+  }, [theme]);
 
   useEffect(() => {
     applyCourseColorPreferences(courseColors, courses);
@@ -110,8 +108,6 @@ export default function App() {
         onHome={() => navigate(homePath())}
         theme={theme}
         setTheme={setTheme}
-        accent={accent}
-        setAccent={setAccent}
       />
       <div className={cn('app-layout', !sidebarOpen && 'sidebar-closed')}>
         <Sidebar

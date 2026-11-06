@@ -24,10 +24,10 @@ export default function LessonWorkspace({ lessonId, course, unit, unitNumber, is
     <div className={`workspace-grid ${isTsi ? 'tsi-workspace' : ''}`} ref={workspace} style={{ '--left-pane': `${leftWidth}px` }}>
       {isTsi
         ? <TsiPractice lessonId={lessonId} onAnswerChecked={setTsiAnswer}/>
-        : <InstructionsPane lessonId={lessonId}/>}
+        : <InstructionsPane lessonId={lessonId} task={task}/>}
       <Splitter axis="columns" onDrag={resizeColumns}/>
       {isTsi
-        ? <InstructionsPane lessonId={lessonId} isTsi tsiAnswer={tsiAnswer}/>
+        ? <InstructionsPane lessonId={lessonId} task={task} isTsi tsiAnswer={tsiAnswer}/>
         : <CodePane lessonId={lessonId} task={task}/>}
     </div>
   </div>;

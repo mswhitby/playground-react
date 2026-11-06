@@ -39,7 +39,7 @@ export default function Sidebar({ open, page, courseId, lessonId, setPage, openC
               <div className="outline-lesson-list">
                 {unit.lessons.map(id => {
                   const activity = statusFor('lesson:'+id,{assignments,grades,completedLessons});
-                  const state = activity.state;
+                  const state = activity.dueDate ? activity.state : '';
                   const statusText = state==='completed' ? 'Completed' : state==='overdue' ? 'Overdue' : state==='assigned' ? 'Assigned' : '';
                   return (
                     <button key={id} onClick={() => openCourse(course.id, id)}

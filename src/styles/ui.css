@@ -130,3 +130,8 @@
     font-size: 25px;
   }
 }
+
+/* A consistent green Submit action across lessons, challenges and journals. */
+.btn.submit { background:var(--pass);border-color:transparent;color:#101012; }
+.btn.submit:hover { filter:brightness(1.06);background:var(--pass); }
+:root[data-theme="light"] .btn.submit { color:#fff; }

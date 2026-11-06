@@ -1,25 +1,28 @@
 import { ArrowUpRight, BookOpen, ChevronRight, Layers3, LibraryBig } from 'lucide-react';
 import { lessons } from '../data/lessons.js';
+import { courseProgress } from '../lib/completion.js';
 import { challengesPath, playgroundPath } from '../lib/routes.js';
 
-export default function CourseLanding({ course, openCourse, openChallenges }) {
+export default function CourseLanding({ course, openCourse, openChallenges, completedLessons = [] }) {
+  const progress = courseProgress(course, completedLessons);
   return (
-    <div className="course-landing" style={{ '--course-color': course.color }}>
+    <div className="course-landing">
       <header className="course-hero surface-card">
-        <div className="eyebrow">Course overview · React design lab</div>
+        <div className="eyebrow">Course overview</div>
         <h1>{course.label}</h1>
         <p>{course.description}</p>
         <div className="course-hero-stats">
-          <span><Layers3 size={16} /> {course.units.length} sample units</span>
-          <span><BookOpen size={16} /> {course.lessons.length} sample lessons</span>
+          <span><Layers3 size={16} /> {course.units.length} units</span>
+          <span><BookOpen size={16} /> {course.lessons.length} lessons</span>
         </div>
         <button className="btn primary" onClick={() => openCourse(course.id, course.lessons[0])}>
           Start learning <ChevronRight size={16} />
         </button>
       </header>
+      <p className="course-landing-progress">{progress.completed} of {progress.total} lessons completed · {progress.percent}%</p>
       <div className="course-landing-heading">
         <div><h2>Units &amp; lessons</h2><p>Choose a unit or jump directly into a lesson.</p></div>
-        <span className="eyebrow">All items are design samples</span>
+
       </div>
       <div className="unit-card-grid">
         {course.units.map((unit, index) => (
@@ -48,7 +51,6 @@ export default function CourseLanding({ course, openCourse, openChallenges }) {
         <div><div className="eyebrow">Shared practice library</div><h2>Related programming challenges</h2><p>Browse reusable problems suited to this course. Review each challenge's prerequisites before recommending it to students.</p></div>
         <a href={challengesPath(course.id)} className="btn" onClick={event => { if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return; event.preventDefault(); openChallenges(course.id); }}><LibraryBig size={16}/> Browse challenges</a>
       </section>
-      <p className="hint">These are representative course outlines for experimenting with layout. They are not the full curriculum from the production course repositories.</p>
     </div>
   );
 }

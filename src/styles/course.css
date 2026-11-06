@@ -457,3 +457,10 @@
 .course-layout .splitter:hover {background:color-mix(in srgb,var(--course-color) 20%,var(--surface-2));}
 .course-layout .markdown-preview blockquote {border-left-color:var(--course-color);}
 .course-layout .lesson-next-bar .btn.primary:disabled {opacity:.45;}
+
+/* Old unit names can contain punctuation and exceed one line. */
+.course-breadcrumb {flex-wrap:wrap;min-width:0;}
+.course-breadcrumb .breadcrumb-unit-name {min-width:0;overflow-wrap:anywhere;line-height:1.45;}
+.lesson-header .eyebrow,
+.lesson-header .page-title-row,
+.lesson-header .page-title-row h1 {overflow-wrap:anywhere;white-space:normal;min-width:0;}

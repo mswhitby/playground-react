@@ -70,7 +70,7 @@ export default function CourseLanding({ course, openCourse, openChallenges, comp
                   <span className="unit-lesson-label"><strong title={lessonTitleOf(course,id)}>{lessonTitleOf(course,id)}</strong>
                     {(() => { const a=statusFor('lesson:'+id,{assignments,grades,completedLessons});
                       return (a.dueDate || a.completed) ? <span className="unit-assignment-meta">
-                        <span className={`assignment-status ${a.state}`}>{a.completed?'Completed':a.state==='overdue'?'Overdue':'Assigned'}</span>
+                        <span className={`assignment-status ${a.state}`}><span className={`assignment-dot ${a.state}`} aria-hidden="true"/>{a.completed?'Completed':a.state==='overdue'?'Overdue':'Assigned'}</span>
                         {a.dueDate && <small>Due {dueLabel(a.dueDate)}</small>}
                         {a.grade&&<small>{a.grade.earned} / {a.grade.possible} pts</small>}
                       </span> : <small>{getCourseLesson(course,id)?.kind}{getCourseLesson(course,id)?.difficulty ? ` · ${getCourseLesson(course,id).difficulty}` : ''}</small>;

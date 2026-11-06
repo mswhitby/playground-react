@@ -45,7 +45,7 @@ test('TSI shows a question beside Learn without a Practice tab', () => {
   const instructions = read('../src/components/course/InstructionsPane.jsx');
   const question = read('../src/components/course/TsiPractice.jsx');
   assert.match(workspace, /<TsiPractice lessonId=/);
-  assert.match(workspace, /<InstructionsPane lessonId=\{lessonId\} isTsi/);
+  assert.match(workspace, /<InstructionsPane lessonId=\{lessonId\} task=\{task\} isTsi/);
   assert.match(instructions, /isTsi \? <strong className="tsi-learn-title">Learn<\/strong>/);
   assert.match(instructions, /tsi-worked-solution/);
   assert.doesNotMatch(question, /coding tools|console|TSIA2 sample practice/i);

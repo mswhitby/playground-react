@@ -10,14 +10,12 @@ export default function CoursePage({ courseId, lessonId, openCourse, openChallen
   const currentUnit = course.units[unitIndex];
   const lessonIndex = course.lessons.indexOf(lessonId);
 
-
   return (
     <div className="course-layout integrated-course" data-course={course.id}>
       <div className="course-main">
         <div className="course-breadcrumb">
           <button onClick={() => openCourse(null)}>All playgrounds</button><ChevronRight size={14}/>
           {lessonId ? <><button onClick={() => openCourse(course.id)}>{course.label}</button><ChevronRight size={14}/><span>{currentUnit?.title}</span></> : <span>{course.label}</span>}
-
         </div>
         {lessonId ? (
           <>

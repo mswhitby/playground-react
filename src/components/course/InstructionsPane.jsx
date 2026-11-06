@@ -35,9 +35,9 @@ export default function InstructionsPane({ lessonId, task, isTsi = false, tsiAns
         {isTsi ? <strong className="tsi-learn-title">Learn</strong> : (
           <div className="tabs compact" role="tablist" aria-label="Lesson views">
             <button role="tab" aria-selected={tab==='solve'} className={tab==='solve'?'active':''}
-              onClick={() => setTab('solve')}>Solve</button>
+              onClick={() => {setTab('solve');setStep(0);}}>Solve</button>
             <button role="tab" aria-selected={tab==='learn'} className={tab==='learn'?'active':''}
-              onClick={() => setTab('learn')}>Learn</button>
+              onClick={() => {setTab('learn');setStep(0);}}>Learn</button>
           </div>
         )}
         <button type="button" className={cn('icon-button',editing&&'active')}

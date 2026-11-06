@@ -30,9 +30,5 @@
 .grades-course-row > span:last-child {color:var(--soft);font-size:12px;}
 .grades-course-dot {display:inline-block;width:11px;height:11px;background:var(--course-color);border-radius:3px;flex:none;}
 .grades-due-meta {display:grid;justify-items:end;gap:4px;}
-.assignment-status {display:inline-flex;align-items:center;border-radius:999px;padding:3px 8px;font-size:10px;font-weight:750;background:var(--surface-2);color:var(--soft);border:1px solid var(--border);white-space:nowrap;}
-.assignment-status.completed {color:var(--status-completed);background:var(--pass-bg);border-color:color-mix(in srgb,var(--status-completed) 30%,var(--border));}
-.assignment-status.overdue {color:var(--status-overdue);background:var(--status-overdue-bg);border-color:color-mix(in srgb,var(--status-overdue) 30%,var(--border));}
-.assignment-status.assigned {color:var(--status-assigned);background:var(--warn-bg);border-color:color-mix(in srgb,var(--status-assigned) 30%,var(--border));}
 @media(max-width:850px){.grades-summary{grid-template-columns:1fr;}.grades-stat{padding:18px;}.grades-stat strong{font-size:27px;}}
 @media(max-width:520px){.grades-panel{padding:15px;}.grades-heading h1{font-size:29px;}.grades-week-score{min-width:105px;}.grades-entry{align-items:start;}}

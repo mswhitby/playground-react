@@ -159,3 +159,41 @@
   .course-color-controls {gap:10px;}
   .course-color-control-copy {flex-basis:100%;}
 }
+
+/* Published course names may be longer than sample titles: show them in full. */
+.outline-unit summary,
+.outline-lesson,
+.outline-lesson-name,
+.outline-unit-title,
+.unit-card-header h3,
+.unit-card-header p,
+.unit-lesson-label,
+.unit-lesson-label strong,
+.course-hero h1 {
+  overflow-wrap: anywhere;
+  white-space: normal;
+}
+.outline-unit-title {flex:1;min-width:0;line-height:1.45;}
+.outline-lesson-name {line-height:1.45;}
+.unit-lesson-label strong {line-height:1.45;}
+.unit-lesson-link {min-width:0;}
+.unit-lesson-link > svg {flex:none;}
+.lesson-next-bar .btn {
+  max-width:100%;
+  min-width:0;
+  white-space:normal;
+  overflow-wrap:anywhere;
+  text-align:center;
+  line-height:1.45;
+}
+.lesson-content-pending {
+  padding:24px;
+  margin-top:18px;
+  max-width:860px;
+}
+.lesson-content-pending h2 {margin:0 0 8px;font-size:18px;}
+.lesson-content-pending p {margin:0;color:var(--soft);}
+@media (max-width:600px) {
+  .lesson-next-bar {flex-direction:column;align-items:stretch;}
+  .lesson-next-bar .btn {width:100%;justify-content:center;}
+}

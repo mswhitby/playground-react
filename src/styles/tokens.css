@@ -21,6 +21,10 @@
   --pass-bg: rgba(52, 210, 107, 0.13);
   --warn: #ffae24;
   --warn-bg: rgba(255, 174, 36, 0.12);
+  --status-completed: var(--pass);
+  --status-assigned: var(--warn);
+  --status-overdue: #f27780;
+  --status-overdue-bg: rgba(242, 119, 128, 0.12);
   --shadow: 0 8px 26px rgba(0, 0, 0, 0.18);
   --card-shadow: 0 6px 20px rgba(0, 0, 0, 0.16);
   --mono: ui-monospace, SFMono-Regular, Consolas, "Liberation Mono", monospace;
@@ -51,6 +55,8 @@
   --pass-bg: #e0f6e9;
   --warn: #a05b00;
   --warn-bg: #fff1dc;
+  --status-overdue: #b92944;
+  --status-overdue-bg: #ffe9ed;
   --shadow: 0 10px 25px rgba(32, 33, 42, 0.06);
   --card-shadow: 0 5px 18px rgba(32, 33, 42, 0.055);
 }

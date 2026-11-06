@@ -199,3 +199,7 @@
 }
 
 .course-published-note {font-size:12px;color:var(--muted);margin:14px 0 0;}
+
+/* Course lesson cards mirror the same completion state as the sidebar and progress bar. */
+.unit-lesson-link:has(.assignment-status.completed) .unit-lesson-index {background:var(--pass-bg);color:var(--status-completed);}
+.unit-lesson-link:has(.assignment-status.completed) .unit-lesson-label strong {color:var(--text);}

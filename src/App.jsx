@@ -4,8 +4,11 @@ import { seedJournalSubmissions } from './data/journalSubmissions.js';
 import { getCourse } from './data/courses.js';
 import { useSaved } from './hooks/useSaved.js';
 import { toggleLessonComplete } from './lib/completion.js';
+import { completionIds } from './lib/gradebook.js';
+import { sampleGrades } from './data/sampleGrades.js';
+import { assignedWork } from './data/assignedWork.js';
 import { cn } from './lib/cn.js';
-import { homePath, journalsPath, playgroundPath, challengesPath, challengePath, resolveRoute, teacherPath } from './lib/routes.js';
+import { homePath, journalsPath, gradesPath, playgroundPath, challengesPath, challengePath, resolveRoute, teacherPath } from './lib/routes.js';
 import Topbar from './components/layout/Topbar.jsx';
 import Sidebar from './components/layout/Sidebar.jsx';
 import Footer from './components/layout/Footer.jsx';
@@ -13,6 +16,7 @@ import Home from './pages/Home.jsx';
 import CoursePage from './pages/CoursePage.jsx';
 import TeacherDashboard from './pages/TeacherDashboard.jsx';
 import Journals from './pages/Journals.jsx';
+import Grades from './pages/Grades.jsx';
 import ChallengeBank from './pages/ChallengeBank.jsx';
 import ChallengeDetail from './pages/ChallengeDetail.jsx';
 
@@ -24,6 +28,8 @@ export default function App() {
   const [accent, setAccent] = useSaved('designlab:accent', 'purple');
   const [sidebarOpen, setSidebarOpen] = useSaved('designlab:sidebar', true);
   const [completedLessons, setCompletedLessons] = useSaved('designlab:completed-lessons', []);
+  const [grades] = useSaved('designlab:sample-gradebook', sampleGrades);
+  const completedWithGrades = completionIds(completedLessons,grades);
   const [students, setStudents] = useSaved('designlab:students', seedStudents);
   const [journalSubmissions, setJournalSubmissions] = useSaved('designlab:journal-submissions', seedJournalSubmissions);
 
@@ -36,7 +42,7 @@ export default function App() {
     if (route.page === 'course') setLastCourse(route.courseId);
     const label = route.page === 'course'
       ? getCourse(route.courseId)?.label
-      : route.page === 'teacher' ? 'Teacher dashboard' : route.page === 'journals' ? 'Weekly journals'
+      : route.page === 'teacher' ? 'Teacher dashboard' : route.page === 'grades' ? 'Grades' : route.page === 'journals' ? 'Weekly journals'
       : route.page === 'challenges' ? 'Challenge Bank' : route.page === 'challenge' ? 'Coding challenge' : 'Your playgrounds';
     document.title = `${label || 'Playground'} | Ms. Whitby's Playground — React Lab`;
   }, [route.page, route.courseId, setLastCourse]);
@@ -62,6 +68,7 @@ export default function App() {
   function setPage(page) {
     if (page === 'teacher') navigate(teacherPath());
     else if (page === 'journals') navigate(journalsPath());
+    else if (page === 'grades') navigate(gradesPath());
     else if (page === 'challenges') navigate(challengesPath());
     else if (page === 'course') openCourse(route.page === 'course' ? route.courseId : lastCourse);
     else navigate(homePath());
@@ -89,11 +96,13 @@ export default function App() {
           lessonId={route.page === 'course' ? route.lessonId : null}
           setPage={setPage}
           openCourse={openCourse}
-          completedLessons={completedLessons}
+          completedLessons={completedWithGrades}
+          assignments={assignedWork}
+          grades={grades}
         />
         <main className="main-panel">
           {page === 'home' ? (
-            <Home completedLessons={completedLessons} openCourse={openCourse} openTeacher={() => navigate(teacherPath())} openChallenges={() => navigate(challengesPath())} />
+            <Home completedLessons={completedWithGrades} openCourse={openCourse} openTeacher={() => navigate(teacherPath())} openChallenges={() => navigate(challengesPath())} />
           ) : page === 'course' ? (
             <CoursePage
               key={route.courseId}
@@ -101,13 +110,17 @@ export default function App() {
               lessonId={route.lessonId}
               openCourse={openCourse}
               openChallenges={(courseId) => navigate(challengesPath(courseId))}
-              completedLessons={completedLessons}
+              completedLessons={completedWithGrades}
+              assignments={assignedWork}
+              grades={grades}
               onToggleLessonComplete={(id) => setCompletedLessons(previous => toggleLessonComplete(previous, id))}
             />
+          ) : page === 'grades' ? (
+            <Grades grades={grades} completedLessons={completedWithGrades}/>
           ) : page === 'challenges' ? (
-            <ChallengeBank filterCourse={route.filterCourse} onSelect={(id) => navigate(challengePath(id))} onBrowseCourse={(id) => navigate(challengesPath(id))} />
+            <ChallengeBank grades={grades} filterCourse={route.filterCourse} onSelect={(id) => navigate(challengePath(id))} onBrowseCourse={(id) => navigate(challengesPath(id))} />
           ) : page === 'challenge' ? (
-            <ChallengeDetail key={route.challengeId} challengeId={route.challengeId} onBack={() => navigate(challengesPath())} />
+            <ChallengeDetail key={route.challengeId} challengeId={route.challengeId} grades={grades} onBack={() => navigate(challengesPath())} />
           ) : page === 'journals' ? (
             <Journals submissions={journalSubmissions} setSubmissions={setJournalSubmissions} />
           ) : page === 'teacher' ? (

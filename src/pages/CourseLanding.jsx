@@ -1,9 +1,10 @@
 import { ArrowUpRight, BookOpen, ChevronRight, Layers3, LibraryBig } from 'lucide-react';
 import { lessons } from '../data/lessons.js';
 import { courseProgress } from '../lib/completion.js';
+import { statusFor,dueLabel } from '../lib/gradebook.js';
 import { challengesPath, playgroundPath } from '../lib/routes.js';
 
-export default function CourseLanding({ course, openCourse, openChallenges, completedLessons = [] }) {
+export default function CourseLanding({ course, openCourse, openChallenges, completedLessons = [], assignments = [], grades = [] }) {
   const progress = courseProgress(course, completedLessons);
   return (
     <div className="course-landing">
@@ -39,7 +40,15 @@ export default function CourseLanding({ course, openCourse, openChallenges, comp
                   event.preventDefault(); openCourse(course.id, id);
                 }}>
                   <span className="unit-lesson-index">{i + 1}</span>
-                  <span className="unit-lesson-label"><strong>{lessons[id].title}</strong><small>{lessons[id].kind} · {lessons[id].difficulty}</small></span>
+                  <span className="unit-lesson-label"><strong>{lessons[id].title}</strong>
+                    {(() => { const a=statusFor('lesson:'+id,{assignments,grades,completedLessons});
+                      return a.dueDate ? <span className="unit-assignment-meta">
+                        <span className={`assignment-status ${a.state}`}>{a.state==='completed'?'Completed':a.state==='overdue'?'Overdue':'Assigned'}</span>
+                        <small>Due {dueLabel(a.dueDate)}</small>
+                        {a.grade&&<small>{a.grade.earned} / {a.grade.possible} pts</small>}
+                      </span> : <small>{lessons[id].kind} · {lessons[id].difficulty}</small>;
+                    })()}
+                  </span>
                   <ArrowUpRight size={16}/>
                 </a>
               ))}

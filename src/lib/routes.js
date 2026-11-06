@@ -5,7 +5,8 @@ import { lessonInCourse } from './courseContent.js';
 // URLs remain the source of truth, even with localStorage UI preferences.
 const viteBase = import.meta.env?.BASE_URL || '/';
 const basePrefix = viteBase === '/' ? '' : '/' + viteBase.replace(/^\/+|\/+$/g, '');
-const withBase = (path) => `${basePrefix}${path}` || '/';
+const hashRouting = import.meta.env?.VITE_HASH_ROUTING === 'true';
+const withBase = path => hashRouting ? `${basePrefix}/#${path}` : (`${basePrefix}${path}` || '/');
 
 export const homePath = () => withBase('/');
 export const teacherPath = () => withBase('/teacher');
@@ -22,8 +23,11 @@ export function playgroundPath(courseOrId, lessonId) {
 }
 
 export function resolveRoute(pathname, availableCourses = courses) {
-  const incoming = pathname.replace(/\/+$/, '') || '/';
-  const base = basePrefix || '';
+  const routeInput = hashRouting
+    ? (typeof window !== 'undefined' ? window.location.hash.slice(1) || '/' : '/')
+    : pathname;
+  const incoming = routeInput.replace(/\/+$/, '') || '/';
+  const base = hashRouting ? '' : basePrefix || '';
   if (base && incoming !== base && !incoming.startsWith(base + '/')) return { page: 'not-found' };
   const relative = incoming.slice(base.length) || '/';
   if (relative === '/') return { page: 'home' };

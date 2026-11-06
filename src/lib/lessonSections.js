@@ -10,16 +10,34 @@ export function splitLesson(doc, task = null) {
   return { solve, learn };
 }
 
-/** Split a step-by-step guide into individual pages without losing Markdown formatting. */
+/** Pagination for both explicitly numbered steps and existing section-based lessons.
+ *
+ * Numbered `## ... Step 1: ...` headings take priority. If the author used
+ * descriptive section headings instead, each H2 becomes a learnable step.
+ * Fenced code examples remain intact, even if they contain heading-like text.
+ */
 export function guidedSteps(markdown) {
-  const source=String(markdown||'');
-  const lines=source.split('\n');
-  const markers=[];
-  lines.forEach((line,index)=>{if(/^##\s+.*\bStep\s+\d+\s*:/i.test(line))markers.push(index);});
-  if(!markers.length)return {intro:source,steps:[]};
+  const lines=String(markdown||'').split('\n');
+  const headings=[];
+  let fence=null;
+  lines.forEach((line,index)=>{
+    const trimmed=line.trim();
+    const delimiter=/^(`{3,}|~{3,})/.exec(trimmed);
+    if(delimiter) {
+      const char=delimiter[1][0];
+      if(!fence) fence={char,length:delimiter[1].length};
+      else if(fence.char===char && delimiter[1].length>=fence.length) fence=null;
+      return;
+    }
+    if(!fence && /^##\s+\S/.test(line)) {
+      headings.push({index,numbered:/\bStep\s+\d+\s*:/i.test(line)});
+    }
+  });
+  const explicit=headings.filter(heading=>heading.numbered);
+  const markers=explicit.length?explicit.map(heading=>heading.index):headings.map(heading=>heading.index);
+  if(!markers.length) return {intro:lines.join('\n'),steps:[]};
   return {
-    intro:lines.slice(0,markers[0]).join('\n'),
-    steps:markers.map((start,i)=>lines.slice(start,markers[i+1]??lines.length).join('\n'))
+    intro:lines.slice(0,markers[0]).join('\n').trim(),
+    steps:markers.map((start,i)=>lines.slice(start,markers[i+1]??lines.length).join('\n').trim()),
   };
 }
-

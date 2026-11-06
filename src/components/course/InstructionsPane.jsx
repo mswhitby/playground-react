@@ -44,8 +44,7 @@ export default function InstructionsPane({ lessonId, isTsi = false, tsiAnswer = 
       {editing ? (
         <div className="markdown-source">
           <div className="hint">
-            Local browser edit. To update source permanently, edit <code>src/content/{lessonId}.md</code> in
-            VS Code.
+            Try editing these instructions. Changes here are just for your preview.
           </div>
           <textarea
             aria-label="Markdown source"

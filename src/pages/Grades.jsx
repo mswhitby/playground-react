@@ -13,7 +13,7 @@ function titleFor(id,courseId) {
   return kind==='lesson' ? lessonTitleOf(getCourse(courseId),name) : getChallenge(name)?.title||name;
 }
 
-export default function Grades({ grades=[], completedLessons=[] }) {
+export default function Grades({ grades=[], assignments=assignedWork, completedLessons=[] }) {
   const [filter,setFilter]=useState('all');
   const filtered=filter==='all'?grades:grades.filter(g=>g.courseId===filter);
   const overall=gradeTotals(filtered);
@@ -22,8 +22,8 @@ export default function Grades({ grades=[], completedLessons=[] }) {
   const courseBreakdown=courses.map(course=>({
     ...course, ...gradeTotals(grades.filter(g=>g.courseId===course.id))
   }));
-  const pending=assignedWork.filter(a=>filter==='all'||a.courseId===filter)
-    .map(a=>({...a,status:statusFor(a.id,{assignments:assignedWork,grades,completedLessons})}))
+  const pending=assignments.filter(a=>filter==='all'||a.courseId===filter)
+    .map(a=>({...a,status:statusFor(a.id,{assignments,grades,completedLessons})}))
     .filter(a=>a.status.state==='assigned'||a.status.state==='overdue')
     .sort((a,b)=>a.dueDate.localeCompare(b.dueDate));
 

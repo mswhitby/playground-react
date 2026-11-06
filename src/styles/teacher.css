@@ -380,3 +380,61 @@
 .account-card, .setup-card { background: var(--surface); }
 .stat-card strong { color: var(--text); }
 @media (max-width: 600px) { .stat-grid { gap: 10px; } .account-grid, .setup-grid { gap: 12px; } }
+
+/* Published curriculum content, distinct from sample student/grade information. */
+.curriculum-panel .section-heading h2 {display:flex;gap:9px;align-items:center;}
+.curriculum-source {font-size:11px;color:var(--soft);border:1px solid var(--border);border-radius:999px;padding:6px 11px;}
+.curriculum-explanation {font-size:12px;color:var(--muted);max-width:950px;}
+.curriculum-grid {display:grid;grid-template-columns:minmax(250px,1fr) minmax(330px,1.2fr);gap:18px;margin-top:20px;}
+.curriculum-units {max-height:630px;overflow:auto;border:1px solid var(--border);border-radius:12px;padding:8px;min-width:0;}
+.curriculum-units details {border-bottom:1px solid var(--border);}
+.curriculum-units details:last-child {border-bottom:0;}
+.curriculum-units summary {cursor:pointer;font-size:12px;font-weight:750;padding:11px 10px;overflow-wrap:anywhere;}
+.curriculum-units details > div {display:grid;gap:3px;padding:0 4px 10px 14px;}
+.curriculum-lesson {text-align:left;background:transparent;border:0;border-radius:8px;font-size:12px;line-height:1.45;color:var(--soft);padding:9px 10px;}
+.curriculum-lesson:hover {background:var(--surface-2);}
+.curriculum-lesson.selected {background:var(--surface-2);color:var(--text);box-shadow:inset 3px 0 var(--accent);}
+.curriculum-lesson-preview {border:1px solid var(--border);background:var(--surface-2);border-radius:12px;padding:22px;min-width:0;align-self:start;}
+.curriculum-lesson-preview h3 {font-size:21px;overflow-wrap:anywhere;margin:0 0 12px;}
+.curriculum-lesson-preview h4 {margin:18px 0 9px;font-size:12px;}
+.curriculum-lesson-preview p {font-size:13px;}
+.curriculum-lesson-preview pre {background:var(--code-bg);border:1px solid var(--border);border-radius:10px;padding:16px;overflow:auto;max-height:280px;font-size:12px;line-height:1.6;}
+.curriculum-meta {display:flex;gap:9px;flex-wrap:wrap;}
+.curriculum-meta span {background:var(--surface);border:1px solid var(--border);font-size:11px;border-radius:8px;padding:5px 9px;}
+@media(max-width:900px){.curriculum-grid{grid-template-columns:1fr;}.curriculum-units{max-height:360px;}}
+
+/* Teacher curriculum assignment draft controls. Demo-only, no student API calls. */
+.curriculum-code-tabs {display:flex;gap:14px;align-items:center;margin:20px 0 9px;border-bottom:1px solid var(--border);}
+.curriculum-code-tabs button {display:inline-flex;align-items:center;gap:6px;padding:8px 4px;background:transparent;border:0;border-bottom:2px solid transparent;color:var(--muted);font-size:12px;font-weight:750;}
+.curriculum-code-tabs button.active {color:var(--text);border-bottom-color:var(--accent);}
+.curriculum-code {background:var(--code-bg);border:1px solid var(--border);border-radius:10px;padding:16px;overflow:auto;max-height:260px;font-size:12px;line-height:1.65;white-space:pre;}
+.curriculum-solution-locked {display:flex;align-items:flex-start;gap:12px;background:var(--surface);border:1px dashed var(--border-strong);border-radius:10px;padding:16px;margin:10px 0;}
+.curriculum-solution-locked svg {flex:none;color:var(--muted);}
+.curriculum-solution-locked strong {font-size:13px;}
+.curriculum-solution-locked p {margin:6px 0 0;font-size:12px;color:var(--soft);}
+.curriculum-assignment-editor {margin-top:24px;border-top:1px solid var(--border);padding-top:20px;}
+.curriculum-assignment-editor h4 {font-size:15px;margin:0 0 6px;}
+.curriculum-assignment-warning {font-size:12px;color:var(--soft);margin:8px 0 15px;}
+.curriculum-assignment-form {display:grid;gap:14px;}
+.curriculum-assignment-form > label,
+.curriculum-assignment-fields label {display:flex;flex-direction:column;gap:6px;min-width:0;font-size:12px;font-weight:700;color:var(--soft);}
+.curriculum-assignment-form select,
+.curriculum-assignment-form input[type="date"],
+.curriculum-assignment-form input[type="number"] {width:100%;min-width:0;min-height:40px;border:1px solid var(--border-strong);border-radius:9px;background:var(--surface);color:var(--text);padding:9px;}
+.curriculum-assignment-fields {display:grid;grid-template-columns:1fr 110px;gap:10px;}
+.curriculum-recipient-picker {border:1px solid var(--border);border-radius:10px;padding:10px 12px;max-height:220px;overflow-y:auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(145px,1fr));gap:7px;}
+.curriculum-recipient-picker legend {font-size:12px;font-weight:750;padding:0 5px;}
+.curriculum-recipient-picker label {display:flex;gap:8px;align-items:flex-start;font-size:12px;line-height:1.4;cursor:pointer;}
+.curriculum-recipient-picker input {accent-color:var(--accent);margin:2px 0 0;}
+.curriculum-assignment-actions {display:flex;flex-wrap:wrap;align-items:center;gap:10px;}
+.curriculum-current-assignment {font-size:12px;color:var(--soft);padding:11px;border:1px solid var(--border);background:var(--surface);border-radius:9px;margin:13px 0 0;}
+.curriculum-assignment-feedback {font-size:12px;color:var(--text);margin:9px 0 0;}
+.curriculum-lesson small {color:var(--soft);font-size:10px;}
+.section-setup-toggle {align-self:end;min-height:38px;}
+.admin-screen .page-subtitle {display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+.admin-actions {display:flex;align-items:center;gap:12px;margin-bottom:16px;}
+.admin-actions small {color:var(--soft);}
+@media (max-width:600px) {
+  .curriculum-assignment-fields {grid-template-columns:minmax(0,1fr) 110px;}
+  .section-setup-toggle {width:100%;justify-content:center;}
+}

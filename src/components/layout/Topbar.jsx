@@ -2,7 +2,7 @@ import { Menu, PanelLeftClose } from "lucide-react";
 import Chip from "../ui/Chip.jsx";
 import ThemeControls from "./ThemeControls.jsx";
 
-export default function Topbar({ sidebarOpen, onToggleSidebar, onHome, theme, setTheme, accent, setAccent }) {
+export default function Topbar({ sidebarOpen, onToggleSidebar, onHome, theme, setTheme }) {
   return (
     <header className="topbar">
       <div className="topbar-inner">
@@ -16,7 +16,7 @@ export default function Topbar({ sidebarOpen, onToggleSidebar, onHome, theme, se
         </button>
         <div className="topbar-spacer" />
         <Chip>LOCAL DESIGN LAB</Chip>
-        <ThemeControls theme={theme} setTheme={setTheme} accent={accent} setAccent={setAccent} />
+        <ThemeControls theme={theme} setTheme={setTheme} />
         <span className="user-circle">W</span>
       </div>
     </header>

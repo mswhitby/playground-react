@@ -47,7 +47,8 @@ test('updated course order is preserved in home and sidebar', () => {
     assert.ok(tokensCss.includes('--status-' + state));
   }
   assert.doesNotMatch(page, /Copy link|copyCourseLink/);
-  assert.match(page, /← Prev/);
+  assert.match(page, /Prev: \{lessonTitleOf\(course, sequence\[lessonIndex - 1\]\)\}/);
+  assert.match(page, /Next: \{lessonTitleOf\(course, sequence\[lessonIndex \+ 1\]\)\}/);
 });
 
 test('TSI shows a question beside Learn without a Practice tab', () => {

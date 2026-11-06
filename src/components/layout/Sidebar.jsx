@@ -1,4 +1,4 @@
-import { BookOpen, ChevronDown, CircleHelp, ClipboardPenLine, House, LayoutDashboard, LibraryBig, GraduationCap } from 'lucide-react';
+import { BookOpen, ChevronDown, CircleHelp, ClipboardPenLine, House, LayoutDashboard, LibraryBig, GraduationCap, ShieldCheck } from 'lucide-react';
 import { courses, getCourse } from '../../data/courses.js';
 import { lessonIdsOf, lessonTitleOf, unitNumberOf, unitTitleOf } from '../../lib/courseContent.js';
 import { cn } from '../../lib/cn.js';
@@ -10,6 +10,7 @@ const MENU = [
   ['journals', 'Weekly journals', ClipboardPenLine],
   ['grades', 'Grades', GraduationCap],
   ['teacher', 'Teacher dashboard', LayoutDashboard],
+  ['admin', 'Admin dashboard', ShieldCheck],
 ];
 
 /** One shared sidebar: Explore → current course outline → all playgrounds. */
@@ -40,7 +41,7 @@ export default function Sidebar({ open, page, courseId, lessonId, setPage, openC
                 {lessonIdsOf(unit).map(id => {
                   const title = lessonTitleOf(course,id);
                   const activity = statusFor('lesson:'+id,{assignments,grades,completedLessons});
-                  const state = activity.dueDate ? activity.state : '';
+                  const state = activity.completed ? 'completed' : activity.dueDate ? activity.state : '';
                   const statusText = state==='completed' ? 'Completed' : state==='overdue' ? 'Overdue' : state==='assigned' ? 'Assigned' : '';
                   return (
                     <button key={id} onClick={() => openCourse(course.id, id)}

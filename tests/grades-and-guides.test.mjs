@@ -79,7 +79,9 @@ test('lesson reading accents and navigation are consistently course colored',()=
   assert.ok(css.includes('.instructions-pane .tabs button.active'));
   assert.ok(css.includes('border-color: var(--course-color)'));
   assert.ok(tokens.includes('--inline-code:'));
-  assert.ok(page.includes('className="btn primary" disabled={lessonIndex <= 0}'));
+  assert.ok(page.includes('lessonIndex > 0 && <button'));
+  assert.ok(page.includes('className="lesson-nav-link previous"'));
+  assert.ok(page.includes('className="lesson-nav-link next"'));
 });
 
 test('the actual Strings and Variables lesson paginates into three separate pages',()=>{

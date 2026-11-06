@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { Code2, Save, Send } from "lucide-react";
+import CodeEditor from "./CodeEditor.jsx";
 import { useSaved } from "../../hooks/useSaved.js";
 import { readString, storageKeys, writeString } from "../../lib/storage.js";
 import Chip from "../ui/Chip.jsx";
@@ -108,17 +109,11 @@ export default function CodePane({ lessonId, task }) {
       </div>
 
       <div className="code-workspace" ref={workspace} style={{ "--editor-height": `${editorHeight}px` }}>
-        <textarea
-          spellCheck="false"
-          className="code-editor"
-          aria-label="Code editor"
-          value={code}
-          onChange={(e) => {
-            setCode(e.target.value);
-            setSavedMessage("");
-            setChecksText("Your code has changed. Choose Check to review this draft.");
-          }}
-        />
+        <CodeEditor value={code} language={task.language} onChange={value => {
+          setCode(value);
+          setSavedMessage("");
+          setChecksText("Your code has changed. Choose Check to review this draft.");
+        }}/>
         <Splitter axis="rows" onDrag={resizeRows} />
         <ConsolePane text={consoleText} checksText={checksText} language={task.language} lessonId={lessonId} activeTab={consoleTab} onTabChange={setConsoleTab} />
       </div>

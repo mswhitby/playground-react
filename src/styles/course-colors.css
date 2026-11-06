@@ -7,3 +7,6 @@
 [data-course="tsi-math"] { --course-color: var(--student-course-color-tsi-math, #30c85a); --course-on-color: var(--student-course-ink-tsi-math, #111118); }
 
 .course-nav-item .nav-dot { background-color: var(--course-color); }
+
+/* Accent controls live with the course, not the global theme. */
+[data-course] { --accent: var(--course-color); --on-accent: var(--course-on-color); }

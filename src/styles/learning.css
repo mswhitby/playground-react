@@ -48,8 +48,13 @@
 .unit-lesson-link > svg {color:var(--muted);}
 .unit-lesson-link:hover > svg {color:var(--course-color);}
 .lesson-mobile-navigation {display:none;}
-.lesson-next-bar {display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-top:20px;}
-.lesson-next-bar .btn.primary { background:var(--course-color);color:var(--course-on-color); }
+.lesson-next-bar {display:grid;grid-template-columns:repeat(2,minmax(0,1fr));align-items:start;gap:16px;margin-top:20px;}
+.lesson-next-bar .lesson-nav-link {display:inline-flex;align-items:flex-start;gap:6px;min-width:0;max-width:100%;padding:8px 0;border:0;background:transparent;color:var(--course-color);font-size:13px;font-weight:750;line-height:1.5;text-align:left;white-space:normal;overflow-wrap:anywhere;}
+.lesson-next-bar .lesson-nav-link svg {flex:none;margin-top:2px;}
+.lesson-next-bar .lesson-nav-link span {min-width:0;overflow-wrap:anywhere;}
+.lesson-next-bar .lesson-nav-link.previous {grid-column:1;justify-self:start;}
+.lesson-next-bar .lesson-nav-link.next {grid-column:2;justify-self:end;text-align:right;}
+.lesson-next-bar .lesson-nav-link:hover {text-decoration:underline;}
 
 /* TSIA2 is math practice, never a code editor. */
 .tsi-workspace { height:auto;min-height:580px;max-height:none; }
@@ -178,14 +183,6 @@
 .unit-lesson-label strong {line-height:1.45;}
 .unit-lesson-link {min-width:0;}
 .unit-lesson-link > svg {flex:none;}
-.lesson-next-bar .btn {
-  max-width:100%;
-  min-width:0;
-  white-space:normal;
-  overflow-wrap:anywhere;
-  text-align:center;
-  line-height:1.45;
-}
 .lesson-content-pending {
   padding:24px;
   margin-top:18px;
@@ -194,8 +191,12 @@
 .lesson-content-pending h2 {margin:0 0 8px;font-size:18px;}
 .lesson-content-pending p {margin:0;color:var(--soft);}
 @media (max-width:600px) {
-  .lesson-next-bar {flex-direction:column;align-items:stretch;}
-  .lesson-next-bar .btn {width:100%;justify-content:center;}
+  .lesson-next-bar {grid-template-columns:minmax(0,1fr);}
+  .lesson-next-bar .lesson-nav-link.previous,
+  .lesson-next-bar .lesson-nav-link.next {grid-column:1;}
 }
 
 .course-published-note {font-size:12px;color:var(--muted);margin:14px 0 0;}
+
+/* Lesson number tiles always use the course accent. Completion, assigned, and
+   overdue colors belong only to the status dot and tag beside the lesson name. */

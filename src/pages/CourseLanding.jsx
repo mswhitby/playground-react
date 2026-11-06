@@ -47,7 +47,7 @@ export default function CourseLanding({ course, openCourse, openChallenges, comp
       {course.publishedContent && <p className="course-published-note">
         Explore the complete Computer Science I lessons. Practice here won't change your grades.
       </p>}
-      <p className="course-landing-progress">{progress.completed} of {progress.total} lessons completed · {progress.percent}%</p>
+      <p className="course-landing-progress">{progress.completed} of {progress.total} lessons {course.publishedContent ? 'marked complete in preview' : 'completed'} · {progress.percent}%</p>
       <div className="course-landing-heading">
         <div><h2>Units &amp; lessons</h2><p>Choose a unit or jump directly into a lesson.</p></div>
 
@@ -69,9 +69,9 @@ export default function CourseLanding({ course, openCourse, openChallenges, comp
                   <span className="unit-lesson-index">{i + 1}</span>
                   <span className="unit-lesson-label"><strong title={lessonTitleOf(course,id)}>{lessonTitleOf(course,id)}</strong>
                     {(() => { const a=statusFor('lesson:'+id,{assignments,grades,completedLessons});
-                      return a.dueDate ? <span className="unit-assignment-meta">
-                        <span className={`assignment-status ${a.state}`}>{a.state==='completed'?'Completed':a.state==='overdue'?'Overdue':'Assigned'}</span>
-                        <small>Due {dueLabel(a.dueDate)}</small>
+                      return (a.dueDate || a.completed) ? <span className="unit-assignment-meta">
+                        <span className={`assignment-status ${a.state}`}><span className={`assignment-dot ${a.state}`} aria-hidden="true"/>{a.completed?'Completed':a.state==='overdue'?'Overdue':'Assigned'}</span>
+                        {a.dueDate && <small>Due {dueLabel(a.dueDate)}</small>}
                         {a.grade&&<small>{a.grade.earned} / {a.grade.possible} pts</small>}
                       </span> : <small>{getCourseLesson(course,id)?.kind}{getCourseLesson(course,id)?.difficulty ? ` · ${getCourseLesson(course,id).difficulty}` : ''}</small>;
                     })()}

@@ -1,4 +1,4 @@
-import { ChevronRight } from 'lucide-react';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { courses, getCourse } from '../data/courses.js';
 import { courseLessonIds, lessonIdsOf, lessonTitleOf, unitTitleOf } from '../lib/courseContent.js';
 import CourseLanding from './CourseLanding.jsx';
@@ -32,11 +32,15 @@ export default function CoursePage({ courseId, lessonId, openCourse, openChallen
             </div>
             <LessonWorkspace key={lessonId} lessonId={lessonId} course={course} unit={currentUnit} unitNumber={unitIndex + 1} isCompleted={completedLessons.includes(lessonId)} assignment={assignments.find(a=>a.id==='lesson:'+lessonId)} grade={grades.find(g=>g.id==='lesson:'+lessonId)} onToggleCompleted={() => onToggleLessonComplete?.(lessonId)}/>
             <nav className="lesson-next-bar" aria-label="Lesson sequence">
-              <button className="btn primary" disabled={lessonIndex <= 0} onClick={() => openCourse(course.id, sequence[lessonIndex - 1])}>
-                ← Prev
-              </button>
-              {lessonIndex < sequence.length - 1 && <button className="btn primary" onClick={() => openCourse(course.id, sequence[lessonIndex + 1])}>
-                Next: {lessonTitleOf(course,sequence[lessonIndex + 1])} <ChevronRight size={16}/>
+              {lessonIndex > 0 && <button type="button" className="lesson-nav-link previous"
+                onClick={() => openCourse(course.id, sequence[lessonIndex - 1])}>
+                <ChevronLeft size={16} aria-hidden="true"/>
+                <span>Prev: {lessonTitleOf(course, sequence[lessonIndex - 1])}</span>
+              </button>}
+              {lessonIndex >= 0 && lessonIndex < sequence.length - 1 && <button type="button" className="lesson-nav-link next"
+                onClick={() => openCourse(course.id, sequence[lessonIndex + 1])}>
+                <span>Next: {lessonTitleOf(course, sequence[lessonIndex + 1])}</span>
+                <ChevronRight size={16} aria-hidden="true"/>
               </button>}
             </nav>
           </>

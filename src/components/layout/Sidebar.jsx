@@ -1,6 +1,6 @@
 import { BookOpen, ChevronDown, CircleHelp, ClipboardPenLine, House, LayoutDashboard, LibraryBig, GraduationCap } from 'lucide-react';
 import { courses, getCourse } from '../../data/courses.js';
-import { lessons } from '../../data/lessons.js';
+import { lessonIdsOf, lessonTitleOf, unitNumberOf, unitTitleOf } from '../../lib/courseContent.js';
 import { cn } from '../../lib/cn.js';
 import { statusFor } from '../../lib/gradebook.js';
 
@@ -34,20 +34,21 @@ export default function Sidebar({ open, page, courseId, lessonId, setPage, openC
           </button>
           {course.units.map((unit, index) => (
             <details key={`${course.id}-${unit.id}-${lessonId || 'overview'}`} className="outline-unit"
-              open={unit.lessons.includes(lessonId) || (!lessonId && index === 0) ? true : undefined}>
-              <summary><span className="outline-unit-number">{String(index + 1).padStart(2, '0')}</span><span>{unit.title}</span><ChevronDown size={14} /></summary>
+              open={lessonIdsOf(unit).includes(lessonId) || (!lessonId && index === 0) ? true : undefined}>
+              <summary><span className="outline-unit-number">{String(unitNumberOf(unit,index + 1)).padStart(2, '0')}</span><span className="outline-unit-title" title={unitTitleOf(unit)}>{unitTitleOf(unit)}</span><ChevronDown size={14} /></summary>
               <div className="outline-lesson-list">
-                {unit.lessons.map(id => {
+                {lessonIdsOf(unit).map(id => {
+                  const title = lessonTitleOf(course,id);
                   const activity = statusFor('lesson:'+id,{assignments,grades,completedLessons});
                   const state = activity.dueDate ? activity.state : '';
                   const statusText = state==='completed' ? 'Completed' : state==='overdue' ? 'Overdue' : state==='assigned' ? 'Assigned' : '';
                   return (
                     <button key={id} onClick={() => openCourse(course.id, id)}
                       className={cn('outline-lesson', id === lessonId && 'selected')}
-                      aria-label={statusText ? `${lessons[id].title}, ${statusText.toLowerCase()}` : lessons[id].title}
-                      title={statusText ? `${lessons[id].title} · ${statusText}` : lessons[id].title}
+                      aria-label={statusText ? `${title}, ${statusText.toLowerCase()}` : title}
+                      title={statusText ? `${title} · ${statusText}` : title}
                       aria-current={id === lessonId ? 'page' : undefined}>
-                      <span className="outline-lesson-name">{lessons[id].title}</span>
+                      <span className="outline-lesson-name">{title}</span>
                       {statusText && <span className={`assignment-dot ${state}`} aria-hidden="true" />}
                     </button>
                   );

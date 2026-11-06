@@ -9,13 +9,14 @@ import { completionIds } from './lib/gradebook.js';
 import { sampleGrades } from './data/sampleGrades.js';
 import { assignedWork } from './data/assignedWork.js';
 import { cn } from './lib/cn.js';
-import { homePath, journalsPath, gradesPath, playgroundPath, challengesPath, challengePath, resolveRoute, teacherPath } from './lib/routes.js';
+import { homePath, journalsPath, gradesPath, playgroundPath, challengesPath, challengePath, resolveRoute, teacherPath, adminPath } from './lib/routes.js';
 import Topbar from './components/layout/Topbar.jsx';
 import Sidebar from './components/layout/Sidebar.jsx';
 import Footer from './components/layout/Footer.jsx';
 import Home from './pages/Home.jsx';
 import CoursePage from './pages/CoursePage.jsx';
 import TeacherDashboard from './pages/TeacherDashboard.jsx';
+import AdminDashboard from './pages/AdminDashboard.jsx';
 import Journals from './pages/Journals.jsx';
 import Grades from './pages/Grades.jsx';
 import ChallengeBank from './pages/ChallengeBank.jsx';
@@ -65,7 +66,7 @@ export default function App() {
     if (route.page === 'course') setLastCourse(route.courseId);
     const label = route.page === 'course'
       ? getCourse(route.courseId)?.label
-      : route.page === 'teacher' ? 'Teacher dashboard' : route.page === 'grades' ? 'Grades' : route.page === 'journals' ? 'Weekly journals'
+      : route.page === 'admin' ? 'Admin dashboard' : route.page === 'teacher' ? 'Teacher dashboard' : route.page === 'grades' ? 'Grades' : route.page === 'journals' ? 'Weekly journals'
       : route.page === 'challenges' ? 'Challenge Bank' : route.page === 'challenge' ? 'Coding challenge' : 'Your playgrounds';
     document.title = `${label || 'Playground'} | Ms. Whitby's Playground — React Lab`;
   }, [route.page, route.courseId, setLastCourse]);
@@ -90,6 +91,7 @@ export default function App() {
 
   function setPage(page) {
     if (page === 'teacher') navigate(teacherPath());
+    else if (page === 'admin') navigate(adminPath());
     else if (page === 'journals') navigate(journalsPath());
     else if (page === 'grades') navigate(gradesPath());
     else if (page === 'challenges') navigate(challengesPath());
@@ -148,7 +150,9 @@ export default function App() {
           ) : page === 'journals' ? (
             <Journals submissions={journalSubmissions} setSubmissions={setJournalSubmissions} />
           ) : page === 'teacher' ? (
-            <TeacherDashboard students={students} setStudents={setStudents} journalSubmissions={journalSubmissions} />
+            <TeacherDashboard students={students} journalSubmissions={journalSubmissions} />
+          ) : page === 'admin' ? (
+            <AdminDashboard students={students} setStudents={setStudents}/>
           ) : (
             <div className="main-content route-not-found">
               <div className="eyebrow">Link not found</div>

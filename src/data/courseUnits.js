@@ -45,6 +45,7 @@ export const courseUnits = {
       "description": "Connect scripts and game mechanics.",
       "lessons": [
         "unity-colliders",
+        "unity-player-controller",
         "unity-score"
       ]
     }

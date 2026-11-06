@@ -27,7 +27,7 @@
 .course-hero p { max-width:690px;margin:0;font-size:15px; }
 .course-hero-stats { display:flex;gap:12px;flex-wrap:wrap;margin:8px 0 3px; }
 .course-hero-stats span {display:inline-flex;align-items:center;gap:8px;padding:7px 11px;border-radius:8px;background:var(--surface-2);color:var(--soft);font-size:12px;}
-.course-hero .btn.primary { background:var(--course-color);color:#111118; }
+.course-hero .btn.primary { background:var(--course-color);color:var(--course-on-color); }
 .course-landing-heading { display:flex;justify-content:space-between;align-items:end;gap:12px;flex-wrap:wrap;margin:32px 0 18px; }
 .course-landing-heading h2 { font-size:22px;margin:0 0 5px; }
 .course-landing-heading p { margin:0;font-size:13px; }
@@ -49,7 +49,7 @@
 .unit-lesson-link:hover > svg {color:var(--course-color);}
 .lesson-mobile-navigation {display:none;}
 .lesson-next-bar {display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-top:20px;}
-.lesson-next-bar .btn.primary { background:var(--course-color);color:#111118; }
+.lesson-next-bar .btn.primary { background:var(--course-color);color:var(--course-on-color); }
 
 /* TSIA2 is math practice, never a code editor. */
 .tsi-workspace { height:auto;min-height:580px;max-height:none; }
@@ -73,7 +73,7 @@
 .tsi-feedback strong {display:flex;align-items:center;gap:8px;color:var(--pass);}
 .tsi-feedback p {margin:7px 0 0;font-size:13px;}
 .tsi-buttons {display:flex;flex-wrap:wrap;gap:9px;margin-top:18px;}
-.tsi-buttons .btn.primary {background:var(--course-color);color:#111118;}
+.tsi-buttons .btn.primary {background:var(--course-color);color:var(--course-on-color);}
 .tsi-practice-tip {display:flex;gap:10px;align-items:start;border-radius:12px;background:var(--surface-2);padding:16px;}
 .tsi-practice-tip svg {flex:none;color:var(--course-color);}
 .tsi-practice-tip p {font-size:12px;margin:0;}
@@ -125,3 +125,37 @@
 .unit-assignment-meta {display:flex;align-items:center;gap:7px;flex-wrap:wrap;}
 .unit-assignment-meta small {color:var(--muted);}
 .lesson-assignment-info {display:flex;align-items:center;gap:9px;margin-top:13px;font-size:12px;color:var(--soft);}
+
+/* Student choice of course color lives on the overview card, not in component markup. */
+.course-hero .course-color-settings {
+  position:absolute;top:20px;right:20px;z-index:1;
+  background:var(--surface-2);color:var(--soft);
+}
+.course-hero .course-color-settings:hover,
+.course-hero .course-color-settings[aria-expanded="true"] {
+  border-color:var(--course-color);
+  color:var(--text);
+}
+.course-hero h1 {padding-right:45px;}
+.course-color-controls {
+  align-self:stretch;display:flex;flex-wrap:wrap;align-items:center;gap:12px;
+  background:var(--surface-2);border:1px solid var(--border);border-radius:12px;
+  padding:14px 16px;margin-top:8px;position:relative;z-index:1;
+}
+.course-color-control-copy {flex:1 1 230px;}
+.course-color-control-copy strong {font-size:13px;color:var(--text);}
+.course-color-control-copy p {font-size:12px;color:var(--muted);margin-top:3px;}
+.course-color-picker {display:inline-flex;align-items:center;gap:9px;font-size:12px;font-weight:650;cursor:pointer;}
+.course-color-picker input[type="color"] {
+  width:40px;height:36px;cursor:pointer;border:1px solid var(--border-strong);
+  border-radius:10px;background:var(--surface);padding:3px;
+}
+.course-color-picker input[type="color"]::-webkit-color-swatch-wrapper {padding:0;}
+.course-color-picker input[type="color"]::-webkit-color-swatch {border:0;border-radius:6px;}
+.course-color-picker input[type="color"]:focus-visible {outline:2px solid var(--course-color);outline-offset:3px;}
+.course-color-controls .btn {flex:none;}
+@media(max-width:600px) {
+  .course-hero .course-color-settings {top:14px;right:14px;}
+  .course-color-controls {gap:10px;}
+  .course-color-control-copy {flex-basis:100%;}
+}

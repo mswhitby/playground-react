@@ -1,7 +1,8 @@
 import { useCallback, useEffect, useState } from 'react';
 import { seedStudents } from './data/students.js';
 import { seedJournalSubmissions } from './data/journalSubmissions.js';
-import { getCourse } from './data/courses.js';
+import { courses, getCourse } from './data/courses.js';
+import { applyCourseColorPreferences, isHexColor } from './lib/courseColors.js';
 import { useSaved } from './hooks/useSaved.js';
 import { toggleLessonComplete } from './lib/completion.js';
 import { completionIds } from './lib/gradebook.js';
@@ -26,6 +27,7 @@ export default function App() {
   const [lastCourse, setLastCourse] = useSaved('designlab:course', 'computer-science-1');
   const [theme, setTheme] = useSaved('designlab:theme', 'dark');
   const [accent, setAccent] = useSaved('designlab:accent', 'purple');
+  const [courseColors, setCourseColors] = useSaved('designlab:course-colors', {});
   const [sidebarOpen, setSidebarOpen] = useSaved('designlab:sidebar', true);
   const [completedLessons, setCompletedLessons] = useSaved('designlab:completed-lessons', []);
   const [grades] = useSaved('designlab:sample-gradebook', sampleGrades);
@@ -37,6 +39,26 @@ export default function App() {
     document.documentElement.dataset.theme = theme;
     document.documentElement.dataset.accent = accent;
   }, [theme, accent]);
+
+  useEffect(() => {
+    applyCourseColorPreferences(courseColors, courses);
+  }, [courseColors]);
+
+  function setCourseColor(courseId, value) {
+    if (!courses.some(course => course.id === courseId) || !isHexColor(value)) return;
+    setCourseColors(previous => ({
+      ...(previous && typeof previous === 'object' ? previous : {}),
+      [courseId]: value.toUpperCase()
+    }));
+  }
+
+  function resetCourseColor(courseId) {
+    setCourseColors(previous => {
+      const next = { ...(previous && typeof previous === 'object' ? previous : {}) };
+      delete next[courseId];
+      return next;
+    });
+  }
 
   useEffect(() => {
     if (route.page === 'course') setLastCourse(route.courseId);
@@ -114,6 +136,9 @@ export default function App() {
               assignments={assignedWork}
               grades={grades}
               onToggleLessonComplete={(id) => setCompletedLessons(previous => toggleLessonComplete(previous, id))}
+              courseColors={courseColors}
+              onSetCourseColor={setCourseColor}
+              onResetCourseColor={resetCourseColor}
             />
           ) : page === 'grades' ? (
             <Grades grades={grades} completedLessons={completedWithGrades}/>

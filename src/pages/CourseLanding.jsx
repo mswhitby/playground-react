@@ -1,14 +1,25 @@
-import { ArrowUpRight, BookOpen, ChevronRight, Layers3, LibraryBig } from 'lucide-react';
+import { useState } from 'react';
+import { ArrowUpRight, BookOpen, ChevronRight, Layers3, LibraryBig, Settings2, X } from 'lucide-react';
 import { lessons } from '../data/lessons.js';
 import { courseProgress } from '../lib/completion.js';
+import { selectedCourseColor } from '../lib/courseColors.js';
 import { statusFor,dueLabel } from '../lib/gradebook.js';
 import { challengesPath, playgroundPath } from '../lib/routes.js';
 
-export default function CourseLanding({ course, openCourse, openChallenges, completedLessons = [], assignments = [], grades = [] }) {
+export default function CourseLanding({ course, openCourse, openChallenges, completedLessons = [], assignments = [], grades = [], courseColors = {}, onSetCourseColor, onResetCourseColor }) {
   const progress = courseProgress(course, completedLessons);
+  const [editingColor, setEditingColor] = useState(false);
+  const color = selectedCourseColor(course, courseColors);
   return (
     <div className="course-landing">
       <header className="course-hero surface-card">
+        <button type="button" className="icon-button course-color-settings"
+          onClick={() => setEditingColor(value => !value)}
+          aria-label={editingColor ? 'Close course color settings' : `Change ${course.label} color`}
+          title={editingColor ? 'Close settings' : 'Course color'}
+          aria-expanded={editingColor} aria-controls="course-color-controls">
+          {editingColor ? <X size={17}/> : <Settings2 size={17}/>}
+        </button>
         <div className="eyebrow">Course overview</div>
         <h1>{course.label}</h1>
         <p>{course.description}</p>
@@ -19,6 +30,19 @@ export default function CourseLanding({ course, openCourse, openChallenges, comp
         <button className="btn primary" onClick={() => openCourse(course.id, course.lessons[0])}>
           Start learning <ChevronRight size={16} />
         </button>
+        {editingColor && <section id="course-color-controls" className="course-color-controls" aria-label="Choose a course color">
+          <div className="course-color-control-copy">
+            <strong>Course color</strong>
+            <p>Make this course your own. The color updates throughout your Playground.</p>
+          </div>
+          <label className="course-color-picker">
+            <input type="color" value={color} onChange={event => onSetCourseColor?.(course.id, event.target.value)}
+              aria-label={`Choose a color for ${course.label}`}/>
+            <span>Choose color</span>
+          </label>
+          <button type="button" className="btn" onClick={() => onResetCourseColor?.(course.id)}>Reset to default</button>
+          <button type="button" className="btn" onClick={() => setEditingColor(false)}>Done</button>
+        </section>}
       </header>
       <p className="course-landing-progress">{progress.completed} of {progress.total} lessons completed · {progress.percent}%</p>
       <div className="course-landing-heading">

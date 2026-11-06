@@ -1,7 +1,8 @@
-import { ClipboardPenLine, LayoutDashboard, Settings2, Users } from "lucide-react";
+import { BookOpen, ClipboardPenLine, LayoutDashboard, Settings2, Users } from "lucide-react";
 
 export const TEACHER_TABS = [
   ["overview", "Class overview", LayoutDashboard],
+  ["curriculum", "Curriculum", BookOpen],
   ["journals", "Journals", ClipboardPenLine],
   ["accounts", "Accounts", Users],
   ["setup", "Section setup", Settings2],

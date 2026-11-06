@@ -66,7 +66,7 @@ export default function ChallengeDetail({challengeId,onBack}) {
         </div>
         </div>
         <div className="editor-controls challenge-controls"><div><button className="btn" onClick={()=>act('Run')}>Run</button><button className="btn" onClick={()=>act('Check')}><Check size={15}/> Check</button><button className="btn" onClick={()=>act('Reset')}><RotateCcw size={15}/> Reset</button></div><div><button className="btn" onClick={()=>act('Save')}><Save size={15}/> Save</button><button className="btn submit" onClick={()=>act('Submit')}><Send size={15}/> Demo submit</button></div></div>
-        <p className="challenge-editor-message" role="status">{message||'Resize the panels by dragging their gutters. Language drafts save separately in this browser.'}</p>
+        <p className="challenge-editor-message" role="status">{message||'Drag the dividers to resize your workspace. Each language keeps its own draft.'}</p>
       </section>
     </div>
     {mine.length>0&&<section className="challenge-history surface-card"><h2>Demo hand-ins ({mine.length})</h2><p>These are saved only in your browser, not real grades.</p>{mine.slice().reverse().map(x=><details key={x.id}><summary>{languageLabels[x.language]} · {new Date(x.submittedAt).toLocaleString()}</summary><pre>{x.code}</pre></details>)}</section>}

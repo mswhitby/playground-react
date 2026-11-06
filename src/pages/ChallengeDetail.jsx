@@ -15,20 +15,28 @@ export default function ChallengeDetail({challengeId,onBack}) {
   const [code,setCode]=useState(()=>readString(key)??starter);
   const [output,setOutput]=useState('Run and Check are simulations. This preview does not execute code.');
   const [message,setMessage]=useState('');
+  const [checkText,setCheckText]=useState('Choose Check to review the published examples.');
+  const [outputTab,setOutputTab]=useState('Console');
   const [history,setHistory]=useSaved('designlab:challenge-attempts',[]);
   const [leftWidth,setLeftWidth]=useSaved('designlab:challenge-left-width',420);
   const [editorHeight,setEditorHeight]=useSaved('designlab:challenge-editor-height',330);
   const work=useRef(null),rows=useRef(null);
   const samples=getChallengeExamples(challengeId);
   const mine=history.filter(x=>x.challengeId===challengeId);
-  useEffect(()=>{setCode(readString(key)??starter);setOutput('Run / Check are design-only controls—no program is executed.');setMessage('');},[key,starter]);
+  useEffect(()=>{setCode(readString(key)??starter);setOutput('Run / Check are design-only controls—no program is executed.');setMessage('');setCheckText('Choose Check to review the published examples.');setOutputTab('Console');},[key,starter]);
   const change=text=>{setCode(text);writeString(key,text);setMessage('Draft saved in this browser for '+languageLabels[lang]+'.');};
   const act=action=>{
-    if(action==='Reset'){change(starter);setOutput('Starter restored; nothing was executed.');return;}
+    if(action==='Reset'){change(starter);setOutput('Starter restored; nothing was executed.');setCheckText('Choose Check to review the published examples.');setOutputTab('Console');return;}
     if(action==='Save'){writeString(key,code);setMessage('Draft saved in this browser.');return;}
     if(action==='Submit'){setHistory(h=>[...h,{id:'demo-'+Date.now()+'-'+Math.random().toString(36).slice(2),challengeId,language:lang,code,submittedAt:new Date().toISOString()}]);setMessage('Demo hand-in recorded locally. No code was graded or delivered to a teacher.');return;}
     const cases=samples.map((e,i)=>'Example '+(i+1)+': input '+JSON.stringify(e.input)+' → expected '+JSON.stringify(e.expected)).join('\n');
-    setOutput((action==='Check'?'Published checks (NOT run against your code):':'Published example outputs (your code was NOT executed):')+'\n\n'+cases);
+    if(action==='Check'){
+      setCheckText('Published examples (not checked against your code):\n\n'+cases);
+      setOutputTab('Checks');
+    } else {
+      setOutput('Expected sample outputs (your code has not run):\n\n'+cases);
+      setOutputTab('Console');
+    }
   };
   const resizeCols=e=>{if(!work.current)return;const rect=work.current.getBoundingClientRect();setLeftWidth(Math.max(280,Math.min(rect.width-360,e.clientX-rect.left)));};
   const resizeRows=e=>{if(!rows.current)return;const rect=rows.current.getBoundingClientRect();setEditorHeight(Math.max(180,Math.min(rect.height-130,e.clientY-rect.top)));};
@@ -45,9 +53,19 @@ export default function ChallengeDetail({challengeId,onBack}) {
         <div className="challenge-code-layout" ref={rows} style={{'--challenge-editor-height':editorHeight+'px'}}>
           <textarea className="code-editor challenge-editor" spellCheck={false} aria-label={languageLabels[lang]+' solution editor'} value={code} onChange={e=>change(e.target.value)}/>
           <Splitter axis="rows" onDrag={resizeRows}/>
-          <div className="console-pane"><div className="console-heading"><TerminalSquare size={15}/> Console <span>Design-only preview</span></div><pre role="status">{output}</pre></div>
+          <div className="console-pane"><div className="console-heading">
+            <div className="console-tabs" role="tablist" aria-label="Challenge results">
+              {['Console', 'Checks'].map(tab => <button key={tab} type="button" role="tab" aria-selected={outputTab===tab}
+                className={outputTab===tab?'active':''} onClick={()=>setOutputTab(tab)}>
+                {tab==='Console'&&<TerminalSquare size={14}/>} {tab}
+              </button>)}
+            </div>
+            <span>Demo</span>
+          </div>
+          <pre role="tabpanel" aria-label={outputTab==='Checks'?'Checks':'Console output'}>{outputTab==='Checks'?checkText:output}</pre>
         </div>
-        <div className="editor-controls challenge-controls"><div><button className="btn" onClick={()=>act('Run')}>Run</button><button className="btn" onClick={()=>act('Check')}><Check size={15}/> Check</button><button className="btn" onClick={()=>act('Reset')}><RotateCcw size={15}/> Reset</button></div><div><button className="btn" onClick={()=>act('Save')}><Save size={15}/> Save</button><button className="btn primary" onClick={()=>act('Submit')}><Send size={15}/> Demo submit</button></div></div>
+        </div>
+        <div className="editor-controls challenge-controls"><div><button className="btn" onClick={()=>act('Run')}>Run</button><button className="btn" onClick={()=>act('Check')}><Check size={15}/> Check</button><button className="btn" onClick={()=>act('Reset')}><RotateCcw size={15}/> Reset</button></div><div><button className="btn" onClick={()=>act('Save')}><Save size={15}/> Save</button><button className="btn submit" onClick={()=>act('Submit')}><Send size={15}/> Demo submit</button></div></div>
         <p className="challenge-editor-message" role="status">{message||'Resize the panels by dragging their gutters. Language drafts save separately in this browser.'}</p>
       </section>
     </div>

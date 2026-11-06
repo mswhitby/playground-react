@@ -1,6 +1,6 @@
 # Ms. Whitby's Playground — React Design Lab
 
-A **standalone, lightweight frontend design sandbox** modeled after the November 2026 version of Ms. Whitby's Playground. The site uses React, Vite and **fictional sample data**. It has no Supabase, Google Sheet, GitHub OAuth, grading, production API, or real student connections.
+A **standalone React frontend preview** modeled after Ms. Whitby's Playground. **Computer Science I includes the complete published 10-unit, 40-lesson curriculum** with authentic unit names, lesson Markdown, hints, public examples, and starter code. The other five courses and all student/teacher records remain fictional samples. CS1 Run and Check execute browser-based Python and use **public examples only**; Submit never records a grade or sends student work. There is no Supabase, student sign-in, production API, or private test data.
 
 ## Start it locally
 
@@ -32,7 +32,7 @@ You can also link to a specific lesson: `/playgrounds/mobile-app-web/lessons/rea
 
 The route definitions live in `src/lib/routes.js`; each course's public `slug` is in `src/data/courses.js` and can differ from its internal `id`. Keep published slugs stable, or old shared links will stop working. The home-page course actions are real links, so you can right-click to **Copy Link Address** or open in another tab.
 
-**Deployment:** `localhost` links only work on your own computer. To give students usable links, deploy the React build at a public domain. Clean URLs require your host to serve `index.html` for non-file paths. Vite's dev server does this automatically, and `public/_redirects` supplies that rule for Netlify/Cloudflare Pages. GitHub Pages and other static hosts need their own SPA fallback handling. If deploying to a subfolder, configure Vite's `base` first; routes honor that prefix.
+**Hosted review:** [React preview](https://www.mswhitby.com/playground/preview/react/) uses hash-based links, keeping lesson URLs shareable without changing the live Playground. **Deployment:** `localhost` links only work on your own computer. To give students usable links, deploy the React build at a public domain. Clean URLs require your host to serve `index.html` for non-file paths. Vite's dev server does this automatically, and `public/_redirects` supplies that rule for Netlify/Cloudflare Pages. GitHub Pages and other static hosts need their own SPA fallback handling. If deploying to a subfolder, configure Vite's `base` first; routes honor that prefix.
 
 Run `npm test` to check the slug and deep-link mapping.
 
@@ -79,14 +79,14 @@ src/
 - **Home / course navigation:** All six course categories represented, with mock lessons and challenges.
 - **Learn / Practice:** Displays lesson content from editable Markdown files (with fenced code samples, headings, lists and blockquotes (not a production-identical renderer; math typesetting extensions are not included)). To permanently change text, edit `src/content/<lesson-id>.md` in VS Code. The `FileText` button also opens an editable Markdown source *in the browser*, but browser-only edits save to localStorage, **not** back to the `.md` file.
 - **Resizable workspace:** Drag the vertical gutter between Markdown and editor; drag the horizontal gutter between code editor and console. Layout sizes persist locally. On narrow screens the page stacks vertically.
-- **Editor and console:** Editable sample code and mock Run, Check, Save, Reset, Submit controls. These **do not execute, grade, or submit code**. Save stores sample text in your browser only.
+- **Editor and console:** CS1 Run executes Python in a browser worker, and Check compares against the published examples. These do **not** record grades or student submissions. Other courses still use mock actions. Save stores drafts in your browser only.
 - **Teacher Dashboard → Class overview:** Mock weekly scorecard, sorting by first/last/GitHub, and click a name to expand assignment history **in its roster row**.
 - **Teacher Dashboard → Accounts:** Search, period filter, sorting, and editable sample Sheet/student names. Sheet names take precedence; if blank, the demo falls back to the student name, then GitHub.
 - **Appearance:** Dark/light and coral/purple accent switches; left sidebar collapses. Preferences and mock edits persist across reloads through localStorage.
 
 ## Important differences from the production Playground
 
-This is a **design prototype**, not a fork of the full runtime. It reproduces core *visual flows* and selected interactions rather than production auth, course parsers, the actual CodeMirror editor, auto-grading, the Supabase dashboard backend, or real point calculations. No actual school data is in the zip; weekly values are fictional and predetermined.
+This remains a **frontend preview**, not the production app. It includes the authentic public CS1 curriculum and browser-only public Python checks, but does not connect to production auth, hidden grading, student accounts, the Supabase dashboard backend, or real point calculations. No actual school data is in the zip; weekly values are fictional and predetermined.
 
 The current production site is maintained in `mswhitby/playground` and deployed through `mswhitby/classroom/playground/`. This sandbox runs independently at localhost. Changing it does **not** change the production site. When you settle on a layout, we can port the relevant React components and CSS patterns back without risking the live system.
 

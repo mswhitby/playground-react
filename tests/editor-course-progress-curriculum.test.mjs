@@ -69,7 +69,7 @@ test('teacher Curriculum tab pulls public lesson catalog but not student records
   const teacher=read('../src/pages/TeacherDashboard.jsx');
   const curriculum=read('../src/components/teacher/TeacherCurriculum.jsx');
   assert.match(tab,/\["curriculum", "Curriculum"/);
-  assert.match(teacher,/<TeacherCurriculum\/>/);
+  assert.match(teacher,/<TeacherCurriculum section=\{currentSection\}/);
   assert.match(curriculum,/\/playground\/data\/computer-science-1\/course\.json/);
   assert.match(curriculum,/normalizeImportedOutline\(result\)/);
   assert.match(curriculum,/cache:'no-store'/);

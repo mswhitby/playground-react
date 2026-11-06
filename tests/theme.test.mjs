@@ -26,9 +26,11 @@ test('cards have individual spacing, padding, and category signals', () => {
   assert.match(css, /padding: 24px/);
   assert.match(css, /box-shadow: var\(--card-shadow\)/);
   assert.match(css, /background: var\(--course-color\)/);
-  assert.match(card, /--course-color/);
-  assert.match(card, /course-color-bar/);
-  assert.match(card, /playgroundPath\(course\)/);
+  assert.match(card, /course-progress-track/);
+  assert.match(card, /data-course=\{course.id\}/);
+  assert.match(card, /href=\{playgroundPath\(course\)\}/);
+  assert.doesNotMatch(card, /style=\{\{/);
+  assert.match(read('../src/styles/course-colors.css'), /--course-color/);
 });
 
 test('course identity and status colors remain separate', () => {

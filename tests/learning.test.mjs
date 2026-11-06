@@ -13,8 +13,15 @@ test('every course has unit groups and every listed lesson has metadata and Mark
     assert.deepEqual(course.lessons, course.units.flatMap(unit => unit.lessons));
     assert.equal(new Set(course.lessons).size, course.lessons.length);
     for (const id of course.lessons) {
-      assert.ok(lessons[id], `missing lesson ${id}`);
-      assert.ok(existsSync(new URL(`../src/content/${id}.md`, import.meta.url)), `missing Markdown ${id}`);
+      if (course.publishedContent) {
+        const record = course.lessonRecords[id];
+        assert.ok(record, `missing public lesson ${id}`);
+        assert.ok(record.markdownSource?.length > 100, `missing published Markdown ${id}`);
+        assert.equal(typeof record.starter, 'string');
+      } else {
+        assert.ok(lessons[id], `missing sample lesson ${id}`);
+        assert.ok(existsSync(new URL(`../src/content/${id}.md`, import.meta.url)), `missing Markdown ${id}`);
+      }
     }
   }
 });

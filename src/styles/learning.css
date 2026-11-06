@@ -125,3 +125,37 @@
 .unit-assignment-meta {display:flex;align-items:center;gap:7px;flex-wrap:wrap;}
 .unit-assignment-meta small {color:var(--muted);}
 .lesson-assignment-info {display:flex;align-items:center;gap:9px;margin-top:13px;font-size:12px;color:var(--soft);}
+
+/* Student choice of course color lives on the overview card, not in component markup. */
+.course-hero .course-color-settings {
+  position:absolute;top:20px;right:20px;z-index:1;
+  background:var(--surface-2);color:var(--soft);
+}
+.course-hero .course-color-settings:hover,
+.course-hero .course-color-settings[aria-expanded="true"] {
+  border-color:var(--course-color);
+  color:var(--text);
+}
+.course-hero h1 {padding-right:45px;}
+.course-color-controls {
+  align-self:stretch;display:flex;flex-wrap:wrap;align-items:center;gap:12px;
+  background:var(--surface-2);border:1px solid var(--border);border-radius:12px;
+  padding:14px 16px;margin-top:8px;position:relative;z-index:1;
+}
+.course-color-control-copy {flex:1 1 230px;}
+.course-color-control-copy strong {font-size:13px;color:var(--text);}
+.course-color-control-copy p {font-size:12px;color:var(--muted);margin-top:3px;}
+.course-color-picker {display:inline-flex;align-items:center;gap:9px;font-size:12px;font-weight:650;cursor:pointer;}
+.course-color-picker input[type="color"] {
+  width:40px;height:36px;cursor:pointer;border:1px solid var(--border-strong);
+  border-radius:10px;background:var(--surface);padding:3px;
+}
+.course-color-picker input[type="color"]::-webkit-color-swatch-wrapper {padding:0;}
+.course-color-picker input[type="color"]::-webkit-color-swatch {border:0;border-radius:6px;}
+.course-color-picker input[type="color"]:focus-visible {outline:2px solid var(--course-color);outline-offset:3px;}
+.course-color-controls .btn {flex:none;}
+@media(max-width:600px) {
+  .course-hero .course-color-settings {top:14px;right:14px;}
+  .course-color-controls {gap:10px;}
+  .course-color-control-copy {flex-basis:100%;}
+}

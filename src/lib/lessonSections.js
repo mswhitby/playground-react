@@ -3,7 +3,7 @@ export function splitLesson(doc, task = null) {
   const source=String(doc||'');
   const lines=source.split('\n');
   const start=lines.findIndex(l=>/^##\s+(?:Practice|Solve)(?:\s*[:—-].*)?\s*$/i.test(l));
-  const stop=start===-1?-1:lines.findIndex((l,i)=>i>start&&/^##\s+(?:Reflection|Learn)(?:\s*[:—-].*)?\s*$/i.test(l));
+  const stop=start===-1?-1:lines.findIndex((l,i)=>i>start&&/^##\s+(?:Reflect(?:ion)?|Learn|Stop and think|Optional reading)(?:\b|\s*[:—-])/i.test(l));
   const solve=start>=0 ? lines.slice(start,stop<0?lines.length:stop).join('\n')
     : `# Solve\n\n${task?.challenge||'Try the lesson task before looking at the guide.'}`;
   const learn=start>=0 ? [...lines.slice(0,start),...(stop<0?[]:lines.slice(stop))].join('\n').trim():source;

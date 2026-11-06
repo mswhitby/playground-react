@@ -30,7 +30,10 @@ export default function App() {
   const [courseColors, setCourseColors] = useSaved('designlab:course-colors', {});
   const [sidebarOpen, setSidebarOpen] = useSaved('designlab:sidebar', true);
   const [completedLessons, setCompletedLessons] = useSaved('designlab:completed-lessons', []);
-  const [grades] = useSaved('designlab:sample-gradebook', sampleGrades);
+  const [previewGrades] = useSaved('designlab:sample-gradebook', sampleGrades);
+  // CS1 course materials are real; never present fabricated CS1 grades or due dates.
+  const grades = previewGrades.filter(record => record.courseId !== 'computer-science-1');
+  const courseAssignments = assignedWork.filter(record => record.courseId !== 'computer-science-1');
   const completedWithGrades = completionIds(completedLessons,grades);
   const [students, setStudents] = useSaved('designlab:students', seedStudents);
   const [journalSubmissions, setJournalSubmissions] = useSaved('designlab:journal-submissions', seedJournalSubmissions);
@@ -119,7 +122,7 @@ export default function App() {
           setPage={setPage}
           openCourse={openCourse}
           completedLessons={completedWithGrades}
-          assignments={assignedWork}
+          assignments={courseAssignments}
           grades={grades}
         />
         <main className="main-panel">
@@ -133,7 +136,7 @@ export default function App() {
               openCourse={openCourse}
               openChallenges={(courseId) => navigate(challengesPath(courseId))}
               completedLessons={completedWithGrades}
-              assignments={assignedWork}
+              assignments={courseAssignments}
               grades={grades}
               onToggleLessonComplete={(id) => setCompletedLessons(previous => toggleLessonComplete(previous, id))}
               courseColors={courseColors}
@@ -141,7 +144,7 @@ export default function App() {
               onResetCourseColor={resetCourseColor}
             />
           ) : page === 'grades' ? (
-            <Grades grades={grades} completedLessons={completedWithGrades}/>
+            <Grades grades={grades} assignments={courseAssignments} completedLessons={completedWithGrades}/>
           ) : page === 'challenges' ? (
             <ChallengeBank grades={grades} filterCourse={route.filterCourse} onSelect={(id) => navigate(challengePath(id))} onBrowseCourse={(id) => navigate(challengesPath(id))} />
           ) : page === 'challenge' ? (

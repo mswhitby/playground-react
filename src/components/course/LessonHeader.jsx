@@ -1,14 +1,15 @@
 import { CircleCheck, Circle } from 'lucide-react';
 import SectionTitle from '../ui/SectionTitle.jsx';
 import { dueLabel, statusFor } from '../../lib/gradebook.js';
+import { unitNumberOf, unitTitleOf } from '../../lib/courseContent.js';
 
 export default function LessonHeader({ task, unit, unitNumber, isTsi, isCompleted = false, assignment = null, grade = null, onToggleCompleted }) {
   const activityId = assignment?.id || grade?.id || '';
   const state = statusFor(activityId,{assignments:assignment?[assignment]:[],grades:grade?[grade]:[],completedLessons:isCompleted?[activityId.replace(/^lesson:/,'')]:[]});
   return <div className="lesson-header">
-    <div className="eyebrow">Unit {unitNumber} · {unit.title} <span className="dot">·</span> {task.kind}</div>
+    <div className="eyebrow">Unit {unitNumberOf(unit,unitNumber)} · {unitTitleOf(unit)} <span className="dot">·</span> {task.kind}</div>
     <SectionTitle actions={<div className="lesson-heading-actions">
-      {!isTsi && <span className="points-tag">{grade ? `${grade.earned} / ${grade.possible} pts` : `${task.points} points available`}</span>}
+      {!isTsi && task?.points != null && <span className="points-tag">{grade ? `${grade.earned} / ${grade.possible} pts` : `${task.points} points available`}</span>}
       {grade ? <span className="btn completion-toggle completed"><CircleCheck size={16}/> Completed</span> : (
         <button type="button" className={`btn completion-toggle ${isCompleted ? 'completed' : ''}`}
           aria-pressed={isCompleted} onClick={onToggleCompleted}>

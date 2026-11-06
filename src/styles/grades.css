@@ -32,3 +32,8 @@
 .grades-due-meta {display:grid;justify-items:end;gap:4px;}
 @media(max-width:850px){.grades-summary{grid-template-columns:1fr;}.grades-stat{padding:18px;}.grades-stat strong{font-size:27px;}}
 @media(max-width:520px){.grades-panel{padding:15px;}.grades-heading h1{font-size:29px;}.grades-week-score{min-width:105px;}.grades-entry{align-items:start;}}
+
+/* Preserve full lesson names in scored and outstanding-work lists. */
+.grades-entry > div:first-child,
+.grades-entry > div:first-child strong,
+.grades-entry > div:first-child small {min-width:0;overflow-wrap:anywhere;white-space:normal;}

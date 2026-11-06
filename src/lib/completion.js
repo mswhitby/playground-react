@@ -1,10 +1,11 @@
+import { courseLessonIds } from './courseContent.js';
 // Only student-marked lessons count toward the local preview's progress.
 export function isLessonComplete(id, completedLessons = []) {
   return Array.isArray(completedLessons) && completedLessons.includes(id);
 }
 
 export function courseProgress(course, completedLessons = []) {
-  const ids = course?.lessons || [];
+  const ids = courseLessonIds(course);
   const completed = ids.filter(id => isLessonComplete(id, completedLessons)).length;
   return {
     completed,

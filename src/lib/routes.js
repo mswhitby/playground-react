@@ -1,10 +1,12 @@
 import { courses, getCourse } from '../data/courses.js';
 import { challengeIds } from '../data/challengeIds.js';
+import { lessonInCourse } from './courseContent.js';
 
 // URLs remain the source of truth, even with localStorage UI preferences.
 const viteBase = import.meta.env?.BASE_URL || '/';
 const basePrefix = viteBase === '/' ? '' : '/' + viteBase.replace(/^\/+|\/+$/g, '');
-const withBase = (path) => `${basePrefix}${path}` || '/';
+const hashRouting = import.meta.env?.VITE_HASH_ROUTING === 'true';
+const withBase = path => hashRouting ? `${basePrefix}/#${path}` : (`${basePrefix}${path}` || '/');
 
 export const homePath = () => withBase('/');
 export const teacherPath = () => withBase('/teacher');
@@ -20,9 +22,12 @@ export function playgroundPath(courseOrId, lessonId) {
   return withBase(lessonId ? `${base}/lessons/${encodeURIComponent(lessonId)}` : base);
 }
 
-export function resolveRoute(pathname) {
-  const incoming = pathname.replace(/\/+$/, '') || '/';
-  const base = basePrefix || '';
+export function resolveRoute(pathname, availableCourses = courses) {
+  const routeInput = hashRouting
+    ? (typeof window !== 'undefined' ? window.location.hash.slice(1) || '/' : '/')
+    : pathname;
+  const incoming = routeInput.replace(/\/+$/, '') || '/';
+  const base = hashRouting ? '' : basePrefix || '';
   if (base && incoming !== base && !incoming.startsWith(base + '/')) return { page: 'not-found' };
   const relative = incoming.slice(base.length) || '/';
   if (relative === '/') return { page: 'home' };
@@ -47,8 +52,8 @@ export function resolveRoute(pathname) {
     slug = decodeURIComponent(segments[1]);
     lessonId = segments.length === 4 ? decodeURIComponent(segments[3]) : undefined;
   } catch { return { page: 'not-found' }; }
-  const course = courses.find((item) => item.slug === slug);
+  const course = availableCourses.find((item) => item.slug === slug);
   if (!course || (segments.length === 4 && segments[2] !== 'lessons')) return { page: 'not-found' };
-  if (lessonId && !course.lessons.includes(lessonId)) return { page: 'not-found' };
+  if (lessonId && !lessonInCourse(course,lessonId)) return { page: 'not-found' };
   return { page: 'course', courseId: course.id, lessonId: lessonId ?? null };
 }

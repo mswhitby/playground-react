@@ -1,16 +1,23 @@
 import { courseUnits } from './courseUnits.js';
+import { liveCs1Lessons } from './liveCs1/index.js';
+import { normalizeImportedOutline } from '../lib/courseContent.js';
+
+const cs1Content = normalizeImportedOutline(liveCs1Lessons);
 // Fictional design-only data. Never import or paste real student information here.
 export const courses = [
   {
     id: "computer-science-1",
-    units: courseUnits["computer-science-1"],
+    units: cs1Content.units,
+    lessonRecords: cs1Content.lessonRecords,
+    language: "python",
+    publishedContent: true,
     slug: "computer-science-1",
     label: "Computer Science I",
     short: "Python",
     glyph: "py",
     color: "#6366F1",
     description: "Build your problem-solving toolkit with Python.",
-    lessons: courseUnits["computer-science-1"].flatMap((unit) => unit.lessons),
+    lessons: cs1Content.lessons,
     topics: ["Variables", "Strings", "Formatting", "Conditions", "Lists"],
   },
   {

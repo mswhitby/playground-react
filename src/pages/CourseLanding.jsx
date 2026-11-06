@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { ArrowUpRight, BookOpen, ChevronRight, Layers3, LibraryBig, Settings2, X } from 'lucide-react';
-import { courseLessonIds, lessonIdsOf, lessonTitleOf, unitNumberOf, unitTitleOf } from '../lib/courseContent.js';
+import { courseLessonIds, getCourseLesson, lessonIdsOf, lessonTitleOf, unitNumberOf, unitTitleOf } from '../lib/courseContent.js';
 import { courseProgress } from '../lib/completion.js';
 import { selectedCourseColor } from '../lib/courseColors.js';
 import { statusFor,dueLabel } from '../lib/gradebook.js';
@@ -70,7 +70,7 @@ export default function CourseLanding({ course, openCourse, openChallenges, comp
                         <span className={`assignment-status ${a.state}`}>{a.state==='completed'?'Completed':a.state==='overdue'?'Overdue':'Assigned'}</span>
                         <small>Due {dueLabel(a.dueDate)}</small>
                         {a.grade&&<small>{a.grade.earned} / {a.grade.possible} pts</small>}
-                      </span> : <small>{(course.lessonRecords?.[id]?.kind || 'Lesson')}{(course.lessonRecords?.[id]?.difficulty) ? ` · ${course.lessonRecords[id].difficulty}` : ''}</small>;
+                      </span> : <small>{getCourseLesson(course,id)?.kind}{getCourseLesson(course,id)?.difficulty ? ` · ${getCourseLesson(course,id).difficulty}` : ''}</small>;
                     })()}
                   </span>
                   <ArrowUpRight size={16}/>

@@ -19,3 +19,5 @@
 .challenge-card .challenge-open {color:var(--text);}
 .challenge-card:hover .challenge-open {color:var(--accent);}
 @media(prefers-reduced-motion:reduce){.challenge-card{transition:none}.challenge-card:hover{transform:none}}
+
+.challenge-earned-points {display:inline-flex;color:var(--pass);background:var(--pass-bg);padding:7px 12px;border-radius:8px;font-size:12px;font-weight:750;margin:2px 0 15px;}

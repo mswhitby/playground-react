@@ -16,7 +16,7 @@ test('due dates apply only to assigned work and statuses update with completion'
   assert.equal(statusFor('lesson:python-strings',{assignments:assignedWork,grades:sampleGrades,today:'2026-11-06'}).state,'completed');
   assert.equal(statusFor('lesson:python-decisions',{assignments:assignedWork,grades:[],completedLessons:['python-decisions'],today:'2026-11-06'}).state,'completed');
   assert.equal(statusFor('lesson:python-loops',{assignments:assignedWork,grades:[],today:'2026-11-06'}).state,'unassigned');
-  assert.equal(dueLabel('2026-11-06'),'Nov 6');
+  assert.equal(dueLabel('2026-11-06'),'Nov 6, 2026');
 });
 test('earned points are shown only for actual score records',()=>{
   assert.equal(gradeFor('lesson:python-loops',sampleGrades),null);

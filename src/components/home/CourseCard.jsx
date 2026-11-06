@@ -13,7 +13,7 @@ const COURSE_ICONS = {
 
 /** A single link makes the whole card work with mouse, keyboard, and new tabs. */
 export default function CourseCard({ course, onOpen, completedLessons = [] }) {
-  const { completed, total, percent } = courseProgress(course, completedLessons);
+  const { completed, total } = courseProgress(course, completedLessons);
   const CourseIcon = COURSE_ICONS[course.id] || Code2;
   function followLink(event) {
     if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
@@ -30,7 +30,6 @@ export default function CourseCard({ course, onOpen, completedLessons = [] }) {
       <p className="course-description">{course.description}</p>
       <div className="course-meta"><span>{total} {total === 1 ? 'lesson' : 'lessons'}</span><span>{completed} completed</span></div>
       <div className="course-card-footer">
-        <div className="course-progress-label"><span>Course progress</span><strong>{percent}%</strong></div>
         <progress className="course-progress-track" value={completed} max={Math.max(total, 1)}
           aria-label={`${course.label}: ${completed} of ${total} lessons completed`} />
       </div>

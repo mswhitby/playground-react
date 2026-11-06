@@ -35,7 +35,17 @@ test('updated course order is preserved in home and sidebar', () => {
   const page = read('../src/pages/CoursePage.jsx');
   assert.match(card, /<a className="course-card"/);
   assert.match(card, /course-progress-track/);
-  assert.match(side, /lesson-completion-dot/);
+  assert.match(side, /assignment-dot/);
+  assert.match(side, /activity.dueDate \? activity.state : ''/);
+  assert.doesNotMatch(side, /outline-due|lesson-completion-dot/);
+  const statusCss = read('../src/styles/learning.css');
+  const uiCss = read('../src/styles/ui.css');
+  const tokensCss = read('../src/styles/tokens.css');
+  for (const state of ['completed', 'assigned', 'overdue']) {
+    assert.ok(statusCss.includes('.assignment-dot.' + state));
+    assert.ok(uiCss.includes('.assignment-status.' + state));
+    assert.ok(tokensCss.includes('--status-' + state));
+  }
   assert.doesNotMatch(page, /Copy link|copyCourseLink/);
   assert.match(page, /← Prev/);
 });

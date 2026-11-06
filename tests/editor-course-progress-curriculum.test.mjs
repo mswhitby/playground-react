@@ -43,7 +43,8 @@ test('there are no global coral or purple accent selectors',()=>{
 test('Learn step navigation is plain course-colored text',()=>{
   const pane=read('../src/components/course/InstructionsPane.jsx');
   const css=read('../src/styles/course.css');
-  assert.match(pane,/className="step-link"/);
+  assert.match(pane,/className="step-link previous"/);
+  assert.match(pane,/className="step-link next"/);
   assert.doesNotMatch(pane,/className="btn primary" disabled=\{page/);
   assert.match(css,/\.lesson-step-controls \.step-link/);
   assert.match(css,/background:transparent;color:var\(--course-color\)/);

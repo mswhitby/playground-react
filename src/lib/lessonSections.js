@@ -10,34 +10,41 @@ export function splitLesson(doc, task = null) {
   return { solve, learn };
 }
 
-/** Pagination for both explicitly numbered steps and existing section-based lessons.
+/** Paginate both structured tutorials and existing lesson Markdown.
  *
- * Numbered `## ... Step 1: ...` headings take priority. If the author used
- * descriptive section headings instead, each H2 becomes a learnable step.
- * Fenced code examples remain intact, even if they contain heading-like text.
+ * Numbered Step headings (H2–H4, e.g. "### Step 1 · Store a value")
+ * take priority over ordinary section headings. Preserve fenced code blocks
+ * and all lesson content exactly as authored.
  */
 export function guidedSteps(markdown) {
-  const lines=String(markdown||'').split('\n');
-  const headings=[];
-  let fence=null;
-  lines.forEach((line,index)=>{
-    const trimmed=line.trim();
-    const delimiter=/^(`{3,}|~{3,})/.exec(trimmed);
-    if(delimiter) {
-      const char=delimiter[1][0];
-      if(!fence) fence={char,length:delimiter[1].length};
-      else if(fence.char===char && delimiter[1].length>=fence.length) fence=null;
+  const lines = String(markdown || '').split('\n');
+  const headings = [];
+  let fence = null;
+  lines.forEach((line, index) => {
+    const trimmed = line.trim();
+    const delimiter = /^(`{3,}|~{3,})/.exec(trimmed);
+    if (delimiter) {
+      const mark = delimiter[1];
+      if (!fence) fence = { char: mark[0], length: mark.length };
+      else if (fence.char === mark[0] && mark.length >= fence.length) fence = null;
       return;
     }
-    if(!fence && /^##\s+\S/.test(line)) {
-      headings.push({index,numbered:/\bStep\s+\d+\s*:/i.test(line)});
-    }
+    if (fence) return;
+    const heading = /^(#{2,4})\s+(.+?)\s*#*\s*$/.exec(line);
+    if (!heading) return;
+    const title = heading[2];
+    const numbered = /^Step\s+\d+(?=\s*(?:[:.·–—-]|$))/i.test(title);
+    headings.push({ index, level: heading[1].length, numbered });
   });
-  const explicit=headings.filter(heading=>heading.numbered);
-  const markers=explicit.length?explicit.map(heading=>heading.index):headings.map(heading=>heading.index);
-  if(!markers.length) return {intro:lines.join('\n'),steps:[]};
+  const numbered = headings.filter(heading => heading.numbered);
+  // Fall back to ordinary H2 sections for lessons that do not number steps.
+  const markers = (numbered.length ? numbered : headings.filter(heading => heading.level === 2))
+    .map(heading => heading.index);
+  if (!markers.length) return { intro: lines.join('\n'), steps: [] };
   return {
-    intro:lines.slice(0,markers[0]).join('\n').trim(),
-    steps:markers.map((start,i)=>lines.slice(start,markers[i+1]??lines.length).join('\n').trim()),
+    intro: lines.slice(0, markers[0]).join('\n').trim(),
+    steps: markers.map((start, i) =>
+      lines.slice(start, markers[i + 1] ?? lines.length).join('\n').trim()
+    ),
   };
 }

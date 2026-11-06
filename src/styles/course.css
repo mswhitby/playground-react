@@ -435,3 +435,16 @@
 .console-preview-card p {margin:0;font-size:12px;}
 .console-preview-action {display:inline-flex;border-radius:7px;background:var(--accent);color:var(--on-accent);padding:6px 12px;font-size:12px;font-weight:700;margin-top:8px;}
 .console-preview-note {color:var(--muted);font-size:12px;margin:0;}
+
+/* Guided Markdown steps and expandable hints live with the lesson reader. */
+.lesson-step-controls {display:flex;align-items:center;justify-content:space-between;gap:9px;flex-wrap:wrap;border-top:1px solid var(--border);padding:12px;background:var(--surface);}
+.lesson-step-controls > span {font-size:12px;color:var(--muted);font-variant-numeric:tabular-nums;}
+.lesson-step-controls button:disabled {opacity:.4;}
+.markdown-preview details {background:var(--surface-2);border:1px solid var(--border);padding:12px 15px;border-radius:10px;margin:12px 0;}
+.markdown-preview details > summary {cursor:pointer;font-weight:700;color:var(--text);}
+.markdown-preview details[open] > summary {margin-bottom:9px;}
+.markdown-preview details p:last-child {margin-bottom:0;}
+.markdown-preview hr {border:0;border-top:1px solid var(--border);margin:22px 0;}
+.markdown-preview table {width:100%;border-collapse:collapse;font-size:13px;}
+.markdown-preview th,.markdown-preview td {border:1px solid var(--border);padding:8px;vertical-align:top;}
+@media(max-width:550px){.lesson-step-controls{justify-content:center}.lesson-step-controls > span{order:-1;width:100%;text-align:center;}}

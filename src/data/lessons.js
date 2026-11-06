@@ -76,6 +76,16 @@ export const lessons = {
   "python-lists": {"title": "Lists and Indexing", "kind": "Challenge", "difficulty": "Medium", "points": 15, "language": "python", "challenge": "Work with a list of scores.", "starter": "scores = [8, 12, 15, 10]\n# Print the highest score.\n", "console": "Run, Check and Submit are simulated in this React design lab."},
   "csharp-conditionals": {"title": "Player Decisions", "kind": "Lesson", "difficulty": "Easy", "points": 10, "language": "csharp", "challenge": "Use if statements to respond to changing game state.", "starter": "int health = 40;\n// Show a warning when health is low.\n", "console": "Run, Check and Submit are simulated in this React design lab."},
   "unity-colliders": {"title": "Collision Events", "kind": "Lesson", "difficulty": "Medium", "points": 10, "language": "csharp", "challenge": "Plan what happens when a player touches an item.", "starter": "// Pseudocode: react when the player collides with a coin.\n", "console": "Run, Check and Submit are simulated in this React design lab."},
+  "unity-player-controller": {
+    title: "Build a Player Controller",
+    kind: "Lesson",
+    difficulty: "Medium",
+    points: 15,
+    language: "csharp",
+    challenge: "Build a player controller from a blank script. Make the player turn and move with keyboard input. Open Learn for guided steps.",
+    starter: "using UnityEngine;\n\npublic class PlayerController : MonoBehaviour\n{\n}\n",
+    console: "Choose a step in Learn to build your controller."
+  },
   "unity-score": {"title": "Score and Feedback", "kind": "Challenge", "difficulty": "Medium", "points": 15, "language": "csharp", "challenge": "Build and update a score counter.", "starter": "int score = 0;\n// Add points when a goal is completed.\n", "console": "Run, Check and Submit are simulated in this React design lab."},
   "web-layout": {"title": "Responsive Layouts", "kind": "Lesson", "difficulty": "Easy", "points": 10, "language": "jsx", "challenge": "Organize information with semantic HTML and CSS.", "starter": "function App() {\n  return <main><h1>My site</h1></main>;\n}\n", "console": "Run, Check and Submit are simulated in this React design lab."},
   "web-events": {"title": "Events and Forms", "kind": "Challenge", "difficulty": "Medium", "points": 15, "language": "jsx", "challenge": "Design a form that reacts to user input.", "starter": "export default function App() {\n  return <button>Click me</button>;\n}\n", "console": "Run, Check and Submit are simulated in this React design lab."},

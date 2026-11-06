@@ -9,6 +9,7 @@ const withBase = (path) => `${basePrefix}${path}` || '/';
 export const homePath = () => withBase('/');
 export const teacherPath = () => withBase('/teacher');
 export const journalsPath = () => withBase('/journals');
+export const gradesPath = () => withBase('/grades');
 export const challengesPath = (courseId = null) => withBase(courseId ? `/challenges/course/${encodeURIComponent(courseId)}` : '/challenges');
 export const challengePath = (id) => withBase(`/challenges/${encodeURIComponent(id)}`);
 
@@ -27,6 +28,7 @@ export function resolveRoute(pathname) {
   if (relative === '/') return { page: 'home' };
   if (relative === '/teacher') return { page: 'teacher' };
   if (relative === '/journals') return { page: 'journals' };
+  if (relative === '/grades') return { page: 'grades' };
   if (relative === '/challenges') return { page: 'challenges', filterCourse: null };
   if (relative.startsWith('/challenges/')) {
     const parts = relative.split('/').filter(Boolean);

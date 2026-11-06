@@ -4,7 +4,7 @@ import { lessons } from '../data/lessons.js';
 import CourseLanding from './CourseLanding.jsx';
 import LessonWorkspace from '../components/course/LessonWorkspace.jsx';
 
-export default function CoursePage({ courseId, lessonId, openCourse, openChallenges, completedLessons = [], onToggleLessonComplete }) {
+export default function CoursePage({ courseId, lessonId, openCourse, openChallenges, completedLessons = [], assignments = [], grades = [], onToggleLessonComplete }) {
   const course = getCourse(courseId) || courses[0];
   const unitIndex = course.units.findIndex((unit) => unit.lessons.includes(lessonId));
   const currentUnit = course.units[unitIndex];
@@ -29,7 +29,7 @@ export default function CoursePage({ courseId, lessonId, openCourse, openChallen
                 ))}
               </select>
             </div>
-            <LessonWorkspace key={lessonId} lessonId={lessonId} course={course} unit={currentUnit} unitNumber={unitIndex + 1} isCompleted={completedLessons.includes(lessonId)} onToggleCompleted={() => onToggleLessonComplete?.(lessonId)}/>
+            <LessonWorkspace key={lessonId} lessonId={lessonId} course={course} unit={currentUnit} unitNumber={unitIndex + 1} isCompleted={completedLessons.includes(lessonId)} assignment={assignments.find(a=>a.id==='lesson:'+lessonId)} grade={grades.find(g=>g.id==='lesson:'+lessonId)} onToggleCompleted={() => onToggleLessonComplete?.(lessonId)}/>
             <nav className="lesson-next-bar" aria-label="Lesson sequence">
               <button className="btn" disabled={lessonIndex <= 0} onClick={() => openCourse(course.id, course.lessons[lessonIndex - 1])}>
                 ← Prev
@@ -39,7 +39,7 @@ export default function CoursePage({ courseId, lessonId, openCourse, openChallen
               </button>}
             </nav>
           </>
-        ) : <CourseLanding course={course} openCourse={openCourse} openChallenges={openChallenges} completedLessons={completedLessons} />}
+        ) : <CourseLanding course={course} openCourse={openCourse} openChallenges={openChallenges} completedLessons={completedLessons} assignments={assignments} grades={grades} />}
       </div>
     </div>
   );

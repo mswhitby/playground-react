@@ -5,10 +5,12 @@ import { renderMarkdown } from '../lib/markdown.js';
 import { readString,writeString } from '../lib/storage.js';
 import { useSaved } from '../hooks/useSaved.js';
 import Splitter from '../components/ui/Splitter.jsx';
+import { gradeFor } from '../lib/gradebook.js';
 
 const draftKey=(id,lang)=>'designlab:challenge-code:'+id+':'+lang;
-export default function ChallengeDetail({challengeId,onBack}) {
+export default function ChallengeDetail({challengeId,onBack,grades=[]}) {
   const task=getChallenge(challengeId);
+  const graded=gradeFor('challenge:'+challengeId,grades);
   const [language,setLanguage]=useSaved('designlab:challenge-language','python');
   const lang=challengeLanguages.includes(language)?language:'python';
   const key=draftKey(challengeId,lang),starter=getChallengeStarter(challengeId,lang);
@@ -43,7 +45,8 @@ export default function ChallengeDetail({challengeId,onBack}) {
   if(!task)return <div className="main-content"><h1>Challenge not found</h1><button className="btn" onClick={onBack}>Back to bank</button></div>;
   return <div className="challenge-detail-page">
     <div className="challenge-breadcrumb"><button onClick={onBack}><ArrowLeft size={16}/> Challenge Bank</button><span>/</span><span>{task.title}</span></div>
-    <header className="challenge-detail-heading surface-card"><div className="eyebrow">Shared challenge · {task.difficulty} · {task.points} points</div><h1>{task.title}</h1><p>{task.summary}</p>
+    <header className="challenge-detail-heading surface-card"><div className="eyebrow">Shared challenge · {task.difficulty} · {task.points} possible points</div><h1>{task.title}</h1><p>{task.summary}</p>
+      {graded&&<div className="challenge-earned-points">Completed · {graded.earned} / {graded.possible} points earned</div>}
       <div className="challenge-prerequisites"><strong>Prerequisites:</strong>{task.prerequisites.map(x=><span key={x}>{x}</span>)}</div>
     </header>
     <div className="challenge-workspace" ref={work} style={{'--challenge-left':leftWidth+'px'}}>

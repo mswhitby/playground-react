@@ -135,3 +135,9 @@
 .btn.submit { background:var(--pass);border-color:transparent;color:#101012; }
 .btn.submit:hover { filter:brightness(1.06);background:var(--pass); }
 :root[data-theme="light"] .btn.submit { color:#fff; }
+
+/* Assignment states use the same semantic colors across every course, lesson, and grades view. */
+.assignment-status {display:inline-flex;align-items:center;border-radius:999px;padding:3px 8px;font-size:10px;font-weight:750;background:var(--surface-2);color:var(--soft);border:1px solid var(--border);white-space:nowrap;}
+.assignment-status.completed {color:var(--status-completed);background:var(--pass-bg);border-color:color-mix(in srgb,var(--status-completed) 30%,var(--border));}
+.assignment-status.overdue {color:var(--status-overdue);background:var(--status-overdue-bg);border-color:color-mix(in srgb,var(--status-overdue) 30%,var(--border));}
+.assignment-status.assigned {color:var(--status-assigned);background:var(--warn-bg);border-color:color-mix(in srgb,var(--status-assigned) 30%,var(--border));}

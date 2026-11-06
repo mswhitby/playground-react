@@ -25,7 +25,7 @@ test('cards have individual spacing, padding, and category signals', () => {
   assert.match(css, /gap: 20px/);
   assert.match(css, /padding: 24px/);
   assert.match(css, /box-shadow: var\(--card-shadow\)/);
-  assert.match(css, /background: var\(--course-color\)/);
+  assert.match(css, /background:var\(--course-color\)/);
   assert.match(card, /course-progress-track/);
   assert.match(card, /data-course=\{course.id\}/);
   assert.match(card, /href=\{playgroundPath\(course\)\}/);

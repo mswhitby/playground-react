@@ -81,3 +81,35 @@ test('lesson reading accents and navigation are consistently course colored',()=
   assert.ok(tokens.includes('--inline-code:'));
   assert.ok(page.includes('className="btn primary" disabled={lessonIndex <= 0}'));
 });
+
+test('the actual Strings and Variables lesson paginates into three separate pages',()=>{
+  const markdown = readFileSync(new URL('../src/content/python-strings.md',import.meta.url),'utf8');
+  const sections = splitLesson(markdown);
+  const guide = guidedSteps(sections.learn);
+  assert.equal(guide.steps.length,3);
+  assert.match(guide.intro,/Strings and Variables/);
+  assert.match(guide.steps[0],/Step 1 · Store a value/);
+  assert.doesNotMatch(guide.steps[0],/Step 2 · Combine information/);
+  assert.match(guide.steps[1],/Step 2 · Combine information/);
+  assert.match(guide.steps[1],/f-string/);
+  assert.doesNotMatch(guide.steps[1],/Step 3 · Check your understanding/);
+  assert.match(guide.steps[2],/Step 3 · Check your understanding/);
+  assert.match(sections.solve,/Create a greeting/);
+});
+
+test('numbered step headings in fenced example code do not create pages',()=>{
+  const sample = [
+    '## Learn',
+    'Introduction.',
+    '### Step 1 · Start',
+    '~~~markdown',
+    '### Step 50 · This is code, not a lesson',
+    '~~~',
+    '### Step 2 · Finish',
+    'Done.'
+  ].join('\n');
+  const guide=guidedSteps(sample);
+  assert.equal(guide.steps.length,2);
+  assert.match(guide.steps[0],/Step 50/);
+  assert.doesNotMatch(guide.steps[0],/Step 2/);
+});

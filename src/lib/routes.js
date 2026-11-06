@@ -10,6 +10,7 @@ const withBase = path => hashRouting ? `${basePrefix}/#${path}` : (`${basePrefix
 
 export const homePath = () => withBase('/');
 export const teacherPath = () => withBase('/teacher');
+export const adminPath = () => withBase('/admin');
 export const journalsPath = () => withBase('/journals');
 export const gradesPath = () => withBase('/grades');
 export const challengesPath = (courseId = null) => withBase(courseId ? `/challenges/course/${encodeURIComponent(courseId)}` : '/challenges');
@@ -32,6 +33,7 @@ export function resolveRoute(pathname, availableCourses = courses) {
   const relative = incoming.slice(base.length) || '/';
   if (relative === '/') return { page: 'home' };
   if (relative === '/teacher') return { page: 'teacher' };
+  if (relative === '/admin') return { page: 'admin' };
   if (relative === '/journals') return { page: 'journals' };
   if (relative === '/grades') return { page: 'grades' };
   if (relative === '/challenges') return { page: 'challenges', filterCourse: null };

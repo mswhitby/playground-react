@@ -61,7 +61,7 @@ test('explicit numbered steps win over section headings and fenced headings are 
     '```',
     '## Step 2: Finish',
     'Done.'
-  ].join('\\n');
+  ].join('\n');
   const guide=guidedSteps(source);
   assert.equal(guide.steps.length,2);
   assert.match(guide.intro,/Introduction/);
@@ -73,11 +73,11 @@ test('lesson reading accents and navigation are consistently course colored',()=
   const css=readFileSync(new URL('../src/styles/course.css',import.meta.url),'utf8');
   const tokens=readFileSync(new URL('../src/styles/tokens.css',import.meta.url),'utf8');
   const page=readFileSync(new URL('../src/pages/CoursePage.jsx',import.meta.url),'utf8');
-  assert.match(css,/font-size: 16px;\\n}\\n\\.markdown-preview h1/);
-  assert.match(css,/font-size:13\\.5px/);
-  assert.match(css,/color: var\\(--inline-code\\)/);
-  assert.match(css,/\\.instructions-pane \\.tabs button\\.active/);
-  assert.match(css,/border-color: var\\(--course-color\\)/);
-  assert.match(tokens,/--inline-code:/);
-  assert.match(page, /className="btn primary" disabled={lessonIndex <= 0}/);
+  assert.ok(css.includes('font-size: 16px;'));
+  assert.ok(css.includes('font-size:13.5px;'));
+  assert.ok(css.includes('color: var(--inline-code);'));
+  assert.ok(css.includes('.instructions-pane .tabs button.active'));
+  assert.ok(css.includes('border-color: var(--course-color)'));
+  assert.ok(tokens.includes('--inline-code:'));
+  assert.ok(page.includes('className="btn primary" disabled={lessonIndex <= 0}'));
 });

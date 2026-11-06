@@ -86,3 +86,27 @@ test('lesson number tiles retain their course color for completed, assigned and 
   assert.match(landing,/assignment-dot \$\{a\.state\}/);
   assert.match(course,/--student-course-color-computer-science-1/);
 });
+
+test('Learn step and lesson navigation has chevrons and hides unavailable actions',()=>{
+  const steps=read('../src/components/course/InstructionsPane.jsx');
+  const page=read('../src/pages/CoursePage.jsx');
+  const stepCss=read('../src/styles/course.css');
+  const lessonCss=read('../src/styles/learning.css');
+  assert.match(steps,/ChevronLeft, ChevronRight/);
+  assert.match(steps,/page > 0 && <button/);
+  assert.match(steps,/page < guide.steps.length - 1 && <button/);
+  assert.doesNotMatch(steps,/disabled=\{page===/);
+  assert.match(steps,/Previous/);
+  assert.match(steps,/Next <ChevronRight/);
+  assert.match(page,/lessonIndex > 0 && <button/);
+  assert.match(page,/lessonIndex >= 0 && lessonIndex < sequence.length - 1 && <button/);
+  assert.doesNotMatch(page,/disabled=\{lessonIndex <= 0\}/);
+  assert.match(page,/Prev: \{lessonTitleOf\(course, sequence\[lessonIndex - 1\]\)\}/);
+  assert.match(page,/Next: \{lessonTitleOf\(course, sequence\[lessonIndex \+ 1\]\)\}/);
+  assert.match(page,/ChevronLeft size=\{16\}/);
+  assert.match(page,/ChevronRight size=\{16\}/);
+  assert.match(stepCss,/\.step-link\.previous/);
+  assert.match(stepCss,/\.step-link\.next/);
+  assert.match(lessonCss,/\.lesson-nav-link\.previous/);
+  assert.match(lessonCss,/\.lesson-nav-link\.next/);
+});

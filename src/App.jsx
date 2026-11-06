@@ -3,6 +3,7 @@ import { seedStudents } from './data/students.js';
 import { seedJournalSubmissions } from './data/journalSubmissions.js';
 import { getCourse } from './data/courses.js';
 import { useSaved } from './hooks/useSaved.js';
+import { toggleLessonComplete } from './lib/completion.js';
 import { cn } from './lib/cn.js';
 import { homePath, journalsPath, playgroundPath, challengesPath, challengePath, resolveRoute, teacherPath } from './lib/routes.js';
 import Topbar from './components/layout/Topbar.jsx';
@@ -22,6 +23,7 @@ export default function App() {
   const [theme, setTheme] = useSaved('designlab:theme', 'dark');
   const [accent, setAccent] = useSaved('designlab:accent', 'purple');
   const [sidebarOpen, setSidebarOpen] = useSaved('designlab:sidebar', true);
+  const [completedLessons, setCompletedLessons] = useSaved('designlab:completed-lessons', []);
   const [students, setStudents] = useSaved('designlab:students', seedStudents);
   const [journalSubmissions, setJournalSubmissions] = useSaved('designlab:journal-submissions', seedJournalSubmissions);
 
@@ -87,10 +89,11 @@ export default function App() {
           lessonId={route.page === 'course' ? route.lessonId : null}
           setPage={setPage}
           openCourse={openCourse}
+          completedLessons={completedLessons}
         />
         <main className="main-panel">
           {page === 'home' ? (
-            <Home openCourse={openCourse} openTeacher={() => navigate(teacherPath())} openChallenges={() => navigate(challengesPath())} />
+            <Home completedLessons={completedLessons} openCourse={openCourse} openTeacher={() => navigate(teacherPath())} openChallenges={() => navigate(challengesPath())} />
           ) : page === 'course' ? (
             <CoursePage
               key={route.courseId}
@@ -98,6 +101,8 @@ export default function App() {
               lessonId={route.lessonId}
               openCourse={openCourse}
               openChallenges={(courseId) => navigate(challengesPath(courseId))}
+              completedLessons={completedLessons}
+              onToggleLessonComplete={(id) => setCompletedLessons(previous => toggleLessonComplete(previous, id))}
             />
           ) : page === 'challenges' ? (
             <ChallengeBank filterCourse={route.filterCourse} onSelect={(id) => navigate(challengePath(id))} onBrowseCourse={(id) => navigate(challengesPath(id))} />

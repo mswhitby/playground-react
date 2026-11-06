@@ -9,10 +9,10 @@ export default function CourseNavigation({ course, selectedLesson, setLesson }) 
       <div className="eyebrow">Course content</div>
       <h3>{course.label}</h3>
       <p className="muted">
-        Change a Markdown file in <code>src/content/</code> to see Vite update the preview.
+        Choose a lesson to read, explore, and try.
       </p>
 
-      <div className="side-section-title">Learn & Practice</div>
+      <div className="side-section-title">Lessons</div>
       {course.lessons.map((id, i) => (
         <button
           key={id}

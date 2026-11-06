@@ -102,3 +102,20 @@
 
 .unit-lesson-link {text-decoration:none;}
 .unit-lesson-link:hover {text-decoration:none;}
+
+/* One small completed indicator per lesson, without repeating checkmarks. */
+.outline-lesson { display:flex;align-items:center;gap:8px; }
+.outline-lesson > span:first-child { flex:1;min-width:0; }
+.lesson-completion-dot { width:7px;height:7px;flex:none;border-radius:50%;background:var(--course-color);opacity:0; }
+.outline-lesson.is-complete .lesson-completion-dot { opacity:1; }
+.outline-lesson.is-complete > span:first-child { color:var(--text); }
+.course-landing-progress {margin:17px 0 0;color:var(--soft);font-size:13px;}
+/* TSI questions occupy the left; learning and worked explanations occupy the right. */
+.tsi-workspace .tsi-practice {border-right:0;}
+.tsi-workspace .instructions-pane {background:var(--surface);min-height:580px;}
+.tsi-workspace .instructions-pane .pane-header strong {font-weight:750;color:var(--text);}
+.tsi-answer-status {font-size:13px;font-weight:650;color:var(--soft);margin:14px 0 0;}
+.tsi-worked-solution {padding:18px 20px;margin:24px 0 5px;border:1px solid var(--border);border-left:3px solid var(--course-color);border-radius:10px;background:var(--surface-2);}
+.tsi-worked-solution h3 {margin:0 0 9px;color:var(--text);}
+.tsi-worked-solution p {margin:0;color:var(--soft);line-height:1.7;}
+@media(max-width:850px){.tsi-workspace .tsi-practice {border-right:0;border-bottom:1px solid var(--border);}}

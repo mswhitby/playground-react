@@ -104,7 +104,7 @@ export default function Journals({ submissions, setSubmissions }) {
             </label>}
           </div>
           <div className="journal-actions"><button type="button" className="btn" onClick={() => { setStatus('Draft saved in this browser.'); }}><Save size={15}/> Save draft</button>
-            <button type="submit" className="btn primary"><Send size={15}/> Demo submit</button></div>
+            <button type="submit" className="btn submit"><Send size={15}/> Demo submit</button></div>
           <p role="status" className="journal-submit-status">{status}</p>
         </form>
         <div className="journal-bottom-row">

@@ -396,30 +396,7 @@
   }
 }
 
-/* Shareable per-course URLs in the lesson breadcrumb. */
-.course-link-spacer { flex: 1; }
-.course-breadcrumb .course-copy-link {
-  display: inline-flex;
-  align-items: center;
-  gap: 7px;
-  flex-shrink: 0;
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  background: var(--surface);
-  color: var(--soft);
-  padding: 7px 11px;
-  font-weight: 600;
-  cursor: pointer;
-}
-.course-breadcrumb .course-copy-link:hover,
-.course-breadcrumb .course-copy-link:focus-visible {
-  color: var(--text);
-  border-color: var(--border-strong);
-}
-@media (max-width: 650px) {
-  .course-breadcrumb { flex-wrap: wrap; }
-  .course-link-spacer { flex-basis: 100%; }
-}
+@media(max-width:650px) { .course-breadcrumb {flex-wrap:wrap;} }
 
 /* Clearly separated lesson content and course-colored navigation cues. */
 .course-navigation { background: var(--bar); }
@@ -436,6 +413,25 @@
 .workspace-grid { border: 1px solid var(--border); box-shadow: var(--card-shadow); border-radius: 16px; }
 .instructions-pane, .pane-header { background: var(--surface); }
 .code-pane, .console-pane { background: var(--code-bg); }
-.course-breadcrumb .course-copy-link { background: var(--surface); }
-.course-breadcrumb .course-copy-link:hover { border-color: var(--course-color); }
 @media (max-width: 600px) { .lesson-header { padding: 18px; } }
+
+/* Lesson completion is explicit, not inferred from sample checks. */
+.lesson-heading-actions { display:flex;align-items:center;gap:9px;flex-wrap:wrap; }
+.completion-toggle { font-weight:650; }
+.completion-toggle.completed { color:var(--pass);border-color:color-mix(in srgb,var(--pass) 45%,var(--border));background:var(--pass-bg); }
+.completion-toggle.completed:hover {background:var(--pass-bg);}
+.completion-toggle svg {flex:none;}
+/* Tabs belong with console styles, not in JSX. */
+.console-heading {height:39px;min-height:39px;padding:0 0 0 5px;gap:6px;}
+.console-heading > span {margin-left:auto;margin-right:13px;}
+.console-tabs {display:flex;align-items:stretch;gap:2px;height:100%;}
+.console-tabs button {display:flex;align-items:center;gap:6px;justify-content:center;padding:0 12px;border:0;border-bottom:2px solid transparent;background:transparent;color:var(--muted);font-size:12px;font-weight:650;}
+.console-tabs button:hover {color:var(--text);}
+.console-tabs button.active {border-color:var(--accent);color:var(--text);}
+.console-preview {flex:1;min-height:0;overflow-y:auto;padding:16px;display:grid;align-content:start;gap:12px;}
+.console-preview-card {display:grid;justify-items:start;gap:6px;max-width:270px;border:1px solid var(--border);border-radius:12px;background:var(--surface);padding:18px;}
+.console-preview-card small {color:var(--muted);}
+.console-preview-card strong {font-size:23px;color:var(--text);}
+.console-preview-card p {margin:0;font-size:12px;}
+.console-preview-action {display:inline-flex;border-radius:7px;background:var(--accent);color:var(--on-accent);padding:6px 12px;font-size:12px;font-weight:700;margin-top:8px;}
+.console-preview-note {color:var(--muted);font-size:12px;margin:0;}

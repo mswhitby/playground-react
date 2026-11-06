@@ -2,8 +2,8 @@ import { Moon, Sun } from "lucide-react";
 import { cn } from "../../lib/cn.js";
 
 const ACCENTS = [
-  { id: "coral", label: "Coral", color: "#ff6b59" },
-  { id: "purple", label: "Purple", color: "#a78bfa" },
+  { id: "coral", label: "Coral" },
+  { id: "purple", label: "Purple" },
 ];
 
 /** Light/dark toggle plus accent color swatches. */
@@ -26,7 +26,7 @@ export default function ThemeControls({ theme, setTheme, accent, setAccent }) {
           title={`${a.label} accent`}
           aria-label={`Use ${a.id} accent`}
           onClick={() => setAccent(a.id)}
-          style={{ background: a.color }}
+          data-swatch={a.id}
         />
       ))}
     </>

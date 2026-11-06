@@ -252,3 +252,6 @@
 /* Neutral shell frames the individually elevated cards. */
 .main-panel { background: var(--bg); }
 .user-circle { background: var(--surface); }
+
+.accent-swatch[data-swatch='coral'] { background:#ff6b59; }
+.accent-swatch[data-swatch='purple'] { background:#a78bfa; }

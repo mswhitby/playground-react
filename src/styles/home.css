@@ -36,19 +36,6 @@
 }
 .course-description { font-size: 13px; line-height: 1.65; flex: 1; margin: 0; }
 .course-meta { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; color: var(--muted); font-size: 11px; }
-.course-card-footer {
-  display: flex; align-items: center; justify-content: space-between;
-  gap: 12px;
-  padding-top: 12px; border-top: 1px solid var(--border);
-}
-.course-color-bar { width: 36px; height: 6px; flex: none; border-radius: 99px; background: var(--course-color); }
-.course-open-link {
-  display: inline-flex; gap: 7px; align-items: center;
-  font-size: 12px; font-weight: 700; text-decoration: none;
-  color: var(--text); padding: 5px 2px; border-radius: 6px;
-}
-.course-open-link:hover { color: var(--course-color); }
-.course-open-link:focus-visible { outline-color: var(--course-color); }
 .wide-shortcut {
   background: var(--surface); border: 1px solid var(--border);
   box-shadow: var(--card-shadow);
@@ -68,3 +55,15 @@
   .course-card { transition: none; }
   .course-card:hover, .course-card:focus-within { transform: none; }
 }
+
+/* Entire course cards are links; their colored footer now shows progress. */
+.course-card { color:var(--text);text-decoration:none;cursor:pointer; }
+.course-card:hover { text-decoration:none; }
+.course-card:focus-visible { outline:2px solid var(--course-color);outline-offset:3px; }
+.course-card-footer { display:grid;gap:8px;padding-top:12px;border-top:1px solid var(--border); }
+.course-progress-label { display:flex;justify-content:space-between;gap:10px;color:var(--muted);font-size:11px; }
+.course-progress-label strong { color:var(--text);font-variant-numeric:tabular-nums; }
+.course-progress-track { appearance:none;display:block;width:100%;height:7px;border:0;border-radius:99px;overflow:hidden;background:var(--surface-2); }
+.course-progress-track::-webkit-progress-bar { background:var(--surface-2);border-radius:99px; }
+.course-progress-track::-webkit-progress-value { background:var(--course-color);border-radius:99px; }
+.course-progress-track::-moz-progress-bar { background:var(--course-color);border-radius:99px; }

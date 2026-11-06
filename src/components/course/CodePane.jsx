@@ -14,11 +14,15 @@ export default function CodePane({ lessonId, task }) {
   const [code, setCode] = useState(task.starter);
   const [consoleText, setConsoleText] = useState(task.console);
   const [savedMessage, setSavedMessage] = useState("");
+  const [checksText, setChecksText] = useState("Choose Check to review this draft. Results are for demonstration only.");
+  const [consoleTab, setConsoleTab] = useState(task.language === "jsx" ? "Preview" : "Console");
   const [editorHeight, setEditorHeight] = useSaved("designlab:editor-height", 300);
 
   useEffect(() => {
     setCode(readString(codeKey) ?? task.starter);
     setConsoleText(task.console);
+    setChecksText("Choose Check to review this draft. Results are for demonstration only.");
+    setConsoleTab(task.language === "jsx" ? "Preview" : "Console");
   }, [codeKey, task]);
 
   function resizeRows(e) {
@@ -33,8 +37,20 @@ export default function CodePane({ lessonId, task }) {
       setSavedMessage("Draft saved in this browser only.");
       return;
     }
-    if (action === "Reset") setCode(task.starter);
+    if (action === "Reset") {
+      setCode(task.starter);
+      setChecksText("Choose Check to review this draft. Results are for demonstration only.");
+      setConsoleText(runMockAction("Reset", code, task));
+      setConsoleTab(task.language === "jsx" ? "Preview" : "Console");
+      return;
+    }
+    if (action === "Check") {
+      setChecksText(runMockAction(action, code, task));
+      setConsoleTab("Checks");
+      return;
+    }
     setConsoleText(runMockAction(action, code, task));
+    setConsoleTab("Console");
   }
 
   return (
@@ -57,10 +73,11 @@ export default function CodePane({ lessonId, task }) {
           onChange={(e) => {
             setCode(e.target.value);
             setSavedMessage("");
+            setChecksText("Your code has changed. Choose Check to review this draft.");
           }}
         />
         <Splitter axis="rows" onDrag={resizeRows} />
-        <ConsolePane text={consoleText} />
+        <ConsolePane text={consoleText} checksText={checksText} language={task.language} lessonId={lessonId} activeTab={consoleTab} onTabChange={setConsoleTab} />
       </div>
 
       <div className="editor-controls">
@@ -75,14 +92,14 @@ export default function CodePane({ lessonId, task }) {
           <button className="btn" onClick={() => act("Save")}>
             <Save size={15} /> Save
           </button>
-          <button className="btn primary" onClick={() => act("Submit")}>
+          <button className="btn submit" onClick={() => act("Submit")}>
             <Send size={15} /> Submit
           </button>
         </div>
       </div>
       <div className="editor-note">
         {savedMessage ||
-          "Drag the gutters to resize horizontally and vertically. Run, Check and Submit are safe UI simulations."}
+          "Drag the dividers to resize your workspace. Runs and checks are examples, not grades."}
       </div>
     </div>
   );

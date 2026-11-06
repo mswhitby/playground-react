@@ -21,7 +21,7 @@ export function playgroundPath(courseOrId, lessonId) {
   return withBase(lessonId ? `${base}/lessons/${encodeURIComponent(lessonId)}` : base);
 }
 
-export function resolveRoute(pathname) {
+export function resolveRoute(pathname, availableCourses = courses) {
   const incoming = pathname.replace(/\/+$/, '') || '/';
   const base = basePrefix || '';
   if (base && incoming !== base && !incoming.startsWith(base + '/')) return { page: 'not-found' };
@@ -48,7 +48,7 @@ export function resolveRoute(pathname) {
     slug = decodeURIComponent(segments[1]);
     lessonId = segments.length === 4 ? decodeURIComponent(segments[3]) : undefined;
   } catch { return { page: 'not-found' }; }
-  const course = courses.find((item) => item.slug === slug);
+  const course = availableCourses.find((item) => item.slug === slug);
   if (!course || (segments.length === 4 && segments[2] !== 'lessons')) return { page: 'not-found' };
   if (lessonId && !lessonInCourse(course,lessonId)) return { page: 'not-found' };
   return { page: 'course', courseId: course.id, lessonId: lessonId ?? null };

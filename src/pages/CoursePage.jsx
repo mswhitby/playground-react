@@ -31,7 +31,7 @@ export default function CoursePage({ courseId, lessonId, openCourse, openChallen
             </div>
             <LessonWorkspace key={lessonId} lessonId={lessonId} course={course} unit={currentUnit} unitNumber={unitIndex + 1} isCompleted={completedLessons.includes(lessonId)} assignment={assignments.find(a=>a.id==='lesson:'+lessonId)} grade={grades.find(g=>g.id==='lesson:'+lessonId)} onToggleCompleted={() => onToggleLessonComplete?.(lessonId)}/>
             <nav className="lesson-next-bar" aria-label="Lesson sequence">
-              <button className="btn" disabled={lessonIndex <= 0} onClick={() => openCourse(course.id, course.lessons[lessonIndex - 1])}>
+              <button className="btn primary" disabled={lessonIndex <= 0} onClick={() => openCourse(course.id, course.lessons[lessonIndex - 1])}>
                 ← Prev
               </button>
               {lessonIndex < course.lessons.length - 1 && <button className="btn primary" onClick={() => openCourse(course.id, course.lessons[lessonIndex + 1])}>

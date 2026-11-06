@@ -151,18 +151,18 @@
   overflow: auto;
   min-height: 0;
   line-height: 1.8;
-  font-size: 14px;
+  font-size: 16px;
 }
 .markdown-preview h1 {
   font-size: 24px;
   margin: 2px 0 20px;
 }
 .markdown-preview h2 {
-  font-size: 17px;
+  font-size: 19px;
   margin: 26px 0 12px;
 }
 .markdown-preview h3 {
-  font-size: 15px;
+  font-size: 17px;
   margin: 20px 0 9px;
 }
 .markdown-preview p {
@@ -186,7 +186,7 @@
 }
 .markdown-preview code:not(pre code) {
   background: var(--surface-2);
-  color: var(--accent);
+  color: var(--inline-code);
   font-size: 0.9em;
   padding: 1px 4px;
   border-radius: 4px;
@@ -440,7 +440,7 @@
 .lesson-step-controls {display:flex;align-items:center;justify-content:space-between;gap:9px;flex-wrap:wrap;border-top:1px solid var(--border);padding:12px;background:var(--surface);}
 .lesson-step-controls > span {font-size:12px;color:var(--muted);font-variant-numeric:tabular-nums;}
 .lesson-step-controls button:disabled {opacity:.4;}
-.markdown-preview details {background:var(--surface-2);border:1px solid var(--border);padding:12px 15px;border-radius:10px;margin:12px 0;}
+.markdown-preview details {background:var(--surface-2);border:1px solid var(--border);padding:12px 15px;border-radius:10px;margin:12px 0;font-size:13.5px;line-height:1.65;}
 .markdown-preview details > summary {cursor:pointer;font-weight:700;color:var(--text);}
 .markdown-preview details[open] > summary {margin-bottom:9px;}
 .markdown-preview details p:last-child {margin-bottom:0;}
@@ -448,3 +448,12 @@
 .markdown-preview table {width:100%;border-collapse:collapse;font-size:13px;}
 .markdown-preview th,.markdown-preview td {border:1px solid var(--border);padding:8px;vertical-align:top;}
 @media(max-width:550px){.lesson-step-controls{justify-content:center}.lesson-step-controls > span{order:-1;width:100%;text-align:center;}}
+
+/* The current course determines the interactive learning accents, not the account theme. */
+.course-layout .instructions-pane .tabs button.active,
+.course-layout .code-pane .console-tabs button.active {
+  border-color: var(--course-color);
+}
+.course-layout .splitter:hover {background:color-mix(in srgb,var(--course-color) 20%,var(--surface-2));}
+.course-layout .markdown-preview blockquote {border-left-color:var(--course-color);}
+.course-layout .lesson-next-bar .btn.primary:disabled {opacity:.45;}

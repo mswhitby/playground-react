@@ -21,6 +21,7 @@
   --pass-bg: rgba(52, 210, 107, 0.13);
   --warn: #ffae24;
   --warn-bg: rgba(255, 174, 36, 0.12);
+  --inline-code: #FFE600;
   --status-completed: var(--pass);
   --status-assigned: var(--warn);
   --status-overdue: #f27780;
@@ -55,6 +56,7 @@
   --pass-bg: #e0f6e9;
   --warn: #a05b00;
   --warn-bg: #fff1dc;
+  --inline-code: #8A5900;
   --status-overdue: #b92944;
   --status-overdue-bg: #ffe9ed;
   --shadow: 0 10px 25px rgba(32, 33, 42, 0.06);

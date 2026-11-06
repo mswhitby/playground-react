@@ -1,9 +1,9 @@
 /* Course identity belongs in CSS so student components stay presentation-free. */
-[data-course="computer-science-1"] { --course-color: #6366f1; }
-[data-course="game-programming"] { --course-color: #c052eb; }
-[data-course="mobile-app-dev"] { --course-color: #27bbd2; }
-[data-course="capstone"] { --course-color: #ff2d55; }
-[data-course="uil"] { --course-color: #ff9f0a; }
-[data-course="tsi-math"] { --course-color: #30c85a; }
+[data-course="computer-science-1"] { --course-color: var(--student-course-color-computer-science-1, #6366f1); }
+[data-course="game-programming"] { --course-color: var(--student-course-color-game-programming, #c052eb); }
+[data-course="mobile-app-dev"] { --course-color: var(--student-course-color-mobile-app-dev, #27bbd2); }
+[data-course="capstone"] { --course-color: var(--student-course-color-capstone, #ff2d55); }
+[data-course="uil"] { --course-color: var(--student-course-color-uil, #ff9f0a); }
+[data-course="tsi-math"] { --course-color: var(--student-course-color-tsi-math, #30c85a); }
 
 .course-nav-item .nav-dot { background-color: var(--course-color); }

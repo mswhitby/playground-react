@@ -29,13 +29,14 @@ export default function ChallengeBank({ filterCourse, onSelect, onBrowseCourse }
       </div><p className="challenge-filter-note">Course matching is informational. Confirm students have learned the prerequisite skills before assigning problems.</p>
     </section>
     <div className="challenge-results-heading"><h2>Available challenges <span>({visible.length})</span></h2><span>Alphabetical order</span></div>
-    {visible.length?<div className="challenge-card-grid">{visible.map(c=><article key={c.id} className="challenge-card surface-card">
+    {visible.length?<div className="challenge-card-grid">{visible.map(c=><a key={c.id} className="challenge-card surface-card" href={challengePath(c.id)}
+      onClick={e=>{if(e.button!==0||e.metaKey||e.ctrlKey||e.shiftKey||e.altKey)return;e.preventDefault();onSelect(c.id);}}>
       <div className="challenge-card-top"><span className={'challenge-level level-'+c.difficulty.toLowerCase().replace(' ','-')}>{c.difficulty}</span><span className="challenge-points">{c.points} pts</span></div>
       <h3>{c.title}</h3><p>{c.summary}</p>
       <div className="challenge-tags">{c.tags.map(t=><span key={t}>{t}</span>)}</div>
       <div className="challenge-course-tags">{c.suggestedCourses.slice(0,3).map(id=><span title={getCourse(id)?.label} key={id}>{getCourse(id)?.short||id}</span>)}{c.suggestedCourses.length>3&&<span>+{c.suggestedCourses.length-3}</span>}</div>
-      <a className="challenge-open" href={challengePath(c.id)} onClick={e=>{if(e.button!==0||e.metaKey||e.ctrlKey||e.shiftKey||e.altKey)return;e.preventDefault();onSelect(c.id);}}>Open challenge <ArrowUpRight size={16}/></a>
-    </article>)}</div>:<div className="challenge-empty surface-card"><h3>No matching challenges</h3><p>Try a broader topic or clear the filters.</p><button className="btn" onClick={clear}>Show all challenges</button></div>}
+      <span className="challenge-open">Open challenge <ArrowUpRight size={16}/></span>
+    </a>)}</div>:<div className="challenge-empty surface-card"><h3>No matching challenges</h3><p>Try a broader topic or clear the filters.</p><button className="btn" onClick={clear}>Show all challenges</button></div>}
     <p className="hint challenge-bottom-note">Static student-facing content from the private Challenge Bank. Run, Check and Submit are simulated in the React design lab; no code is executed or graded.</p>
   </div>;
 }

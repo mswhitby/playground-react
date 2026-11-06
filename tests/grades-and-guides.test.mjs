@@ -37,3 +37,47 @@ test('the published Markdown supports hint disclosure and full steps without sho
   assert.match(guide.steps[0],/Step 1/);
   assert.doesNotMatch(guide.steps[0],/Step 2/);
 });
+
+test('Learn paginates existing lesson section headings without changing source Markdown',()=>{
+  const source=readFileSync(new URL('../src/content/python-variables.md',import.meta.url),'utf8');
+  const {learn,solve}=splitLesson(source);
+  const guide=guidedSteps(learn);
+  assert.ok(guide.steps.length>=4, 'existing lesson sections should become learn pages');
+  assert.match(guide.intro,/New skill/);
+  assert.match(guide.steps[0],/Why this matters/);
+  assert.doesNotMatch(guide.steps[0],/Study this example/);
+  assert.match(guide.steps.at(-1),/Reflection/);
+  assert.match(solve,/Hint 1/);
+});
+
+test('explicit numbered steps win over section headings and fenced headings are ignored',()=>{
+  const source=[
+    '# Lesson',
+    '## Introduction',
+    'Read this first.',
+    '## Step 1: Start',
+    '```markdown',
+    '## Step 99: This is inside code',
+    '```',
+    '## Step 2: Finish',
+    'Done.'
+  ].join('\\n');
+  const guide=guidedSteps(source);
+  assert.equal(guide.steps.length,2);
+  assert.match(guide.intro,/Introduction/);
+  assert.match(guide.steps[0],/Step 99/);
+  assert.doesNotMatch(guide.steps[0],/Step 2/);
+});
+
+test('lesson reading accents and navigation are consistently course colored',()=>{
+  const css=readFileSync(new URL('../src/styles/course.css',import.meta.url),'utf8');
+  const tokens=readFileSync(new URL('../src/styles/tokens.css',import.meta.url),'utf8');
+  const page=readFileSync(new URL('../src/pages/CoursePage.jsx',import.meta.url),'utf8');
+  assert.match(css,/font-size: 16px;\\n}\\n\\.markdown-preview h1/);
+  assert.match(css,/font-size:13\\.5px/);
+  assert.match(css,/color: var\\(--inline-code\\)/);
+  assert.match(css,/\\.instructions-pane \\.tabs button\\.active/);
+  assert.match(css,/border-color: var\\(--course-color\\)/);
+  assert.match(tokens,/--inline-code:/);
+  assert.match(page, /className="btn primary" disabled={lessonIndex <= 0}/);
+});

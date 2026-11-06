@@ -28,8 +28,8 @@ export default function CourseCard({ course, onOpen, completedLessons = [] }) {
         <div><h2>{course.label}</h2><p>{course.short}</p></div>
       </div>
       <p className="course-description">{course.description}</p>
-      <div className="course-meta"><span>{total} {total === 1 ? 'lesson' : 'lessons'}</span><span>{completed} completed</span></div>
       <div className="course-card-footer">
+        <div className="course-meta"><span>{total} {total === 1 ? 'lesson' : 'lessons'}</span><span>{completed} completed</span></div>
         <progress className="course-progress-track" value={completed} max={Math.max(total, 1)}
           aria-label={`${course.label}: ${completed} of ${total} lessons completed`} />
       </div>

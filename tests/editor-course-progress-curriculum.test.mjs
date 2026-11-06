@@ -73,7 +73,7 @@ test('teacher Curriculum tab pulls public lesson catalog but not student records
   assert.match(curriculum,/\/playground\/data\/computer-science-1\/course\.json/);
   assert.match(curriculum,/normalizeImportedOutline\(catalog\)/);
   assert.match(curriculum,/cache:'no-store'/);
-  assert.match(curriculum,/Student records and grades are not connected/);
+  assert.match(curriculum,/Assignment controls below are a browser-only preview/);
   assert.doesNotMatch(curriculum,/supabase|rpc\(/i);
 });
 

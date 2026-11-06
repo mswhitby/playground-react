@@ -37,6 +37,6 @@ export default function ChallengeBank({ filterCourse, onSelect, onBrowseCourse }
       <div className="challenge-course-tags">{c.suggestedCourses.slice(0,3).map(id=><span title={getCourse(id)?.label} key={id}>{getCourse(id)?.short||id}</span>)}{c.suggestedCourses.length>3&&<span>+{c.suggestedCourses.length-3}</span>}</div>
       <span className="challenge-open">Open challenge <ArrowUpRight size={16}/></span>
     </a>)}</div>:<div className="challenge-empty surface-card"><h3>No matching challenges</h3><p>Try a broader topic or clear the filters.</p><button className="btn" onClick={clear}>Show all challenges</button></div>}
-    <p className="hint challenge-bottom-note">Static student-facing content from the private Challenge Bank. Run, Check and Submit are simulated in the React design lab; no code is executed or graded.</p>
+    <p className="hint challenge-bottom-note">Choose a problem, work through its examples, and compare your approach. Practice here does not count toward your grade.</p>
   </div>;
 }

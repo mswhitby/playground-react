@@ -44,6 +44,9 @@ export default function CourseLanding({ course, openCourse, openChallenges, comp
           <button type="button" className="btn" onClick={() => setEditingColor(false)}>Done</button>
         </section>}
       </header>
+      {course.publishedContent && <p className="course-published-note">
+        Explore the complete Computer Science I lessons. Practice here won't change your grades.
+      </p>}
       <p className="course-landing-progress">{progress.completed} of {progress.total} lessons completed · {progress.percent}%</p>
       <div className="course-landing-heading">
         <div><h2>Units &amp; lessons</h2><p>Choose a unit or jump directly into a lesson.</p></div>

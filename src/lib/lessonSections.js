@@ -33,7 +33,7 @@ export function guidedSteps(markdown) {
     const heading = /^(#{2,4})\s+(.+?)\s*#*\s*$/.exec(line);
     if (!heading) return;
     const title = heading[2];
-    const numbered = /^Step\s+\d+(?=\s*(?:[:.·–—-]|$))/i.test(title);
+    const numbered = /\bStep\s+\d+(?=\s*(?:[:.·–—-]|$))/i.test(title);
     headings.push({ index, level: heading[1].length, numbered });
   });
   const numbered = headings.filter(heading => heading.numbered);

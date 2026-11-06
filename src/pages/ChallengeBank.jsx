@@ -3,8 +3,9 @@ import { ArrowUpRight, Filter, LibraryBig, Search, X } from 'lucide-react';
 import { courses, getCourse } from '../data/courses.js';
 import { challengeCatalog, challengeLanguages, challengeTopics, difficultyOrder, filterChallenges, languageLabels } from '../data/challenges.js';
 import { challengePath } from '../lib/routes.js';
+import { gradeFor } from '../lib/gradebook.js';
 
-export default function ChallengeBank({ filterCourse, onSelect, onBrowseCourse }) {
+export default function ChallengeBank({ filterCourse, onSelect, onBrowseCourse, grades = [] }) {
   const [query,setQuery]=useState('');
   const [difficulty,setDifficulty]=useState('all');
   const [topic,setTopic]=useState('all');
@@ -31,7 +32,7 @@ export default function ChallengeBank({ filterCourse, onSelect, onBrowseCourse }
     <div className="challenge-results-heading"><h2>Available challenges <span>({visible.length})</span></h2><span>Alphabetical order</span></div>
     {visible.length?<div className="challenge-card-grid">{visible.map(c=><a key={c.id} className="challenge-card surface-card" href={challengePath(c.id)}
       onClick={e=>{if(e.button!==0||e.metaKey||e.ctrlKey||e.shiftKey||e.altKey)return;e.preventDefault();onSelect(c.id);}}>
-      <div className="challenge-card-top"><span className={'challenge-level level-'+c.difficulty.toLowerCase().replace(' ','-')}>{c.difficulty}</span><span className="challenge-points">{c.points} pts</span></div>
+      <div className="challenge-card-top"><span className={'challenge-level level-'+c.difficulty.toLowerCase().replace(' ','-')}>{c.difficulty}</span><span className="challenge-points">{gradeFor("challenge:"+c.id,grades) ? `${gradeFor("challenge:"+c.id,grades).earned} / ${gradeFor("challenge:"+c.id,grades).possible} pts earned` : `${c.points} pts available`}</span></div>
       <h3>{c.title}</h3><p>{c.summary}</p>
       <div className="challenge-tags">{c.tags.map(t=><span key={t}>{t}</span>)}</div>
       <div className="challenge-course-tags">{c.suggestedCourses.slice(0,3).map(id=><span title={getCourse(id)?.label} key={id}>{getCourse(id)?.short||id}</span>)}{c.suggestedCourses.length>3&&<span>+{c.suggestedCourses.length-3}</span>}</div>

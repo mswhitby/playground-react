@@ -75,3 +75,14 @@ test('teacher Curriculum tab pulls public lesson catalog but not student records
   assert.match(curriculum,/Student records and grades are not connected/);
   assert.doesNotMatch(curriculum,/supabase|rpc\(/i);
 });
+
+test('lesson number tiles retain their course color for completed, assigned and overdue work',()=>{
+  const css=read('../src/styles/learning.css');
+  const course=read('../src/styles/course-colors.css');
+  const landing=read('../src/pages/CourseLanding.jsx');
+  assert.match(css,/\.unit-lesson-index \{[^\n]*--course-color/);
+  assert.doesNotMatch(css,/\.unit-lesson-link:has\(\.assignment-status\.(?:completed|assigned|overdue)\) \.unit-lesson-index/);
+  assert.match(landing,/assignment-status \$\{a\.state\}/);
+  assert.match(landing,/assignment-dot \$\{a\.state\}/);
+  assert.match(course,/--student-course-color-computer-science-1/);
+});

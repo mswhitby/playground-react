@@ -38,6 +38,18 @@ export const courses = [
     topics: ["HTML", "CSS", "JavaScript", "React"],
   },
   {
+    id: "capstone",
+    units: courseUnits["capstone"],
+    slug: "capstone",
+    label: "Capstone",
+    short: "Build for someone",
+    glyph: "++",
+    color: "#FF2D55",
+    description: "Research a problem, prototype, and test a solution.",
+    lessons: courseUnits["capstone"].flatMap((unit) => unit.lessons),
+    topics: ["Research", "Prototype", "Pitch"],
+  },
+  {
     id: "uil",
     units: courseUnits["uil"],
     slug: "uil",
@@ -61,18 +73,7 @@ export const courses = [
     lessons: courseUnits["tsi-math"].flatMap((unit) => unit.lessons),
     topics: ["Percents", "Ratios", "Equations"],
   },
-  {
-    id: "capstone",
-    units: courseUnits["capstone"],
-    slug: "capstone",
-    label: "Capstone",
-    short: "Build for someone",
-    glyph: "++",
-    color: "#FF2D55",
-    description: "Research a problem, prototype, and test a solution.",
-    lessons: courseUnits["capstone"].flatMap((unit) => unit.lessons),
-    topics: ["Research", "Prototype", "Pitch"],
-  },
+
 ];
 
 export const getCourse = (id) => courses.find((c) => c.id === id);

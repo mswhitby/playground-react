@@ -14,6 +14,7 @@ export function getChallengeStarter(id,language) { return starters[`../challenge
 export function getChallengeExamples(id) { return samples[`../challenge-bank/problems/${id}/examples.json`]?.cases ?? []; }
 export const challengeTopics = [...new Set(challengeCatalog.flatMap(c=>c.tags))].sort((a,b)=>a.localeCompare(b));
 export const difficultyOrder = ['Very Easy','Easy','Medium','Hard'];
+
 export function filterChallenges({query='',topic='all',difficulty='all',course='all',language='all'}={}) {
  const q=query.trim().toLocaleLowerCase();
  return challengeCatalog.filter(c=>(!q||[c.title,c.summary,...c.tags].join(' ').toLowerCase().includes(q))

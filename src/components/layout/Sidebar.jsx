@@ -11,7 +11,7 @@ const MENU = [
 ];
 
 /** One shared sidebar: Explore → current course outline → all playgrounds. */
-export default function Sidebar({ open, page, courseId, lessonId, setPage, openCourse }) {
+export default function Sidebar({ open, page, courseId, lessonId, setPage, openCourse, completedLessons = [] }) {
   const course = page === 'course' ? getCourse(courseId) : null;
   return (
     <aside className={cn('main-sidebar', !open && 'collapsed')} aria-label="Playground navigation">
@@ -24,7 +24,7 @@ export default function Sidebar({ open, page, courseId, lessonId, setPage, openC
       ))}
 
       {course && (
-        <section className="course-outline" style={{ '--course-color': course.color }} aria-label={`${course.label} outline`}>
+        <section className="course-outline" data-course={course.id} aria-label={`${course.label} outline`}>
           <div className="side-rule" />
           <div className="side-title">COURSE CONTENT</div>
           <button className={cn('outline-overview', !lessonId && 'active')} onClick={() => openCourse(course.id)}>
@@ -37,8 +37,8 @@ export default function Sidebar({ open, page, courseId, lessonId, setPage, openC
               <div className="outline-lesson-list">
                 {unit.lessons.map((id) => (
                   <button key={id} onClick={() => openCourse(course.id, id)} title={lessons[id].title}
-                    className={cn('outline-lesson', id === lessonId && 'selected')} aria-current={id === lessonId ? 'page' : undefined}>
-                    <span>{lessons[id].title}</span>
+                    className={cn('outline-lesson', id === lessonId && 'selected', completedLessons.includes(id) && 'is-complete')} aria-label={lessons[id].title + (completedLessons.includes(id) ? ', completed' : '')} aria-current={id === lessonId ? 'page' : undefined}>
+                    <span>{lessons[id].title}</span><span className="lesson-completion-dot" aria-hidden="true" />
                   </button>
                 ))}
               </div>
@@ -50,13 +50,13 @@ export default function Sidebar({ open, page, courseId, lessonId, setPage, openC
       <div className="side-rule" />
       <div className="side-title">PLAYGROUNDS</div>
       {courses.map((c) => (
-        <button key={c.id}
+        <button key={c.id} data-course={c.id}
           className={cn('nav-item course-nav-item', page === 'course' && courseId === c.id && 'active')}
           onClick={() => openCourse(c.id)} title={c.label}>
-          <span className="nav-dot" style={{ background: c.color }} /><span>{c.label}</span>
+          <span className="nav-dot" /><span>{c.label}</span>
         </button>
       ))}
-      <div className="sidebar-bottom"><CircleHelp size={17}/><span>Frontend-only preview</span></div>
+      <div className="sidebar-bottom"><CircleHelp size={17}/><span>Your learning spaces</span></div>
     </aside>
   );
 }

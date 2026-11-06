@@ -50,9 +50,10 @@ export function getCourseLesson(course, id, registry = previewLessons) {
     language: imported.language || known.language || course?.language || 'text',
     challenge: imported.challenge || imported.summary || known.challenge || '',
     starter: imported.starter || known.starter || '',
-    console: known.console || '',
-    // Only actual preview lesson records have a working student editor.
-    ready: Boolean(registry?.[id]),
+    console: known.console || (imported.markdownSource ? 'Run Python to see your output. Checks use published examples only.' : ''),
+    // Published CS1 lessons have real content and public sample checks; all other previews stay mocked.
+    ready: Boolean(registry?.[id]) || (typeof imported.markdownSource === 'string' && imported.starter !== undefined),
+    isPublished: typeof imported.markdownSource === 'string' && imported.starter !== undefined,
   };
 }
 

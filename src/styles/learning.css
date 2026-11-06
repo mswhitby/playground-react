@@ -27,7 +27,7 @@
 .course-hero p { max-width:690px;margin:0;font-size:15px; }
 .course-hero-stats { display:flex;gap:12px;flex-wrap:wrap;margin:8px 0 3px; }
 .course-hero-stats span {display:inline-flex;align-items:center;gap:8px;padding:7px 11px;border-radius:8px;background:var(--surface-2);color:var(--soft);font-size:12px;}
-.course-hero .btn.primary { background:var(--course-color);color:#111118; }
+.course-hero .btn.primary { background:var(--course-color);color:var(--course-on-color); }
 .course-landing-heading { display:flex;justify-content:space-between;align-items:end;gap:12px;flex-wrap:wrap;margin:32px 0 18px; }
 .course-landing-heading h2 { font-size:22px;margin:0 0 5px; }
 .course-landing-heading p { margin:0;font-size:13px; }
@@ -49,7 +49,7 @@
 .unit-lesson-link:hover > svg {color:var(--course-color);}
 .lesson-mobile-navigation {display:none;}
 .lesson-next-bar {display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-top:20px;}
-.lesson-next-bar .btn.primary { background:var(--course-color);color:#111118; }
+.lesson-next-bar .btn.primary { background:var(--course-color);color:var(--course-on-color); }
 
 /* TSIA2 is math practice, never a code editor. */
 .tsi-workspace { height:auto;min-height:580px;max-height:none; }
@@ -73,7 +73,7 @@
 .tsi-feedback strong {display:flex;align-items:center;gap:8px;color:var(--pass);}
 .tsi-feedback p {margin:7px 0 0;font-size:13px;}
 .tsi-buttons {display:flex;flex-wrap:wrap;gap:9px;margin-top:18px;}
-.tsi-buttons .btn.primary {background:var(--course-color);color:#111118;}
+.tsi-buttons .btn.primary {background:var(--course-color);color:var(--course-on-color);}
 .tsi-practice-tip {display:flex;gap:10px;align-items:start;border-radius:12px;background:var(--surface-2);padding:16px;}
 .tsi-practice-tip svg {flex:none;color:var(--course-color);}
 .tsi-practice-tip p {font-size:12px;margin:0;}

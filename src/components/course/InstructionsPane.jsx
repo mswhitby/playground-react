@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
-import { FileText } from 'lucide-react';
+import { ChevronLeft, ChevronRight, FileText } from 'lucide-react';
 import { tsiQuestions } from '../../data/tsiQuestions.js';
 import { cn } from '../../lib/cn.js';
 import { localMarkdown, renderMarkdown, splitLesson, guidedSteps } from '../../lib/markdown.js';
@@ -71,10 +71,15 @@ export default function InstructionsPane({ lessonId, task, isTsi = false, tsiAns
           </section>}
         </div>
         {isGuide && <nav className="lesson-step-controls" aria-label="Learning steps">
-          <button type="button" className="step-link" disabled={page===0} onClick={()=>setStep(v=>Math.max(0,v-1))}>Previous</button>
+          {page > 0 && <button type="button" className="step-link previous"
+            onClick={()=>setStep(v=>Math.max(0,v-1))}>
+            <ChevronLeft size={16} aria-hidden="true"/> Previous
+          </button>}
           <span>Step {page+1} of {guide.steps.length}</span>
-          <button type="button" className="step-link" disabled={page===guide.steps.length-1}
-            onClick={()=>setStep(v=>Math.min(guide.steps.length-1,v+1))}>Next</button>
+          {page < guide.steps.length - 1 && <button type="button" className="step-link next"
+            onClick={()=>setStep(v=>Math.min(guide.steps.length-1,v+1))}>
+            Next <ChevronRight size={16} aria-hidden="true"/>
+          </button>}
         </nav>}
       </>}
     </section>

@@ -25,7 +25,10 @@ export function publishedSolveSupplement(task, solve = '') {
 export function resolvePublishedLinks(markdown, sourcePath) {
   if (!sourcePath) return markdown;
   const root = 'https://github.com/mswhitby/computer-science-1/blob/main/units/';
-  const full = new URL(sourcePath,root);
+  // Other published courses live at the same-origin /playground/data/ tree.
+  // Keep CS1's legacy GitHub fallback for its existing Markdown paths.
+  const full = sourcePath.startsWith('/playground/data/')
+    ? new URL(sourcePath, 'https://www.mswhitby.com') : new URL(sourcePath,root);
   return String(markdown).replace(/\]\(([^)]+)\)/g,(match,target)=>{
     // Keep external links, fragments, mail links and non-path schemes unchanged.
     if (/^(?:https?:|mailto:|#|data:)/i.test(target)) return match;

@@ -3,7 +3,7 @@ import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { useSaved } from '../../hooks/useSaved.js';
 import { renderMarkdown } from '../../lib/markdown.js';
 import Splitter from '../ui/Splitter.jsx';
-import CodePane from './CodePane.jsx';
+import WebFilesPane from './WebFilesPane.jsx';
 
 /**
  * Student-facing project steps from the existing Mobile App & Web manifest.
@@ -20,7 +20,7 @@ export default function ProjectWorkspace({course, project, stepId, openProject})
   const task={
     id:draftId,title:project.title,language:project.language||'html',
     starter:project.starter||'',challenge:project.summary||'',console:'Run to see your actual page. Check tests the published step requirements in a sandboxed browser preview.',
-    projectDraft:true,isPublished:false,projectId:project.id,stepId:current.id,
+    projectDraft:true,isPublished:false,projectId:project.id,stepId:current.id,focus:current.focus,
   };
   function resizeColumns(event) {
     if (!layout.current) return;
@@ -46,7 +46,7 @@ export default function ProjectWorkspace({course, project, stepId, openProject})
         <div className="markdown-preview" dangerouslySetInnerHTML={{__html:renderMarkdown(current.markdownSource)}}/>
       </section>
       <Splitter axis="columns" onDrag={resizeColumns}/>
-      <CodePane lessonId={draftId} task={task}/>
+      <WebFilesPane lessonId={draftId} task={task}/>
     </div>
     <nav className="lesson-next-bar" aria-label="Project step navigation">
       {stepIndex>0 && <button type="button" className="lesson-nav-link previous"

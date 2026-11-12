@@ -59,7 +59,7 @@ function jsxName(source,language) {
 }
 export const challengeFunctionName = jsxName;
 
-function typedLiteral(value, language) {
+function typedLiteral(value, language, arrayHint = null) {
   if(typeof value==='string')return JSON.stringify(value);
   if(value===null)return 'null';
   if(typeof value==='boolean')return String(value);
@@ -68,7 +68,7 @@ function typedLiteral(value, language) {
     const numbers=value.every(x=>Number.isInteger(x));
     const strings=value.every(x=>typeof x==='string');
     const booleans=value.every(x=>typeof x==='boolean');
-    const type=numbers?'int':strings?'string':booleans?'bool':'double';
+    const type=value.length===0 && arrayHint ? arrayHint : numbers?'int':strings?'string':booleans?'bool':'double';
     const translated=language==='java' ? (type==='string'?'String':type==='bool'?'boolean':type) : type;
     return 'new ' + translated + '[]{' + value.map(x=>typedLiteral(x,language)).join(',') + '}';
   }
@@ -77,8 +77,14 @@ function typedLiteral(value, language) {
 export function challengeCases(task,language,source) {
   const name=jsxName(source,language) || jsxName(task.starter || '',language);
   if(!name)throw new Error('The checker could not find a function declaration.');
-  return (task.challengeExamples || []).map(row=>({
-    ...row,call:name + '(' + (row.input||[]).map(x=>typedLiteral(x,language)).join(', ') + ')',
+  const examples=task.challengeExamples || [];
+  const hints=(examples[0]?.input || []).map((_,index)=>{
+    const found=examples.map(row=>row.input?.[index]).find(item=>Array.isArray(item)&&item.length>0);
+    return Array.isArray(found)?typeof found[0]==='boolean'?'bool':
+      typeof found[0]==='string'?'string':Number.isInteger(found[0])?'int':'double':null;
+  });
+  return examples.map(row=>({
+    ...row,call:name + '(' + (row.input||[]).map((x,index)=>typedLiteral(x,language,hints[index])).join(', ') + ')',
     expectedLiteral:typedLiteral(row.expected,language),
     expected:String(row.expected)
   }));

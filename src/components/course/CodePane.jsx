@@ -168,17 +168,19 @@ export default function CodePane({lessonId,task}) {
       const protocol=active.protocol;
       const cases=isChallenge?challengeCases(task,'csharp',code).map(row=>({
         ...row,
-        // The stock C# comparer treats two separate arrays as unequal references.
-        // Compare array contents as strings instead, preserving the visible public contract.
-        call:Array.isArray(row.expected)?'string.Join(",", global::Solution.'+row.call+')':row.call,
-        expected:Array.isArray(row.expected)?JSON.stringify(row.expected.join(',')):row.expectedLiteral
+        // The stock C# comparer treats arrays as unequal references.
+        // For array-valued examples, compare elements with LINQ instead.
+        call:Array.isArray(row.expected)?row.call+'.SequenceEqual('+row.expectedLiteral+')':row.call,
+        expected:Array.isArray(row.expected)?'true':row.expectedLiteral
       })):task.cases || [];
       const className=isChallenge?'Solution':csharpClassName(code);
       const shouldUseChecks=check || (isChallenge&&cases.length>0);
       if(check&&!cases.length)throw Error('No public C# examples are available for this exercise.');
       if(shouldUseChecks&&!className)throw Error('The C# checker could not find the public class name.');
       const used=check?cases:cases.slice(0,1);
-      const helper=shouldUseChecks?protocol.buildChecks(used,className):null;
+      const rawHelper=shouldUseChecks?protocol.buildChecks(used,className):null;
+      const helper=rawHelper && used.some(row=>Array.isArray(row.input) && Array.isArray(row.expected))
+        ? 'using System.Linq;\n'+rawHelper : rawHelper;
       const result=await active.instance.run(code,helper);
       if(!result.compiled || !result.success)throw Error([result.diagnostics,result.stderr].filter(Boolean).join('\n')||'C# could not execute.');
       if(shouldUseChecks) {

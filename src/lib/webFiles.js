@@ -28,7 +28,7 @@ function ensureReferences(source, scriptName='script.js') {
     const link='  <link rel="stylesheet" href="styles.css">\n';
     html=/<\/head\s*>/i.test(html) ? html.replace(/<\/head\s*>/i,link+'</head>') : link+html;
   }
-  if(!new RegExp('<script\\b[^>]*src\\s*=\\s*["\\']'+scriptName.replace('.','\\.')+'["\\'][^>]*>','i').test(html)){
+  if(!html.includes('src="'+scriptName+'"') && !html.includes("src='"+scriptName+"'")) {
     const script='  <script src="'+scriptName+'" defer></script>\n';
     html=/<\/body\s*>/i.test(html) ? html.replace(/<\/body\s*>/i,script+'</body>') : html+'\n'+script;
   }

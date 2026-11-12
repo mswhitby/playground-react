@@ -92,12 +92,16 @@ test('TSI migrates current 20-day plan with explicit unpublished sessions and fo
     'tsi-math/content/strand-lessons-v1.json':{lessons:[{id:'tsi-geometry-right-triangles-and-area-v1',
       title:'Right triangles and area',student_lesson:'lessons/strands/geometry/right-triangles-and-area.md',minutes:30}]},
     'tsi-math/lessons/strands/geometry/right-triangles-and-area.md':'# Right triangles and area',
+    'tsi-math/content/diagnostic-24-mc-v2.json':{items:[{id:'geometry-1',strand:'geometry',answer:4,correct_index:2}]},
+    'tsi-math/content/math-locator-profiles.json':{profiles:[{code:'MATH01',levels:{geometry:'Basic'}}]},
   };
   const content=await loadPublishedCourse('tsi-math',{fetchImpl:fixtureFetch(files)});
   assert.deepEqual(content.lessons,['tsi-20d-d01','tsi-20d-d02','tsi-geometry-right-triangles-and-area-v1']);
   assert.equal(getCourseLesson(content,'tsi-20d-d02').ready,false);
   assert.equal(getCourseLesson(content,'tsi-geometry-right-triangles-and-area-v1').ready,true);
   assert.equal(content.tsiDraft,true);
+  assert.equal(content.diagnosticItems[0].id,'geometry-1');
+  assert.equal(content.locatorProfiles[0].code,'MATH01');
 });
 
 test('missing public resources fail closed instead of replacing real content with mocks',async()=>{

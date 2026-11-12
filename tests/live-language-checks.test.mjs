@@ -81,6 +81,17 @@ test('Java/C# shared challenge calls use public inputs, preserve arrays and expe
   assert.equal(rows[0].passed,true);
 });
 
+test('empty boolean-array inputs retain their language-specific type',()=>{
+  const data={challengeExamples:[
+    {input:[[true,false]],expected:1},
+    {input:[[]],expected:0}
+  ]};
+  const java=challengeCases(data,'java','public class Solution {public static int LongestWinStreak(boolean[] wins){return 0;}}');
+  const csharp=challengeCases(data,'csharp','public static class Solution {public static int LongestWinStreak(bool[] wins){return 0;}}');
+  assert.match(java[1].call,/new boolean\[\]\{\}/);
+  assert.match(csharp[1].call,/new bool\[\]\{\}/);
+});
+
 test('sandboxed preview and real browser runners replace simulated UI while Submit stays disabled',()=>{
   const code=read('../src/components/course/CodePane.jsx');
   const output=read('../src/components/course/ConsolePane.jsx');

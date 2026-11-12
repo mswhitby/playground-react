@@ -72,7 +72,7 @@ export default function CodePane({lessonId,task}) {
         previewRequest.current=null;setRunning(false);
         setConsoleTab('Console');
       }
-      if(message.kind==='checks'){
+      if(message.kind==='checks'||message.kind==='project-checks'){
         clearTimeout(timeout.current);
         setCheckRows(convertPreviewRows(message.results || (message.text?[{label:message.text,pass:message.pass}]:[])));
         previewRequest.current=null;setRunning(false);

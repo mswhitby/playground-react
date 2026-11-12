@@ -9,7 +9,7 @@ import ConsolePane from './ConsolePane.jsx';
 import { buildPublicChecks } from '../../lib/publicPythonChecks.js';
 import {
   summarizeChecks,practiceRowsFromPython,practiceRowsFromJava,practiceRowsFromCSharp,
-  convertPreviewRows,challengeCases,buildChallengePython,buildJavaChallenge,parseJavaChallenge
+  convertPreviewRows,challengeCases,challengeFunctionName,buildChallengePython,buildJavaChallenge,parseJavaChallenge
 } from '../../lib/previewChecks.js';
 import { browserPreviewSource,createLanguageRunner,csharpClassName } from '../../lib/livePreviewRuntime.js';
 
@@ -119,7 +119,7 @@ export default function CodePane({lessonId,task}) {
       const result=await active.instance.run(source);
       if(check) {
         const rows=isChallenge?task.challengeExamples.map(row=>({
-          call:(task.functionName || 'Function')+'('+JSON.stringify(row.input)+')',
+          call:(challengeFunctionName(code,'python') || 'Function')+'('+row.input.map(v=>JSON.stringify(v)).join(', ')+')',
           expected:JSON.stringify(row.expected)
         })):task.cases;
         setCheckRows(practiceRowsFromPython(result.output,rows));
@@ -166,7 +166,13 @@ export default function CodePane({lessonId,task}) {
     }
     if(type==='csharp'){
       const protocol=active.protocol;
-      const cases=isChallenge?challengeCases(task,'csharp',code).map(row=>({...row,expected:row.expectedLiteral})):task.cases || [];
+      const cases=isChallenge?challengeCases(task,'csharp',code).map(row=>({
+        ...row,
+        // The stock C# comparer treats two separate arrays as unequal references.
+        // Compare array contents as strings instead, preserving the visible public contract.
+        call:Array.isArray(row.expected)?'string.Join(",", global::Solution.'+row.call+')':row.call,
+        expected:Array.isArray(row.expected)?JSON.stringify(row.expected.join(',')):row.expectedLiteral
+      })):task.cases || [];
       const className=isChallenge?'Solution':csharpClassName(code);
       const shouldUseChecks=check || (isChallenge&&cases.length>0);
       if(check&&!cases.length)throw Error('No public C# examples are available for this exercise.');

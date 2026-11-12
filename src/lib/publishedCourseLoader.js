@@ -64,6 +64,8 @@ async function mobileCourse(fetchImpl, signal) {
     const starter=await request(id,project.starterFile,fetchImpl,signal);
     const steps=await Promise.all(project.steps.map(async step => ({
       ...step,
+      // Honor the published focus so the matching file tab is prominent on each step.
+      focus:step.focus||step.title,
       markdownSource:await request(id,step.markdown,fetchImpl,signal),
       markdownUrl:publicResourceUrl(id,step.markdown),
     })));

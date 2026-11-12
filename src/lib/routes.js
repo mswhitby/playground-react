@@ -16,6 +16,13 @@ export const gradesPath = () => withBase('/grades');
 export const challengesPath = (courseId = null) => withBase(courseId ? `/challenges/course/${encodeURIComponent(courseId)}` : '/challenges');
 export const challengePath = (id) => withBase(`/challenges/${encodeURIComponent(id)}`);
 
+export function projectPath(courseOrId, projectId, stepId = null) {
+  const course = typeof courseOrId === 'string' ? getCourse(courseOrId) : courseOrId;
+  if (!course || !projectId) return homePath();
+  const base = `/playgrounds/${encodeURIComponent(course.slug)}/projects/${encodeURIComponent(projectId)}`;
+  return withBase(stepId ? `${base}/steps/${encodeURIComponent(stepId)}` : base);
+}
+
 export function playgroundPath(courseOrId, lessonId) {
   const course = typeof courseOrId === 'string' ? getCourse(courseOrId) : courseOrId;
   if (!course) return homePath();
@@ -47,7 +54,7 @@ export function resolveRoute(pathname, availableCourses = courses) {
   }
 
   const segments = relative.split('/').filter(Boolean);
-  if (segments[0] !== 'playgrounds' || ![2, 4].includes(segments.length)) return { page: 'not-found' };
+  if (segments[0] !== 'playgrounds' || ![2, 4, 6].includes(segments.length)) return { page: 'not-found' };
 
   let slug, lessonId;
   try {
@@ -55,7 +62,17 @@ export function resolveRoute(pathname, availableCourses = courses) {
     lessonId = segments.length === 4 ? decodeURIComponent(segments[3]) : undefined;
   } catch { return { page: 'not-found' }; }
   const course = availableCourses.find((item) => item.slug === slug);
-  if (!course || (segments.length === 4 && segments[2] !== 'lessons')) return { page: 'not-found' };
+  if (!course) return { page: 'not-found' };
+  if (segments[2] === 'projects' && (segments.length === 4 || segments.length === 6)) {
+    try {
+      const projectId = decodeURIComponent(segments[3]);
+      const project = (course.projects || []).find(item => item.id === projectId);
+      const stepId = segments.length === 6 ? decodeURIComponent(segments[5]) : null;
+      if (!project || (stepId && (segments[4] !== 'steps' || !project.steps.some(step => step.id === stepId)))) return {page:'not-found'};
+      return {page:'course',courseId:course.id,lessonId:null,projectId,stepId};
+    } catch { return {page:'not-found'}; }
+  }
+  if (segments.length !== 2 && (segments.length !== 4 || segments[2] !== 'lessons')) return { page:'not-found' };
   if (lessonId && !lessonInCourse(course,lessonId)) return { page: 'not-found' };
   return { page: 'course', courseId: course.id, lessonId: lessonId ?? null };
 }

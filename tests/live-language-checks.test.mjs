@@ -120,4 +120,5 @@ test('sandboxed preview and real browser runners replace simulated UI while Subm
   assert.match(runtime,/project-preview\.mjs/);
   assert.match(challenge,/<CodePane/);
   assert.match(project,/projectId:project\.id,stepId:current\.id/);
+  assert.match(project,/<WebFilesPane/);
 });

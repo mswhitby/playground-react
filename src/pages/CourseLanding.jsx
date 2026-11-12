@@ -6,7 +6,7 @@ import { selectedCourseColor } from '../lib/courseColors.js';
 import { statusFor,dueLabel } from '../lib/gradebook.js';
 import { challengesPath, playgroundPath, projectPath } from '../lib/routes.js';
 
-export default function CourseLanding({ course, openCourse, openChallenges, completedLessons = [], assignments = [], grades = [], courseColors = {}, onSetCourseColor, onResetCourseColor }) {
+export default function CourseLanding({ course, openCourse, openProject, openChallenges, completedLessons = [], assignments = [], grades = [], courseColors = {}, onSetCourseColor, onResetCourseColor }) {
   const progress = courseProgress(course, completedLessons);
   const [editingColor, setEditingColor] = useState(false);
   const color = selectedCourseColor(course, courseColors);
@@ -94,7 +94,7 @@ export default function CourseLanding({ course, openCourse, openChallenges, comp
             href={projectPath(course,project.id)}
             onClick={event => {
               if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
-              event.preventDefault(); window.location.assign(projectPath(course,project.id));
+              event.preventDefault(); openProject(course.id,project.id);
             }}>
             <span className="unit-lesson-label"><strong>{project.title}</strong><small>{project.steps.length} steps · {project.summary}</small></span>
             <ArrowUpRight size={16}/>

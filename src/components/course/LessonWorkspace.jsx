@@ -5,6 +5,7 @@ import Splitter from '../ui/Splitter.jsx';
 import LessonHeader from './LessonHeader.jsx';
 import InstructionsPane from './InstructionsPane.jsx';
 import CodePane from './CodePane.jsx';
+import WebFilesPane from './WebFilesPane.jsx';
 import TsiPractice from './TsiPractice.jsx';
 import TsiDiagnostic from './TsiDiagnostic.jsx';
 import { tsiQuestions } from '../../data/tsiQuestions.js';
@@ -66,7 +67,9 @@ export default function LessonWorkspace({ lessonId, course, unit, unitNumber, is
       <Splitter axis="columns" onDrag={resizeColumns}/>
       {isTsi
         ? <InstructionsPane lessonId={lessonId} task={task} isTsi tsiAnswer={tsiAnswer}/>
-        : <CodePane lessonId={lessonId} task={task}/>}
+        : course.id==='mobile-app-dev' && ['html','css','javascript','jsx'].includes(task.language)
+          ? <WebFilesPane key={lessonId} lessonId={lessonId} task={{...task,lessonFocus:lessonId}}/>
+          : <CodePane lessonId={lessonId} task={task}/>}
     </div>
   </div>;
 }

@@ -7,6 +7,7 @@ import {
   buildJavaChallenge,parseJavaChallenge,challengeFunctionName
 } from '../src/lib/previewChecks.js';
 import { csharpClassName } from '../src/lib/livePreviewRuntime.js';
+import { buildPythonFunctionPreview } from '../src/lib/publicPythonChecks.js';
 
 const read=path=>readFileSync(new URL(path,import.meta.url),'utf8');
 
@@ -24,6 +25,14 @@ test('Python checks preserve per-example expected/received/error and avoid scori
   assert.equal(rows[1].expected,'"Welcome, !"');
   assert.throws(()=>practiceRowsFromPython('broken',cases),/no example-check results/);
   assert.throws(()=>practiceRowsFromPython('PUBLIC_CHECK_RESULTS=[]',cases),/every published example/);
+});
+
+test('Python Run actually calls the first published function example without awarding points',()=>{
+  const code=buildPythonFunctionPreview('def create_greeting(username):\\n    return "Welcome, "+username+"!"','create_greeting("Kai")');
+  assert.match(code,/PLAYGROUND_PREVIEW=/);
+  assert.match(code,/create_greeting/);
+  assert.match(code,/__value=eval/);
+  assert.doesNotMatch(code,/supabase|submit|awardPoints/i);
 });
 
 test('Java checks normalize terminal line endings but preserve actual errors',()=>{

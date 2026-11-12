@@ -104,6 +104,7 @@ export default function CodePane({lessonId,task}) {
 
   async function executeCompiled(check) {
     const type=task.language;
+    if(type==='java' && task.environment==='ide') throw Error('This activity uses Java 26 file I/O and requires a full Java IDE. Browser execution is not supported for this exercise.');
     const active=await getRunner();
     if(type==='python'){
       let source=code;

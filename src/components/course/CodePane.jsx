@@ -171,6 +171,7 @@ export default function CodePane({lessonId,task}) {
         // The stock C# comparer treats arrays as unequal references.
         // For array-valued examples, compare elements with LINQ instead.
         call:Array.isArray(row.expected)?row.call+'.SequenceEqual('+row.expectedLiteral+')':row.call,
+        arrayResult:Array.isArray(row.expected),
         expected:Array.isArray(row.expected)?'true':row.expectedLiteral
       })):task.cases || [];
       const className=isChallenge?'Solution':csharpClassName(code);
@@ -179,7 +180,7 @@ export default function CodePane({lessonId,task}) {
       if(shouldUseChecks&&!className)throw Error('The C# checker could not find the public class name.');
       const used=check?cases:cases.slice(0,1);
       const rawHelper=shouldUseChecks?protocol.buildChecks(used,className):null;
-      const helper=rawHelper && used.some(row=>Array.isArray(row.input) && Array.isArray(row.expected))
+      const helper=rawHelper && used.some(row=>row.arrayResult)
         ? 'using System.Linq;\n'+rawHelper : rawHelper;
       const result=await active.instance.run(code,helper);
       if(!result.compiled || !result.success)throw Error([result.diagnostics,result.stderr].filter(Boolean).join('\n')||'C# could not execute.');

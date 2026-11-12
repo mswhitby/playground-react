@@ -3,7 +3,6 @@ import { BookOpen, CalendarDays, ChartNoAxesColumnIncreasing, Trophy } from 'luc
 import { courses, getCourse } from '../data/courses.js';
 import { lessonTitleOf } from '../lib/courseContent.js';
 import { getChallenge } from '../data/challenges.js';
-import { assignedWork } from '../data/assignedWork.js';
 import { dueLabel, gradeTotals, gradeFor, statusFor, weeklyGrades } from '../lib/gradebook.js';
 import { journalWeekLabel } from '../lib/journals.js';
 
@@ -13,7 +12,7 @@ function titleFor(id,courseId) {
   return kind==='lesson' ? lessonTitleOf(getCourse(courseId),name) : getChallenge(name)?.title||name;
 }
 
-export default function Grades({ grades=[], assignments=assignedWork, completedLessons=[] }) {
+export default function Grades({ grades=[], assignments=[], completedLessons=[] }) {
   const [filter,setFilter]=useState('all');
   const filtered=filter==='all'?grades:grades.filter(g=>g.courseId===filter);
   const overall=gradeTotals(filtered);
@@ -41,7 +40,7 @@ export default function Grades({ grades=[], assignments=assignedWork, completedL
         </select>
       </label>
     </header>
-    <p className="grades-preview-note">These are sample scores to help preview the page. Only graded work counts toward earned points.</p>
+    <p className="grades-preview-note">This preview does not display real student grades or assignments. Verified scores remain in the current Playground.</p>
     <div className="grades-summary">
       <div className="grades-stat surface-card">
         <ChartNoAxesColumnIncreasing size={19}/><span>Points earned</span>

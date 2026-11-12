@@ -3,7 +3,7 @@ import CourseCard from "../components/home/CourseCard.jsx";
 import TeacherShortcut from "../components/home/TeacherShortcut.jsx";
 import { LibraryBig } from "lucide-react";
 
-export default function Home({ openCourse, openTeacher, openChallenges, completedLessons = [] }) {
+export default function Home({ openCourse, openTeacher, openChallenges, availableCourses = courses, completedLessons = [] }) {
   return (
     <div className="main-content">
       <div className="welcome">
@@ -14,7 +14,7 @@ export default function Home({ openCourse, openTeacher, openChallenges, complete
         </p>
       </div>
       <div className="course-card-grid">
-        {courses.map((c) => (
+        {availableCourses.map((c) => (
           <CourseCard key={c.id} course={c} completedLessons={completedLessons} onOpen={() => openCourse(c.id)} />
         ))}
       </div>

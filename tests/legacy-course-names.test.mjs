@@ -88,7 +88,8 @@ test('long and punctuated names are supported across sidebar, course overview, n
   assert.match(files[0],/lessonTitleOf\(course,id\)/);
   assert.match(files[0],/unitTitleOf\(unit\)/);
   assert.match(files[1],/lessonTitleOf\(course,id\)/);
-  assert.match(files[2],/lessonTitleOf\(course,sequence\[lessonIndex \+ 1\]\)/);
+  assert.match(files[2],/lessonTitleOf\(course, sequence\[lessonIndex \+ 1\]\)/);
+  assert.match(files[2],/lessonTitleOf\(course, sequence\[lessonIndex - 1\]\)/);
   assert.match(files[3],/lessonTitleOf\(getCourse\(courseId\),name\)/);
   assert.match(files[4],/unitTitleOf\(unit\)/);
   const css=read('../src/styles/learning.css');

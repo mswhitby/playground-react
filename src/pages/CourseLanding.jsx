@@ -4,9 +4,9 @@ import { courseLessonIds, getCourseLesson, lessonIdsOf, lessonTitleOf, unitNumbe
 import { courseProgress } from '../lib/completion.js';
 import { selectedCourseColor } from '../lib/courseColors.js';
 import { statusFor,dueLabel } from '../lib/gradebook.js';
-import { challengesPath, playgroundPath } from '../lib/routes.js';
+import { challengesPath, playgroundPath, projectPath } from '../lib/routes.js';
 
-export default function CourseLanding({ course, openCourse, openChallenges, completedLessons = [], assignments = [], grades = [], courseColors = {}, onSetCourseColor, onResetCourseColor }) {
+export default function CourseLanding({ course, openCourse, openProject, openChallenges, completedLessons = [], assignments = [], grades = [], courseColors = {}, onSetCourseColor, onResetCourseColor }) {
   const progress = courseProgress(course, completedLessons);
   const [editingColor, setEditingColor] = useState(false);
   const color = selectedCourseColor(course, courseColors);
@@ -27,7 +27,7 @@ export default function CourseLanding({ course, openCourse, openChallenges, comp
           <span><Layers3 size={16} /> {course.units.length} units</span>
           <span><BookOpen size={16} /> {courseLessonIds(course).length} lessons</span>
         </div>
-        <button className="btn primary" onClick={() => openCourse(course.id, courseLessonIds(course)[0])}>
+        <button className="btn primary" disabled={!courseLessonIds(course).length} onClick={() => openCourse(course.id, courseLessonIds(course)[0])}>
           Start learning <ChevronRight size={16} />
         </button>
         {editingColor && <section id="course-color-controls" className="course-color-controls" aria-label="Choose a course color">
@@ -45,9 +45,12 @@ export default function CourseLanding({ course, openCourse, openChallenges, comp
         </section>}
       </header>
       {course.publishedContent && <p className="course-published-note">
-        Explore the complete Computer Science I lessons. Practice here won't change your grades.
+        Real published lessons are shown here. Practice in this preview does not change your grades.
       </p>}
-      <p className="course-landing-progress">{progress.completed} of {progress.total} lessons completed · {progress.percent}%</p>
+      {course.contentLoadingError && <p className="course-published-note" role="alert">Published course materials could not be loaded: {course.contentLoadingError}. Sample lessons are not substituted.</p>}
+      {!course.publishedContent && !course.contentLoadingError && <p className="course-published-note">Course materials are not yet published here. This is a design preview, not a course to assign.</p>}
+      {course.tsiDraft && <p className="course-published-note">The 20-day TSI schedule is an outline; four strand lessons are drafts. Unwritten sessions are not available for practice.</p>}
+      <p className="course-landing-progress">{progress.completed} of {progress.total} lessons {course.publishedContent ? 'marked complete in preview' : 'completed'} · {progress.percent}%</p>
       <div className="course-landing-heading">
         <div><h2>Units &amp; lessons</h2><p>Choose a unit or jump directly into a lesson.</p></div>
 
@@ -69,9 +72,9 @@ export default function CourseLanding({ course, openCourse, openChallenges, comp
                   <span className="unit-lesson-index">{i + 1}</span>
                   <span className="unit-lesson-label"><strong title={lessonTitleOf(course,id)}>{lessonTitleOf(course,id)}</strong>
                     {(() => { const a=statusFor('lesson:'+id,{assignments,grades,completedLessons});
-                      return a.dueDate ? <span className="unit-assignment-meta">
-                        <span className={`assignment-status ${a.state}`}>{a.state==='completed'?'Completed':a.state==='overdue'?'Overdue':'Assigned'}</span>
-                        <small>Due {dueLabel(a.dueDate)}</small>
+                      return (a.dueDate || a.completed) ? <span className="unit-assignment-meta">
+                        <span className={`assignment-status ${a.state}`}><span className={`assignment-dot ${a.state}`} aria-hidden="true"/>{a.completed?'Completed':a.state==='overdue'?'Overdue':'Assigned'}</span>
+                        {a.dueDate && <small>Due {dueLabel(a.dueDate)}</small>}
                         {a.grade&&<small>{a.grade.earned} / {a.grade.possible} pts</small>}
                       </span> : <small>{getCourseLesson(course,id)?.kind}{getCourseLesson(course,id)?.difficulty ? ` · ${getCourseLesson(course,id).difficulty}` : ''}</small>;
                     })()}
@@ -83,6 +86,21 @@ export default function CourseLanding({ course, openCourse, openChallenges, comp
           </section>
         ))}
       </div>
+      {!!course.projects?.length && <section className="course-projects surface-card">
+        <div className="eyebrow">Published guided projects</div>
+        <h2>Projects</h2>
+        <div className="unit-card-grid">
+          {course.projects.map(project => <a className="unit-lesson-link" key={project.id}
+            href={projectPath(course,project.id)}
+            onClick={event => {
+              if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+              event.preventDefault(); openProject(course.id,project.id);
+            }}>
+            <span className="unit-lesson-label"><strong>{project.title}</strong><small>{project.steps.length} steps · {project.summary}</small></span>
+            <ArrowUpRight size={16}/>
+          </a>)}
+        </div>
+      </section>}
       <section className="course-challenges-shelf surface-card">
         <div><div className="eyebrow">Shared practice library</div><h2>Related programming challenges</h2><p>Browse reusable problems suited to this course. Review each challenge's prerequisites before recommending it to students.</p></div>
         <a href={challengesPath(course.id)} className="btn" onClick={event => { if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return; event.preventDefault(); openChallenges(course.id); }}><LibraryBig size={16}/> Browse challenges</a>

@@ -53,17 +53,6 @@
   border-left: 1px solid var(--border-strong);
   padding-left: 10px;
 }
-.accent-swatch {
-  width: 18px;
-  height: 18px;
-  border: 0;
-  border-radius: 50%;
-  margin: 0 1px;
-}
-.accent-swatch.swatch-active {
-  outline: 2px solid var(--text);
-  outline-offset: 2px;
-}
 .user-circle {
   display: grid;
   place-items: center;
@@ -253,5 +242,3 @@
 .main-panel { background: var(--bg); }
 .user-circle { background: var(--surface); }
 
-.accent-swatch[data-swatch='coral'] { background:#ff6b59; }
-.accent-swatch[data-swatch='purple'] { background:#a78bfa; }

@@ -1,0 +1,30 @@
+/* CodeMirror 5 is bundled locally. No CDN required on the school network. */
+.code-editor-wrap {min-width:0;min-height:0;height:100%;overflow:hidden;background:var(--code-bg);}
+.code-editor-wrap .CodeMirror {height:100%;min-height:0;background:var(--code-bg);color:var(--text);font:13px/1.75 var(--mono);}
+.code-editor-wrap .CodeMirror-scroll {min-height:100%;}
+.code-editor-wrap .CodeMirror-lines {padding:16px 7px;}
+.code-editor-wrap .CodeMirror-gutters {border-right:1px solid var(--border);background:var(--surface-2);}
+.code-editor-wrap .CodeMirror-linenumber {color:var(--muted);padding:0 7px;}
+.code-editor-wrap .CodeMirror-cursor {border-left:2px solid var(--text);}
+.code-editor-wrap .CodeMirror-selected {background:color-mix(in srgb,var(--accent) 30%,var(--code-bg));}
+.code-editor-wrap .CodeMirror-focused .CodeMirror-selected {background:color-mix(in srgb,var(--accent) 28%,var(--code-bg));}
+.code-editor-wrap .CodeMirror-activeline-background {background:var(--surface-2);}
+.code-editor-wrap .CodeMirror-matchingbracket {color:var(--status-completed) !important;text-decoration:underline;}
+.code-editor-wrap .CodeMirror-nonmatchingbracket {color:var(--status-overdue) !important;}
+.code-editor-wrap .cm-keyword {color:#d5a9ff;}
+.code-editor-wrap .cm-string {color:#ffe080;}
+.code-editor-wrap .cm-number {color:#86c9ff;}
+.code-editor-wrap .cm-comment {color:#94a2b0;}
+.code-editor-wrap .cm-def,.code-editor-wrap .cm-variable-2,.code-editor-wrap .cm-property {color:#9ad6ff;}
+.code-editor-wrap .cm-atom,.code-editor-wrap .cm-builtin {color:#c3b0ff;}
+.code-editor-wrap .cm-operator {color:var(--text);}
+:root[data-theme="light"] .code-editor-wrap .cm-keyword {color:#7835aa;}
+:root[data-theme="light"] .code-editor-wrap .cm-string {color:#906000;}
+:root[data-theme="light"] .code-editor-wrap .cm-number {color:#005e9a;}
+:root[data-theme="light"] .code-editor-wrap .cm-comment {color:#53677c;}
+:root[data-theme="light"] .code-editor-wrap .cm-def,
+:root[data-theme="light"] .code-editor-wrap .cm-variable-2,
+:root[data-theme="light"] .code-editor-wrap .cm-property {color:#006fa5;}
+:root[data-theme="light"] .code-editor-wrap .cm-atom,
+:root[data-theme="light"] .code-editor-wrap .cm-builtin {color:#6b2a9c;}
+.code-editor-wrap .CodeMirror-hints {z-index:120;}

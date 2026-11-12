@@ -68,10 +68,13 @@ test('published public checker can distinguish printed scripts and return values
   assert.match(formatPublicCheckResults(output,2),/No grade or points were recorded/);
 });
 
-test('preview has no fictional CS1 graded scores or assigned due dates',()=>{
+test('migrated preview has no fictional graded scores or assigned due dates',()=>{
   const app=readFileSync(new URL('../src/App.jsx',import.meta.url),'utf8');
   const grades=readFileSync(new URL('../src/pages/Grades.jsx',import.meta.url),'utf8');
-  assert.ok(app.includes("record.courseId !== 'computer-science-1'"));
+  assert.match(app, /const grades = \[\];/);
+  assert.match(app, /const courseAssignments = \[\];/);
+  assert.doesNotMatch(app, /sampleGrades|assignedWork/);
   assert.match(app,/assignments=\{courseAssignments\}/);
-  assert.match(grades,/assignments=assignedWork/);
+  assert.match(grades,/assignments=\[\]/);
+  assert.doesNotMatch(grades,/sample scores|assignedWork/);
 });

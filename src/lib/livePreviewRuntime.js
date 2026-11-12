@@ -102,8 +102,8 @@ export async function browserPreviewSource({code,language,lessonId,task={},token
       return buildProjectPreview(html,{token,step:task.stepId,projectId:task.projectId,check});
     }
     const reactLibrary='<script src="'+source+'vendor/learning/react.js"></script>';
-    const page=language==='jsx' ? (/<\\/head\\s*>/i.test(html)
-      ? html.replace(/<\\/head\\s*>/i,reactLibrary+'</head>') : reactLibrary+html) : html;
+    const page=language==='jsx' ? (/<\/head\s*>/i.test(html)
+      ? html.replace(/<\/head\s*>/i,reactLibrary+'</head>') : reactLibrary+html) : html;
     return browserPreviewSource({code:page,language:'html',lessonId,task:{},token,check});
   }
   if(task.projectId) {

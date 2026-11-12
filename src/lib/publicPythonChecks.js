@@ -55,3 +55,20 @@ export function formatPublicCheckResults(output, sampleCount) {
     ].join('\n');
   }catch{return 'Checks returned an unexpected result. Please run the code again.';}
 }
+
+
+/** A real first-example call, matching the production Python function preview. */
+export function buildPythonFunctionPreview(source,call) {
+  const name=String(call).split('(',1)[0].trim();
+  return [
+    'import ast as __ast, io as __io, json as __json, contextlib as __ctx',
+    '__env={"__name__":"student"}',
+    '__stream=__io.StringIO()',
+    'with __ctx.redirect_stdout(__stream):',
+    '    exec(compile('+JSON.stringify(String(source))+',"main.py","exec"),__env)',
+    '    __name='+JSON.stringify(name),
+    '    if __name not in __env and callable(__env.get("solution")): __env[__name]=__env["solution"]',
+    '    __value=eval(compile(__ast.parse('+JSON.stringify(String(call))+',mode="eval"),"sample call","eval"),__env)',
+    'print("PLAYGROUND_PREVIEW="+__json.dumps({"call":'+JSON.stringify(String(call))+',"returned":repr(__value)[:5000],"printed":__stream.getvalue()[:10000]}))'
+  ].join('\n');
+}

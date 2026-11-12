@@ -488,3 +488,27 @@
   .project-step-list{gap:6px}
   .project-step-list .btn{font-size:.78rem}
 }
+
+/* Live public-check cards use the same informative hierarchy as production. */
+.console-preview[hidden]{display:none!important}
+.live-preview-frame{display:block;width:100%;height:100%;min-height:210px;border:1px solid var(--border);border-radius:8px;background:#fff;color:#111}
+.console-preview:has(.live-preview-frame){padding:10px;display:block;overflow:hidden}
+.practice-check-content{flex:1;overflow:auto;padding:16px;min-height:0;color:var(--soft)}
+.practice-check-content .check-summary{margin:0 0 8px;font-size:14px;font-weight:700}
+.practice-check-content .check-summary strong{color:var(--text)}
+.practice-check-content .check-next{margin:0 0 16px;font-size:12px}
+.practice-check-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,235px),1fr));gap:10px}
+.practice-check-card{border:1px solid var(--border);border-radius:11px;min-width:0;background:var(--surface);padding:12px}
+.practice-check-card.passed{border-color:color-mix(in srgb,var(--pass) 50%,var(--border))}
+.practice-check-card header{display:flex;align-items:start;justify-content:space-between;gap:8px;border:0;margin:0 0 12px}
+.practice-check-card header code{font-size:11px;word-break:break-word;overflow-wrap:anywhere;color:var(--text)}
+.practice-check-card header span{font-size:11px;font-weight:750;color:#eb6b7e}
+.practice-check-card.passed header span{color:var(--pass)}
+.practice-check-card dl{display:grid;grid-template-columns:auto minmax(0,1fr);gap:7px 8px;margin:0}
+.practice-check-card dt{font-size:11px;color:var(--muted);font-weight:750}
+.practice-check-card dd{margin:0;min-width:0}
+.console-pane .practice-check-card dd pre{font-size:11px;padding:0;background:transparent;color:var(--soft);white-space:pre-wrap;word-break:break-word}
+.check-practice-score{margin:14px 0 4px;font-size:12px;font-weight:750;color:var(--text)}
+.check-disclaimer{font-size:11px;margin:8px 0 0;color:var(--muted)}
+.console-pane .practice-check-message{padding:2px;white-space:pre-wrap;min-height:70px}
+.console-pane .console-preview[hidden]+pre{display:block}

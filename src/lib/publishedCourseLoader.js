@@ -102,9 +102,11 @@ async function uilCourse(fetchImpl, signal) {
 }
 async function tsiCourse(fetchImpl,signal) {
   const id='tsi-math';
-  const [plan, draft] = await Promise.all([
+  const [plan, draft, diagnostic, locator] = await Promise.all([
     request(id,'content/20-day-program.json',fetchImpl,signal,true),
-    request(id,'content/strand-lessons-v1.json',fetchImpl,signal,true)
+    request(id,'content/strand-lessons-v1.json',fetchImpl,signal,true),
+    request(id,'content/diagnostic-24-mc-v2.json',fetchImpl,signal,true),
+    request(id,'content/math-locator-profiles.json',fetchImpl,signal,true)
   ]);
   // Keep original 20-day IDs and explicit unpublished placeholders.
   const schedule=(plan.days||[]).map(day=>({
@@ -122,7 +124,8 @@ async function tsiCourse(fetchImpl,signal) {
   return {...normalizeImportedOutline({units:[
     {id:'study-schedule',number:1,title:'20-day study schedule (in development)',lessons:schedule},
     {id:'authored-strands',number:2,title:'Available draft strand lessons',lessons:strands}
-  ]}),source:'published-draft',projects:[],tsiDraft:true};
+  ]}),source:'published-draft',projects:[],tsiDraft:true,
+    diagnosticItems:diagnostic.items||[],locatorProfiles:locator.profiles||[]};
 }
 /**
  * Reads only student-facing content already published by the main Playground.

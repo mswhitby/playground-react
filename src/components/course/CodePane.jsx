@@ -6,7 +6,7 @@ import { readString, storageKeys, writeString } from '../../lib/storage.js';
 import Chip from '../ui/Chip.jsx';
 import Splitter from '../ui/Splitter.jsx';
 import ConsolePane from './ConsolePane.jsx';
-import { buildPublicChecks } from '../../lib/publicPythonChecks.js';
+import { buildPublicChecks,buildPythonFunctionPreview } from '../../lib/publicPythonChecks.js';
 import {
   summarizeChecks,practiceRowsFromPython,practiceRowsFromJava,practiceRowsFromCSharp,
   convertPreviewRows,challengeCases,challengeFunctionName,buildChallengePython,buildJavaChallenge,parseJavaChallenge
@@ -114,8 +114,7 @@ export default function CodePane({lessonId,task}) {
         if(!task.cases?.length)throw Error('This lesson has no published examples.');
         source=buildPublicChecks(task,code);
       } else if(task.mode==='function' && task.cases?.[0]?.call) {
-        const {previewHarness}=await import(/* @vite-ignore */ '/playground/python-checks.mjs');
-        source=previewHarness(code,task.cases[0].call);
+        source=buildPythonFunctionPreview(code,task.cases[0].call);
       }
       const result=await active.instance.run(source);
       if(check) {

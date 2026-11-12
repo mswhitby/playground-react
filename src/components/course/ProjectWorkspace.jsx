@@ -19,7 +19,7 @@ export default function ProjectWorkspace({course, project, stepId, openProject})
   const draftId='project:'+course.id+':'+project.id;
   const task={
     id:draftId,title:project.title,language:project.language||'html',
-    starter:project.starter||'',challenge:project.summary||'',console:'Run to see your actual page. Check tests the published step requirements in a sandboxed browser preview.',
+    starter:project.starter||'',starterFiles:project.starterFiles||null,challenge:project.summary||'',console:'Run to see your actual page. Check tests the published step requirements in a sandboxed browser preview.',
     projectDraft:true,isPublished:false,projectId:project.id,stepId:current.id,focus:current.focus,
   };
   function resizeColumns(event) {
@@ -43,6 +43,10 @@ export default function ProjectWorkspace({course, project, stepId, openProject})
     <div className="workspace-grid" ref={layout} style={{'--left-pane':leftWidth+'px'}}>
       <section className="instructions-pane project-reading">
         <div className="pane-header"><strong>Step {stepIndex+1}: {current.title}</strong></div>
+        <p className="web-files-reading-note">This published walkthrough was originally written for one HTML file.
+          When it says to add a &lt;style&gt; or &lt;script&gt; block, put that code in
+          <code>styles.css</code> or <code>script.js</code> instead. Keep the file links in
+          <code>index.html</code>; Run connects them automatically.</p>
         <div className="markdown-preview" dangerouslySetInnerHTML={{__html:renderMarkdown(current.markdownSource)}}/>
       </section>
       <Splitter axis="columns" onDrag={resizeColumns}/>

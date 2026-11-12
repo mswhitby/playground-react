@@ -531,3 +531,7 @@
   .web-file-tabs button {padding:8px 9px;font-size:10px}
   .web-file-badge {font-size:9px}
 }
+
+.web-files-reading-note{padding:12px 14px;margin:14px 18px 0;border-radius:9px;
+  border:1px solid var(--border);background:var(--surface-2);font-size:12px;line-height:1.65;color:var(--soft)}
+.web-files-reading-note code{font-family:var(--mono);color:var(--inline-code);margin:0 3px}

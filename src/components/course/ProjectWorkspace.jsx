@@ -19,8 +19,8 @@ export default function ProjectWorkspace({course, project, stepId, openProject})
   const draftId='project:'+course.id+':'+project.id;
   const task={
     id:draftId,title:project.title,language:project.language||'html',
-    starter:project.starter||'',challenge:project.summary||'',console:'Try editing the project. Run and Check are preview-only until the real runtime is connected.',
-    projectDraft:true,isPublished:false,
+    starter:project.starter||'',challenge:project.summary||'',console:'Run to see your actual page. Check tests the published step requirements in a sandboxed browser preview.',
+    projectDraft:true,isPublished:false,projectId:project.id,stepId:current.id,
   };
   function resizeColumns(event) {
     if (!layout.current) return;
@@ -32,7 +32,7 @@ export default function ProjectWorkspace({course, project, stepId, openProject})
       <div className="eyebrow">Published guided project · {steps.length} steps</div>
       <h1>{project.title}</h1>
       <p>{project.summary}</p>
-      <p className="muted">The walkthrough is published course content. Code edits are saved only in this browser; Run, Check and Submit are not connected to production grading.</p>
+      <p className="muted">Run renders your actual project and Check tests the current step. Drafts save in this browser; Submit and verified grading remain disabled.</p>
     </header>
     <nav className="project-step-list" aria-label="Project steps">
       {steps.map((step,i)=><button type="button" key={step.id} aria-current={i===stepIndex?'step':undefined}

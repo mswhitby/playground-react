@@ -21,3 +21,10 @@
 @media(prefers-reduced-motion:reduce){.challenge-card{transition:none}.challenge-card:hover{transform:none}}
 
 .challenge-earned-points {display:inline-flex;color:var(--pass);background:var(--pass-bg);padding:7px 12px;border-radius:8px;font-size:12px;font-weight:750;margin:2px 0 15px;}
+
+/* Challenges share the same real editor/console/check-card surface as lessons. */
+.challenge-editor-panel>.code-pane{flex:1;min-height:0}
+.challenge-runtime-toolbar{display:flex;gap:12px;align-items:center;justify-content:space-between;padding:9px 12px;border-bottom:1px solid var(--border);background:var(--surface)}
+.challenge-runtime-toolbar>span{font-size:11px;color:var(--muted)}
+.challenge-editor-panel .code-workspace{min-height:0}
+@media(max-width:1000px){.challenge-editor-panel>.code-pane{min-height:525px}}

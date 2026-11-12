@@ -73,6 +73,7 @@ test('static colors and the Submit button use shared CSS; code consoles have out
   const consolePane = read('../src/components/course/ConsolePane.jsx');
   assert.match(consolePane, /\['Preview', 'Console', 'Checks'\]/);
   assert.match(consolePane, /role="tablist"/);
-  assert.match(read('../src/pages/ChallengeDetail.jsx'), /console-tabs/);
+  assert.match(read('../src/pages/ChallengeDetail.jsx'), /<CodePane/);
+  assert.match(read('../src/components/course/ConsolePane.jsx'), /console-tabs/);
   assert.match(read('../src/styles/ui.css'), /\.btn\.submit/);
 });

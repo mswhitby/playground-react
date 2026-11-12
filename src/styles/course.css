@@ -512,3 +512,22 @@
 .check-disclaimer{font-size:11px;margin:8px 0 0;color:var(--muted)}
 .console-pane .practice-check-message{padding:2px;white-space:pre-wrap;min-height:70px}
 .console-pane .console-preview[hidden]+pre{display:block}
+
+/* Source files in Mobile App & Web are individual drafts with one shared preview. */
+.web-files-pane .pane-header {min-height:43px}
+.web-file-badge {color:var(--muted);font-size:10px;font-family:var(--mono)}
+.web-file-tabs {display:flex;align-items:center;flex-wrap:wrap;gap:4px;padding:5px 8px 0;
+  background:var(--code-bg);border-bottom:1px solid var(--border);min-height:41px}
+.web-file-tabs button {padding:8px 13px;border:0;border-bottom:2px solid transparent;
+  background:transparent;color:var(--soft);font:600 11px var(--mono);cursor:pointer}
+.web-file-tabs button:hover {color:var(--text);background:var(--surface-2)}
+.web-file-tabs button.active {color:var(--text);border-bottom-color:var(--course-color,var(--accent));
+  background:color-mix(in srgb,var(--course-color,var(--accent)) 8%,transparent)}
+.web-file-tabs button:focus-visible {outline:2px solid var(--accent);outline-offset:-2px}
+.web-files-pane .code-workspace {flex:1;min-height:0}
+.web-files-pane .console-pane .live-preview-frame {background:white}
+@media(max-width:600px){
+  .web-file-tabs {gap:2px;padding-inline:4px}
+  .web-file-tabs button {padding:8px 9px;font-size:10px}
+  .web-file-badge {font-size:9px}
+}

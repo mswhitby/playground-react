@@ -6,6 +6,8 @@ import LessonHeader from './LessonHeader.jsx';
 import InstructionsPane from './InstructionsPane.jsx';
 import CodePane from './CodePane.jsx';
 import TsiPractice from './TsiPractice.jsx';
+import { tsiQuestions } from '../../data/tsiQuestions.js';
+import { renderMarkdown } from '../../lib/markdown.js';
 
 /** Unit-aware lesson layout; TSIA2 uses questions rather than the coding editor. */
 export default function LessonWorkspace({ lessonId, course, unit, unitNumber, isCompleted = false, assignment = null, grade = null, onToggleCompleted }) {
@@ -24,7 +26,17 @@ export default function LessonWorkspace({ lessonId, course, unit, unitNumber, is
       isCompleted={isCompleted} assignment={assignment} grade={grade} onToggleCompleted={onToggleCompleted}/>
     <section className="lesson-content-pending surface-card">
       <h2>Lesson coming soon</h2>
-      <p>The lesson materials are being prepared.</p>
+      <p>This scheduled lesson has not been authored yet. No practice or scores are available.</p>
+    </section>
+  </div>;
+  // TSI currently publishes an outline plus four Markdown draft lessons.
+  // The old fictional TSI multiple-choice IDs must not be substituted for those lessons.
+  if (isTsi && !tsiQuestions[lessonId]) return <div className="lesson-screen">
+    <LessonHeader task={task} unit={unit} unitNumber={unitNumber} isTsi isCompleted={isCompleted}
+      assignment={assignment} grade={grade} onToggleCompleted={onToggleCompleted}/>
+    <section className="surface-card published-reading">
+      <p className="muted">Published draft lesson · practice shown for learning, not an official TSIA2 score predictor.</p>
+      <div className="markdown-preview" dangerouslySetInnerHTML={{__html:renderMarkdown(task.markdownSource)}}/>
     </section>
   </div>;
   return <div className="lesson-screen">

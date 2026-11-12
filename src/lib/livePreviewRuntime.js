@@ -26,7 +26,6 @@ export function csharpClassName(code) {
 }
 const consoleFixture='<main class="event-card"><h1>Robotics meetup</h1><p>Thursday at 4 PM in the lab.</p><p>Attendees: <span id="count">0</span></p><button id="join">Join</button></main>';
 const safeScript = value=>JSON.stringify(String(value)).replace(/</g,'\\u003c');
-const scriptTag = value=>'<script>'+String(value).replace(/<\\/script/gi,'<\\\\/script')+'<\\/script>';
 function rulesForLesson(lesson) {
   if(lesson==='html')return `(()=>{
    const rows=[{label:'Heading',pass:!!document.querySelector('h1')?.textContent.trim()},

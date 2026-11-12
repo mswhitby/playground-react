@@ -13,6 +13,7 @@ import { buildPublicChecks, formatPublicCheckResults } from "../../lib/publicPyt
 /** Code editor over console, with mock Run / Check / Reset / Save / Submit controls. */
 export default function CodePane({ lessonId, task }) {
   const codeKey = storageKeys.code(lessonId);
+  const isProjectDraft = Boolean(task.projectDraft);
   const workspace = useRef(null);
   const pythonRunner = useRef(null);
   const [running, setRunning] = useState(false);
@@ -83,6 +84,7 @@ export default function CodePane({ lessonId, task }) {
     }
     if (action === "Reset") {
       setCode(task.starter);
+      if (isProjectDraft) writeString(codeKey, task.starter);
       setChecksText("Choose Check to review this draft. Results are for demonstration only.");
       setConsoleText(runMockAction("Reset", code, task));
       setConsoleTab(task.language === "jsx" ? "Preview" : "Console");
@@ -111,6 +113,7 @@ export default function CodePane({ lessonId, task }) {
       <div className="code-workspace" ref={workspace} style={{ "--editor-height": `${editorHeight}px` }}>
         <CodeEditor value={code} language={task.language} onChange={value => {
           setCode(value);
+          if (isProjectDraft) writeString(codeKey, value);
           setSavedMessage("");
           setChecksText("Your code has changed. Choose Check to review this draft.");
         }}/>

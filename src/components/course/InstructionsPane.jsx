@@ -26,8 +26,8 @@ export default function InstructionsPane({ lessonId, task, isTsi = false, tsiAns
     const split = splitLesson(doc, task);
     const solve = split.solve + publishedSolveSupplement(task, split.solve);
     return {
-      solve: resolvePublishedLinks(solve, task?.markdown),
-      learn: resolvePublishedLinks(split.learn, task?.markdown),
+      solve: resolvePublishedLinks(solve, task?.markdownUrl || task?.markdown),
+      learn: resolvePublishedLinks(split.learn, task?.markdownUrl || task?.markdown),
     };
   }, [doc, task]);
   const guide = useMemo(() => guidedSteps(parts.learn), [parts.learn]);

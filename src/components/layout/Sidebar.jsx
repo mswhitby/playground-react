@@ -14,8 +14,8 @@ const MENU = [
 ];
 
 /** One shared sidebar: Explore → current course outline → all playgrounds. */
-export default function Sidebar({ open, page, courseId, lessonId, setPage, openCourse, completedLessons = [], assignments = [], grades = [] }) {
-  const course = page === 'course' ? getCourse(courseId) : null;
+export default function Sidebar({ open, page, courseId, lessonId, setPage, openCourse, onOpenProject, availableCourses = courses, completedLessons = [], assignments = [], grades = [] }) {
+  const course = page === 'course' ? availableCourses.find(item=>item.id===courseId) : null;
   return (
     <aside className={cn('main-sidebar', !open && 'collapsed')} aria-label="Playground navigation">
       <div className="side-title">EXPLORE</div>
@@ -57,12 +57,19 @@ export default function Sidebar({ open, page, courseId, lessonId, setPage, openC
               </div>
             </details>
           ))}
+          {!!course.projects?.length && <>
+            <div className="side-section-title">PROJECTS</div>
+            {course.projects.map(project => <button type="button" key={project.id}
+              className="outline-lesson" title={project.title} onClick={()=>onOpenProject?.(course.id,project.id)}>
+              <span className="outline-lesson-name">{project.title}</span>
+            </button>)}
+          </>}
         </section>
       )}
 
       <div className="side-rule" />
       <div className="side-title">PLAYGROUNDS</div>
-      {courses.map((c) => (
+      {availableCourses.map((c) => (
         <button key={c.id} data-course={c.id}
           className={cn('nav-item course-nav-item', page === 'course' && courseId === c.id && 'active')}
           onClick={() => openCourse(c.id)} title={c.label}>

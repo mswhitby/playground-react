@@ -38,6 +38,15 @@ export default function LessonWorkspace({ lessonId, course, unit, unitNumber, is
       <p>This scheduled lesson has not been authored yet. No practice or scores are available.</p>
     </section>
   </div>;
+  if (task.language === 'text' && !isTsi) return <div className="lesson-screen">
+    <LessonHeader task={task} unit={unit} unitNumber={unitNumber} isTsi={false}
+      isCompleted={isCompleted} assignment={assignment} grade={grade}
+      onToggleCompleted={onToggleCompleted}/>
+    <section className="surface-card published-reading">
+      <p className="muted">Published written-practice material. Answer checking and verified scores remain on the current Playground.</p>
+      <div className="markdown-preview" dangerouslySetInnerHTML={{__html:renderMarkdown(task.markdownSource)}}/>
+    </section>
+  </div>;
   // TSI currently publishes an outline plus four Markdown draft lessons.
   // The old fictional TSI multiple-choice IDs must not be substituted for those lessons.
   if (isTsi && !tsiQuestions[lessonId]) return <div className="lesson-screen">

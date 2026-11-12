@@ -50,18 +50,35 @@ async function gameCourse(fetchImpl, signal) {
   })));
   return {...normalizeImportedOutline({units}), source:'published', projects:[]};
 }
+async function readWebStarterFiles(courseId,files,fetchImpl,signal) {
+  if (!files) return null;
+  const names=Object.keys(files);
+  if(!names.includes('index.html') || !names.includes('styles.css') ||
+    (!names.includes('script.js') && !names.includes('App.jsx'))) {
+    throw Error('A Mobile App starterFiles entry requires index.html, styles.css and script.js (or App.jsx).');
+  }
+  return Object.fromEntries(await Promise.all(names.map(async name=>[
+    name,await request(courseId,files[name],fetchImpl,signal)
+  ])));
+}
 async function mobileCourse(fetchImpl, signal) {
   const id='mobile-app-dev';
   const manifest=await request(id,'course.json',fetchImpl,signal,true);
   const lessons=await Promise.all(manifest.lessons.map(async row => {
-    const [markdownSource,starter]=await Promise.all([
-      request(id,row.markdown,fetchImpl,signal),request(id,row.starterFile,fetchImpl,signal)
+    const [markdownSource,starter,starterFiles]=await Promise.all([
+      request(id,row.markdown,fetchImpl,signal),
+      row.starterFile?request(id,row.starterFile,fetchImpl,signal):Promise.resolve(''),
+      readWebStarterFiles(id,row.starterFiles,fetchImpl,signal)
     ]);
-    return publishedLesson(row,markdownSource,starter,row.language==='react'?'jsx':row.language,id);
+    return {...publishedLesson(row,markdownSource,starter,row.language==='react'?'jsx':row.language,id),
+      ...(starterFiles?{starterFiles}:{})};
   }));
   const projects=await Promise.all((manifest.projects||[]).map(async project => {
     // Finished examples are deliberately NOT loaded into the preview.
-    const starter=await request(id,project.starterFile,fetchImpl,signal);
+    const [starter,starterFiles]=await Promise.all([
+      project.starterFile?request(id,project.starterFile,fetchImpl,signal):Promise.resolve(''),
+      readWebStarterFiles(id,project.starterFiles,fetchImpl,signal)
+    ]);
     const steps=await Promise.all(project.steps.map(async step => ({
       ...step,
       // Honor the published focus so the matching file tab is prominent on each step.
@@ -70,7 +87,7 @@ async function mobileCourse(fetchImpl, signal) {
       markdownUrl:publicResourceUrl(id,step.markdown),
     })));
     return {id:project.id,title:project.title,summary:project.summary,skills:project.skills||[],
-      starter,language:'html',steps};
+      starter,language:'html',steps,...(starterFiles?{starterFiles}:{})};
   }));
   return {...normalizeImportedOutline({lessons}),projects,source:'published'};
 }

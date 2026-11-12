@@ -70,7 +70,8 @@ function challengeJavascript(source,task,check) {
         }catch(e){results.push({label:${safeScript(name)}+'(...)',expected:JSON.stringify(row.expected),
           received:'',error:e.name+': '+e.message,pass:false});}
       }
-      send('checks',{results});
+      if(${check?'true':'false'})send('checks',{results});
+      else results.forEach(row=>send('log',{level:row.pass?'info':'warn',text:row.label+' → '+(row.error || row.received)+' (expected '+row.expected+')'}));
     }catch(e){send('error',{text:e.name+': '+e.message});}
   })();`;
 }

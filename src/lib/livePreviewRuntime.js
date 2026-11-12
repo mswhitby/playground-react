@@ -80,6 +80,32 @@ function bridgeScript(bridge) {
 }
 export async function browserPreviewSource({code,language,lessonId,task={},token,check=true}) {
   if(!token)throw Error('A preview token is required.');
+  if(task.webFiles) {
+    // Separate editable files are assembled only in the opaque-origin preview.
+    // Removing a link or script tag in index.html intentionally disconnects it.
+    const {assembleWebFiles}=await import('./webFiles.js');
+    const scriptName=language==='jsx'?'App.jsx':'script.js';
+    let scriptOverride=null;
+    if(language==='jsx') {
+      if(typeof window.PlaygroundJSX!=='function') {
+        await new Promise((resolve,reject)=>{
+          const tag=document.createElement('script');tag.src=source+'vendor/learning/jsx.js';
+          tag.onload=resolve;tag.onerror=()=>reject(Error('React JSX compiler could not load.'));
+          document.head.append(tag);
+        });
+      }
+      scriptOverride=window.PlaygroundJSX(task.webFiles['App.jsx']||'');
+    }
+    const {html,linkedStyle,linkedScript}=assembleWebFiles(task.webFiles,{scriptName,scriptOverride});
+    if(task.projectId) {
+      const {buildProjectPreview}=await import(/* @vite-ignore */ source+'project-preview.mjs');
+      return buildProjectPreview(html,{token,step:task.stepId,projectId:task.projectId,check});
+    }
+    const reactLibrary='<script src="'+source+'vendor/learning/react.js"></script>';
+    const page=language==='jsx' ? (/<\\/head\\s*>/i.test(html)
+      ? html.replace(/<\\/head\\s*>/i,reactLibrary+'</head>') : reactLibrary+html) : html;
+    return browserPreviewSource({code:page,language:'html',lessonId,task:{},token,check});
+  }
   if(task.projectId) {
     const {buildProjectPreview}=await import(/* @vite-ignore */ source+'project-preview.mjs');
     return buildProjectPreview(code,{token,step:task.stepId,projectId:task.projectId,check});

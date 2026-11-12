@@ -69,6 +69,42 @@ test('Mobile App & Web keeps lessons distinct from guided projects and does not 
   });
 });
 
+test('future native three-file starters are loaded from their own curriculum paths',async()=>{
+  const files={
+    'mobile-app-dev/course.json':{
+      lessons:[{id:'html-02',competency:'HTML',title:'New page',
+        markdown:'lessons/html-02/lesson.md',language:'html',
+        starterFiles:{
+          'index.html':'lessons/html-02/index.html',
+          'styles.css':'lessons/html-02/styles.css',
+          'script.js':'lessons/html-02/script.js'
+        }}],
+      projects:[{id:'next-project',title:'Next Project',summary:'Multi-file starter',
+        starterFiles:{
+          'index.html':'projects/next-project/index.html',
+          'styles.css':'projects/next-project/styles.css',
+          'script.js':'projects/next-project/script.js'
+        },
+        steps:[{id:'page',title:'Write HTML',markdown:'projects/next-project/page.md',focus:'HTML'}]}]
+    },
+    'mobile-app-dev/lessons/html-02/lesson.md':'# New page',
+    'mobile-app-dev/lessons/html-02/index.html':'<link rel="stylesheet" href="styles.css">',
+    'mobile-app-dev/lessons/html-02/styles.css':'body {color:blue}',
+    'mobile-app-dev/lessons/html-02/script.js':'console.log("lesson")',
+    'mobile-app-dev/projects/next-project/index.html':'<script src="script.js"></script>',
+    'mobile-app-dev/projects/next-project/styles.css':'main{display:grid}',
+    'mobile-app-dev/projects/next-project/script.js':'console.log("project")',
+    'mobile-app-dev/projects/next-project/page.md':'# Write HTML'
+  };
+  const content=await loadPublishedCourse('mobile-app-dev',{fetchImpl:fixtureFetch(files)});
+  const lesson=getCourseLesson(content,'html-02');
+  assert.deepEqual(Object.keys(lesson.starterFiles),['index.html','styles.css','script.js']);
+  assert.equal(lesson.starterFiles['script.js'],'console.log("lesson")');
+  assert.equal(content.projects[0].starterFiles['styles.css'],'main{display:grid}');
+  assert.equal(content.projects[0].steps[0].focus,'HTML');
+  assert.deepEqual(content.lessons,['html-02']);
+});
+
 test('UIL written questions remain student-facing without publishing answer indices or explanations',async()=>{
   const files={
     'uil/course.json':{written:{markdown:'lessons/written-prep.md',practice:'practice/written-01.json'},

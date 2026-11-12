@@ -113,7 +113,7 @@ export function buildChallengePython(source, task, check=true) {
 export function buildJavaChallenge(source,task) {
   const cases=challengeCases(task,'java',source);
   if(!cases.length) throw new Error('No visible examples are available.');
-  const lines=cases.map((row,i)=>`try{Object actual=Solution.${row.call}; Object expected=${row.expectedLiteral}; boolean ok=java.util.Objects.deepEquals(actual,expected); System.out.println("PLAYGROUND_CASE:${i}:"+(ok?"1":"0")+":"+String.valueOf(actual));}catch(Throwable error){System.out.println("PLAYGROUND_CASE:${i}:0:ERROR "+error.getClass().getSimpleName()+" "+error.getMessage());}`);
+  const lines=cases.map((row,i)=>`try{Object actual=Solution.${row.call}; Object expected=${row.expectedLiteral}; boolean ok=java.util.Objects.deepEquals(actual,expected); String received=java.util.Arrays.deepToString(new Object[]{actual}); received=received.substring(1,received.length()-1); System.out.println("PLAYGROUND_CASE:${i}:"+(ok?"1":"0")+":"+received);}catch(Throwable error){System.out.println("PLAYGROUND_CASE:${i}:0:ERROR "+error.getClass().getSimpleName()+" "+error.getMessage());}`);
   return source+'\nclass __PlaygroundPracticeChecks {public static void main(String[] args) {'+lines.join('\n')+'}}';
 }
 export function parseJavaChallenge(stdout,cases) {

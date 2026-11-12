@@ -6,6 +6,7 @@ import LessonHeader from './LessonHeader.jsx';
 import InstructionsPane from './InstructionsPane.jsx';
 import CodePane from './CodePane.jsx';
 import TsiPractice from './TsiPractice.jsx';
+import TsiDiagnostic from './TsiDiagnostic.jsx';
 import { tsiQuestions } from '../../data/tsiQuestions.js';
 import { renderMarkdown } from '../../lib/markdown.js';
 
@@ -21,6 +22,14 @@ export default function LessonWorkspace({ lessonId, course, unit, unitNumber, is
     setLeftWidth(Math.max(260, Math.min(rect.width - 340, event.clientX - rect.left)));
   }
   const isTsi = course.id === 'tsi-math';
+  if (isTsi && lessonId === 'tsi-20d-d01' && course.diagnosticItems?.length) {
+    return <div className="lesson-screen">
+      <header className="lesson-header"><div className="eyebrow">Day 1 · TSI Math Advisory</div>
+        <h1>{task.title}</h1><p>Diagnostic placement · 30-minute advisory plan</p>
+      </header>
+      <TsiDiagnostic items={course.diagnosticItems} profiles={course.locatorProfiles}/>
+    </div>;
+  }
   if (!task?.ready) return <div className="lesson-screen">
     <LessonHeader task={task} unit={unit} unitNumber={unitNumber} isTsi={isTsi}
       isCompleted={isCompleted} assignment={assignment} grade={grade} onToggleCompleted={onToggleCompleted}/>

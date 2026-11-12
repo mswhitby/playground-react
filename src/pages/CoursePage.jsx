@@ -3,9 +3,11 @@ import { courses, getCourse } from '../data/courses.js';
 import { courseLessonIds, lessonIdsOf, lessonTitleOf, unitTitleOf } from '../lib/courseContent.js';
 import CourseLanding from './CourseLanding.jsx';
 import LessonWorkspace from '../components/course/LessonWorkspace.jsx';
+import ProjectWorkspace from '../components/course/ProjectWorkspace.jsx';
 
-export default function CoursePage({ courseId, lessonId, openCourse, openChallenges, completedLessons = [], assignments = [], grades = [], onToggleLessonComplete, courseColors = {}, onSetCourseColor, onResetCourseColor }) {
-  const course = getCourse(courseId) || courses[0];
+export default function CoursePage({ courseId, lessonId, projectId, projectStepId, availableCourses = courses, openCourse, openProject, openChallenges, completedLessons = [], assignments = [], grades = [], onToggleLessonComplete, courseColors = {}, onSetCourseColor, onResetCourseColor }) {
+  const course = availableCourses.find(item=>item.id===courseId) || availableCourses[0];
+  const project = (course.projects||[]).find(item=>item.id===projectId);
   const sequence = courseLessonIds(course);
   const unitIndex = course.units.findIndex(unit => lessonIdsOf(unit).includes(lessonId));
   const currentUnit = course.units[unitIndex];
@@ -16,9 +18,10 @@ export default function CoursePage({ courseId, lessonId, openCourse, openChallen
       <div className="course-main">
         <div className="course-breadcrumb">
           <button onClick={() => openCourse(null)}>All playgrounds</button><ChevronRight size={14}/>
-          {lessonId ? <><button onClick={() => openCourse(course.id)}>{course.label}</button><ChevronRight size={14}/><span className="breadcrumb-unit-name" title={currentUnit ? unitTitleOf(currentUnit) : ''}>{currentUnit ? unitTitleOf(currentUnit) : ''}</span></> : <span>{course.label}</span>}
+          {(lessonId || project) ? <><button onClick={() => openCourse(course.id)}>{course.label}</button><ChevronRight size={14}/><span className="breadcrumb-unit-name" title={currentUnit ? unitTitleOf(currentUnit) : ''}>{currentUnit ? unitTitleOf(currentUnit) : project?.title || ''}</span></> : <span>{course.label}</span>}
         </div>
-        {lessonId ? (
+        {project ? <ProjectWorkspace key={project.id} course={course} project={project}
+            stepId={projectStepId} openProject={openProject}/> : lessonId ? (
           <>
             <div className="lesson-mobile-navigation">
               <label htmlFor="lesson-select">Lesson</label>
@@ -44,7 +47,7 @@ export default function CoursePage({ courseId, lessonId, openCourse, openChallen
               </button>}
             </nav>
           </>
-        ) : <CourseLanding course={course} openCourse={openCourse} openChallenges={openChallenges} completedLessons={completedLessons} assignments={assignments} grades={grades} courseColors={courseColors} onSetCourseColor={onSetCourseColor} onResetCourseColor={onResetCourseColor} />}
+        ) : <CourseLanding course={course} openCourse={openCourse} openProject={openProject} openChallenges={openChallenges} completedLessons={completedLessons} assignments={assignments} grades={grades} courseColors={courseColors} onSetCourseColor={onSetCourseColor} onResetCourseColor={onResetCourseColor} />}
       </div>
     </div>
   );

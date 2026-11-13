@@ -2,11 +2,13 @@ import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { courses, getCourse } from '../data/courses.js';
 import { courseLessonIds, lessonIdsOf, lessonTitleOf, unitTitleOf } from '../lib/courseContent.js';
 import CourseLanding from './CourseLanding.jsx';
+import TestPrepCourse from './TestPrepCourse.jsx';
 import LessonWorkspace from '../components/course/LessonWorkspace.jsx';
 import ProjectWorkspace from '../components/course/ProjectWorkspace.jsx';
 
 export default function CoursePage({ courseId, lessonId, projectId, projectStepId, availableCourses = courses, openCourse, openProject, openChallenges, completedLessons = [], assignments = [], grades = [], onToggleLessonComplete, courseColors = {}, onSetCourseColor, onResetCourseColor }) {
   const course = availableCourses.find(item=>item.id===courseId) || availableCourses[0];
+  if (course.id === 'test-prep') return <TestPrepCourse lessonId={lessonId} openCourse={openCourse} completedLessons={completedLessons} onToggleLessonComplete={onToggleLessonComplete}/>;
   const project = (course.projects||[]).find(item=>item.id===projectId);
   const sequence = courseLessonIds(course);
   const unitIndex = course.units.findIndex(unit => lessonIdsOf(unit).includes(lessonId));

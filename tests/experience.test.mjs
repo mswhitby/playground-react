@@ -28,7 +28,7 @@ test('students can mark a lesson complete or undo completion without changing ot
 
 test('updated course order is preserved in home and sidebar', () => {
   assert.deepEqual(courses.map(course => course.id), [
-    'computer-science-1', 'game-programming', 'mobile-app-dev', 'capstone', 'uil', 'tsi-math'
+    'computer-science-1', 'game-programming', 'mobile-app-dev', 'capstone', 'uil', 'test-prep', 'tsi-math'
   ]);
   const card = read('../src/components/home/CourseCard.jsx');
   const side = read('../src/components/layout/Sidebar.jsx');

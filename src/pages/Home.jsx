@@ -14,7 +14,7 @@ export default function Home({ openCourse, openTeacher, openChallenges, availabl
         </p>
       </div>
       <div className="course-card-grid">
-        {availableCourses.map((c) => (
+        {availableCourses.filter((c) => c.id !== 'tsi-math').map((c) => (
           <CourseCard key={c.id} course={c} completedLessons={completedLessons} onOpen={() => openCourse(c.id)} />
         ))}
       </div>

@@ -13,6 +13,11 @@ test('every course has unit groups and every listed lesson has metadata and Mark
     assert.deepEqual(course.lessons, course.units.flatMap(unit => unit.lessons));
     assert.equal(new Set(course.lessons).size, course.lessons.length);
     for (const id of course.lessons) {
+      if (course.id === 'test-prep') {
+        // Quiz topics are intentionally authored as structured MCQs, not Markdown coding lessons.
+        assert.ok(course.lessonRecords[id], `missing Test Prep topic ${id}`);
+        continue;
+      }
       if (course.publishedContent) {
         const record = course.lessonRecords[id];
         assert.ok(record, `missing public lesson ${id}`);

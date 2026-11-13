@@ -1,4 +1,4 @@
-import { Calculator, Code2, Gamepad2, Rocket, Smartphone, Trophy } from 'lucide-react';
+import { Calculator, Code2, Gamepad2, Rocket, Smartphone, Trophy, ClipboardCheck } from 'lucide-react';
 import { playgroundPath } from '../../lib/routes.js';
 import { courseProgress } from '../../lib/completion.js';
 
@@ -8,6 +8,7 @@ const COURSE_ICONS = {
   'mobile-app-dev': Smartphone,
   uil: Trophy,
   'tsi-math': Calculator,
+  'test-prep': ClipboardCheck,
   capstone: Rocket,
 };
 

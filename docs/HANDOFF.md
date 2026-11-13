@@ -128,3 +128,8 @@ At the end of each material change, update `mswhitby/playground/docs/HANDOFF.md`
 
 - GitHub Pages site deployment **completed successfully** in `mswhitby/classroom` run `43273602383` for commit `8f42197a38be7509b2bdd892df1833b9ebbc5d10`. The publisher changed only the isolated preview index and its generated JS/CSS assets. The separate production `/playground/` application was not modified.
 - Preview ready for user review: https://www.mswhitby.com/playground/preview/ . Review HTML lesson, CSS lesson, JavaScript lesson, React lesson, Club Connect step changes and Bracket Challenge; browser-specific smoke testing remains unverified beyond successful build and automated tests.
+
+
+## 2026-11-13 — Test Prep hub work (unmerged feature branch)
+
+Branch `feature/test-prep-hub-20261113` was based on the open React design PR branch `course-accents-editor-teacher-catalog`. It adds a new Test Prep card/hub containing the existing TSI Math link plus 20 **original, preview-only** ASVAB (4 subjects), digital SAT (2), and enhanced ACT (4, with Science optional) multiple-choice questions. It has in-browser answer checking and local practice history, no authentication and no official score predictions. Existing `tsi-math` course URL and lesson identifiers are unchanged. The intended new canonical curriculum repo is `mswhitby/test-prep`, **not created yet**; current sample items reside temporarily in the React design branch. No production app, classroom publisher or live student data changed. Before merging or publishing, run React tests/build and review source attribution and mobile UI; do not assume publication or CI passed.

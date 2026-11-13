@@ -10,3 +10,5 @@
 
 /* Accent controls live with the course, not the global theme. */
 [data-course] { --accent: var(--course-color); --on-accent: var(--course-on-color); }
+
+[data-course="test-prep"] { --course-color: var(--student-course-color-test-prep, #15b7a3); --course-on-color: var(--student-course-ink-test-prep, #111118); }

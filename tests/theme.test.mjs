@@ -5,8 +5,8 @@ import { courses } from '../src/data/courses.js';
 
 const read = path => readFileSync(new URL(path, import.meta.url), 'utf8');
 
-test('six playgrounds retain unique vivid category colors', () => {
-  assert.equal(courses.length, 6);
+test('all registered courses retain unique vivid category colors', () => {
+  assert.equal(courses.length, 7);
   assert.equal(new Set(courses.map(course => course.color)).size, courses.length);
   for (const course of courses) assert.match(course.color, /^#[0-9a-fA-F]{6}$/);
 });

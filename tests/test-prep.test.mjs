@@ -11,6 +11,9 @@ test('Test Prep is a shareable course, and existing TSI routes stay valid', () =
   assert.equal(resolveRoute(playgroundPath(tsi)).courseId, 'tsi-math');
   assert.equal(resolveRoute(playgroundPath(prep, 'asvab-ar')).lessonId, 'asvab-ar');
   assert.equal(resolveRoute('/playgrounds/test-prep/lessons/bogus').page, 'not-found');
+  // TSI stays registered for old links but is shown only through the Test Prep hub.
+  assert.ok(prep.units.some(unit => unit.id === 'asvab'));
+  assert.equal(tsi.id, 'tsi-math');
 });
 
 test('ASVAB, SAT, ACT each contain question samples with valid answer keys', () => {

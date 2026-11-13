@@ -8,7 +8,7 @@ import { buildPublicChecks, formatPublicCheckResults } from '../src/lib/publicPy
 import { readFileSync } from 'node:fs';
 
 const cs1 = courses.find(c=>c.id==='computer-science-1');
-const examples = courses.filter(c=>c.id!=='computer-science-1');
+const examples = courses.filter(c=>c.id!=='computer-science-1' && c.id!=='test-prep');
 
 test('complete published CS1 content replaces only Computer Science I mocks',()=>{
   assert.equal(cs1.publishedContent,true);

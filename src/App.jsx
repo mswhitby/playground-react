@@ -38,7 +38,7 @@ export default function App() {
   const [contentErrors,setContentErrors] = useState({});
   const [contentLoading,setContentLoading] = useState(true);
   const availableCourses = useMemo(() => courses.map(course => {
-    if (course.id === 'computer-science-1') return course;
+    if (course.id === 'computer-science-1' || course.id === 'test-prep') return course;
     if (course.id === 'capstone') return {...course,units:[],lessons:[],lessonRecords:{},
       publishedContent:false,projects:[]};
     const imported = publishedContent[course.id];

@@ -1,4 +1,5 @@
 import { courseUnits } from './courseUnits.js';
+import { testPrepUnits, testPrepLessonRecords } from './testPrepSamples.js';
 import { liveCs1Lessons } from './liveCs1/index.js';
 import { normalizeImportedOutline } from '../lib/courseContent.js';
 
@@ -67,6 +68,19 @@ export const courses = [
     description: "Trace Java, explain your reasoning, and practice.",
     lessons: courseUnits["uil"].flatMap((unit) => unit.lessons),
     topics: ["Java", "Arrays", "Written", "Programming"],
+  },
+  {
+    id: "test-prep",
+    units: testPrepUnits,
+    lessonRecords: testPrepLessonRecords,
+    slug: "test-prep",
+    label: "Test Prep",
+    short: "TSI · ASVAB · SAT · ACT",
+    glyph: "ex",
+    color: "#15B7A3",
+    description: "College readiness and military aptitude study, all in one place.",
+    lessons: testPrepUnits.flatMap((unit) => unit.lessons),
+    topics: ["TSI", "ASVAB", "SAT", "ACT"],
   },
   {
     id: "tsi-math",

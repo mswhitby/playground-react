@@ -69,7 +69,7 @@ export default function Sidebar({ open, page, courseId, lessonId, setPage, openC
 
       <div className="side-rule" />
       <div className="side-title">PLAYGROUNDS</div>
-      {availableCourses.map((c) => (
+      {availableCourses.filter((c) => c.id !== 'tsi-math').map((c) => (
         <button key={c.id} data-course={c.id}
           className={cn('nav-item course-nav-item', page === 'course' && courseId === c.id && 'active')}
           onClick={() => openCourse(c.id)} title={c.label}>

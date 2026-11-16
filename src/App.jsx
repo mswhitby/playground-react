@@ -116,8 +116,8 @@ export default function App() {
     if (route.page === 'course') setLastCourse(route.courseId);
     const label = route.page === 'course'
       ? getCourse(route.courseId)?.label
-      : route.page === 'admin' ? 'Admin dashboard' : route.page === 'teacher' ? 'Teacher dashboard' : route.page === 'grades' ? 'Grades' : route.page === 'journals' ? 'Weekly journals'
-      : route.page === 'challenges' ? 'Challenge Bank' : route.page === 'challenge' ? 'Coding challenge' : 'Your playgrounds';
+      : route.page === 'admin' ? 'Admin Dashboard' : route.page === 'teacher' ? 'Teacher Dashboard' : route.page === 'grades' ? 'Grades' : route.page === 'journals' ? 'Weekly Journals'
+      : route.page === 'challenges' ? 'Challenge Bank' : route.page === 'challenge' ? 'Coding Challenge' : 'Your Playgrounds';
     document.title = `${label || 'Playground'} | Ms. Whitby's Playground — React Lab`;
   }, [route.page, route.courseId, setLastCourse]);
 

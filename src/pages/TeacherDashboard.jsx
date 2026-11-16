@@ -33,7 +33,7 @@ export default function TeacherDashboard({ students, journalSubmissions }) {
   return <div className="main-content teacher-screen">
     <SectionTitle eyebrow="Your classroom · Frontend preview"
       actions={<Chip>{activeTab === "curriculum" ? "Real CS1 catalog · demo assignments" : "Sample student data"}</Chip>}>
-      Teacher dashboard
+      Teacher Dashboard
     </SectionTitle>
     <p className="page-subtitle">
       {activeTab === "curriculum"

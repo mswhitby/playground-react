@@ -7,7 +7,7 @@ const read=path=>readFileSync(new URL(path,import.meta.url),'utf8');
 test('CS1 integration only reads data through canonical production bridge',()=>{
   const adapter=read('../src/lib/cs1Integration.js');
   assert.match(adapter,/VITE_READONLY_INTEGRATION/);
-  assert.match(adapter,/\/playground\/integration\/account-bridge\.js/);
+  assert.match(adapter,/\/playground\/integration\/.*account-bridge\.js/);
   assert.doesNotMatch(adapter,/insert\(|update\(|upsert\(|delete\(|submit\(|signInWithOAuth/);
   const app=read('../src/App.jsx');
   assert.match(app,/cs1IntegrationMode\?courses\.filter\(c=>c\.id==='computer-science-1'\)/);

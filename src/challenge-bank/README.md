@@ -1,12 +1,13 @@
 # Ms. Whitby's Shared Challenge Bank
 
-**One problem, multiple languages.** This private repository is the source of truth for reusable programming challenges across Ms. Whitby's Playground courses.
+**One problem, multiple languages.** This directory is a **prototype snapshot** of the experimental `mswhitby/challenges` shared bank. It is not the production source for the current Computer Science I challenge workflow.
 
 Each challenge has one `problem.md` statement, `config.json` metadata, public sample cases in `examples.json`, and starter code in Python, Java, JavaScript, and C#. Each language uses its normal function-naming convention but preserves the same input/output contract.
 
 ## Use in Playground
 
-- The React design lab carries a **public-facing snapshot** in `src/challenge-bank/` for browsing and layout previews. It is not a live connection to this repository.
+- The React design lab carries this **public-facing snapshot** only for browsing and layout previews. It is not a live connection and must not be treated as authoritative challenge content.
+- The current production challenge bank remains `mswhitby/computer-science-1/challenges` until the shared bank has equivalent legacy coverage and verified production grading.
 - For the production site, package the public-facing challenge files during the existing Playground build. Do **not** call GitHub's private API from a student's browser, and do **not** add secrets to client-side code.
 - To checkout this private repository in a workflow running in a different repository, configure a fine-grained read-only token or GitHub App installation token with access to `mswhitby/challenges`. `GITHUB_TOKEN` scoped to the other repository cannot read it automatically.
 - Problem statements, samples, and starters become public when packaged into a public site. The bank intentionally has **no solutions or hidden grading cases**. Keep unpublished tests/solutions in a separately restricted grader or private secrets, and never ship them to the browser.

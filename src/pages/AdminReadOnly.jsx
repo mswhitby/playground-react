@@ -2,7 +2,7 @@ import {useEffect,useState} from 'react';
 import SectionTitle from '../components/ui/SectionTitle.jsx';
 import Chip from '../components/ui/Chip.jsx';
 import AccountsTab from '../components/teacher/AccountsTab.jsx';
-import {useTeacherIdentity} from '../lib/teacherIdentity.js';
+import {useTeacherIdentity,identityForStudent} from '../lib/teacherIdentity.js';
 
 const bridge='/playground/integration/teacher-bridge.js';
 export default function AdminReadOnly(){
@@ -12,8 +12,7 @@ export default function AdminReadOnly(){
  useEffect(()=>{let active=true;import(/* @vite-ignore */bridge).then(m=>m.teacherReadOnlyClient()).then(client=>{if(active){setService(client);setState(client.status)}}).catch(()=>{if(active)setState('unavailable')});return()=>{active=false}},[]);
  const identity=useTeacherIdentity(service);
  const students=identity.directory.map(p=>({
-  id:p.user_id,github:p.github_account||'',teacherName:identity.teacher.get(p.user_id)||'',
-  sheetName:identity.sheet.get(p.user_id)?.name||'',studentName:p.student_name||p.display_name||'',
+  id:p.user_id,...identityForStudent(identity,p),
   sections:(p.memberships||[]).filter(m=>m.status==='approved').map(m=>m.class_id)
  }));
  return <div className="main-content teacher-screen admin-screen">

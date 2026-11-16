@@ -22,9 +22,10 @@ export default function AccountCard({ student: s, isEditing, onToggleEdit, onDon
         <Chip tone={s.teacherName || s.sheetName ? "success" : ""}>
           {s.teacherName ? 'Teacher name' : s.sheetName ? 'Sheet matched' : s.studentName ? 'Signup name' : 'GitHub fallback'}
         </Chip>
-        {!readOnlyMode && s.sections.map((id) => (
-          <Chip key={id}>Period {getSectionPeriod(id)}</Chip>
+        {(readOnlyMode ? (s.periods||[]) : s.sections.map((id)=>getSectionPeriod(id)).filter(Boolean)).map((period) => (
+          <Chip key={period}>Period {period}</Chip>
         ))}
+        {readOnlyMode&&s.kind==='client'&&<Chip>Private client</Chip>}
       </div>
 
       {isEditing && (

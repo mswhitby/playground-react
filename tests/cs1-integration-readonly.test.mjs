@@ -19,8 +19,11 @@ test('CS1 integration only reads data through canonical production bridge',()=>{
   assert.match(header,/readOnlyMode && !grade/);
   const sidebar=read('../src/components/layout/Sidebar.jsx');
   assert.match(sidebar,/MENU\.filter/);
+  const landing=read('../src/pages/CourseLanding.jsx');
+  assert.match(landing,/with verified grades/);
   const gradeView=read('../src/pages/Grades.jsx');
   assert.match(gradeView,/weeklyPoints/);
+  assert.match(gradeView,/Assignment and due-date data will be connected/);
   assert.match(gradeView,/Verified Computer Science I results/);
 });
 

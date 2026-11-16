@@ -94,7 +94,7 @@ export default function TeacherReadOnly(){
  const selectedSection=section?{id:section.id,name:section.name,course:section.course_id,join_code:section.join_code}:null;
  return <div className="main-content teacher-screen">
   <SectionTitle eyebrow="Your classroom · Connected integration"
-   actions={<Chip>Authorized teacher · Read only</Chip>}>Teacher dashboard</SectionTitle>
+   actions={<Chip>Authorized teacher · Read only</Chip>}>Teacher Dashboard</SectionTitle>
   <p className="page-subtitle">The original React dashboard layout, connected to your existing authorized class data. No student records can be changed here.</p>
   {state==='loading'?<p role="status">Checking your teacher session…</p>:
    state==='signed-out'?<p>Sign in through the <a href="/playground/">current Playground</a>, then return here.</p>:
@@ -117,7 +117,7 @@ export default function TeacherReadOnly(){
      {tab==='curriculum'&&<><SectionBanner section={selectedSection} />
        {selectedSection?.course==='computer-science-1'?<TeacherCurriculum section={selectedSection} students={students} assignments={[]} readOnlyMode />:<section className="panel"><h2><BookOpen size={18}/> Curriculum</h2><p>Course-specific assignments will be connected after authorization and content verification.</p></section>}
      </>}
-     {tab==='journals'&&<section className="panel"><div className="section-heading"><h2><ClipboardPenLine size={18}/> Weekly journal submissions</h2></div><p>Journal access will be connected to authorized section records. No fictional student submissions are shown.</p></section>}
+     {tab==='journals'&&<section className="panel"><div className="section-heading"><h2><ClipboardPenLine size={18}/> Weekly Journal Submissions</h2></div><p>Journal access will be connected to authorized section records. No fictional student submissions are shown.</p></section>}
     </>}
    </>}
  </div>;

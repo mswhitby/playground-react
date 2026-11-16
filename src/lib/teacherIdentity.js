@@ -24,7 +24,7 @@ export function identityForStudent(identity,member){
   github
  };
 }
-export function useTeacherIdentity(service){
+export function useTeacherIdentity(service,refreshToken=0){
  const [identity,setIdentity]=useState(empty);
  useEffect(()=>{
   if(service?.status!=='ready'){setIdentity(empty());return}
@@ -39,6 +39,6 @@ export function useTeacherIdentity(service){
    if(active)setIdentity({...empty(),loading:false,error:'Names and account directory could not be loaded.'});
   });
   return()=>{active=false};
- },[service]);
+ },[service,refreshToken]);
  return identity;
 }

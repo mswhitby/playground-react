@@ -4,6 +4,7 @@ export const cs1IntegrationMode = import.meta.env.VITE_READONLY_INTEGRATION === 
 
 export async function loadCs1ReadOnlyAccount(){
   if(!cs1IntegrationMode)return {status:'disabled',grades:[],weeklyPoints:[]};
-  const {readOnlyCs1Snapshot}=await import(/* @vite-ignore */ '/playground/integration/account-bridge.js');
+  const bridgeUrl = '/playground/integration/' + 'account-bridge.js';
+  const {readOnlyCs1Snapshot}=await import(/* @vite-ignore */ bridgeUrl);
   return readOnlyCs1Snapshot();
 }

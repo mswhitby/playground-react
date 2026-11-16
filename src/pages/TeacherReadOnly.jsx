@@ -15,10 +15,18 @@ import SectionBanner from '../components/teacher/SectionBanner.jsx';
 
 const bridge='/playground/integration/teacher-bridge.js';
 function titleFor(id,course=getCourse('computer-science-1')){
- const raw=String(id||'');
- const variants=[raw,raw.replace(/^lesson:/,''),raw.split('/').at(-1)];
- for(const key of variants){const lesson=getCourseLesson(course,key);if(lesson?.title)return lesson.title;}
- return raw.replace(/^(lesson|challenge|project):/,'').split('/').at(-1).replace(/^\\d+-/,'').replace(/[-_]/g,' ').replace(/\\b\\w/g,c=>c.toUpperCase());
+ const raw=String(id||'').trim();
+ const cleaned=raw.replace(/^(lesson|challenge|project):/,'');
+ const records=course?.lessonRecords||{};
+ const variants=[raw,cleaned,cleaned.split('/').at(-1)];
+ for(const key of variants){
+  const exact=records[key];
+  if(exact?.title)return exact.title;
+ }
+ const tail=cleaned.split('/').at(-1);
+ const matching=Object.entries(records).filter(([key])=>key.split('/').at(-1)===tail);
+ if(matching.length===1&&matching[0][1]?.title)return matching[0][1].title;
+ return tail.replace(/^\\d+-/,'').replace(/[-_]/g,' ').replace(/\\b[a-z]/g,c=>c.toUpperCase())||'Untitled activity';
 }
 function weekOf(value){if(!value||Number.isNaN(Date.parse(value)))return null;const p=Object.fromEntries(new Intl.DateTimeFormat('en-US',{timeZone:'America/Chicago',year:'numeric',month:'2-digit',day:'2-digit'}).formatToParts(new Date(value)).filter(x=>x.type!=='literal').map(x=>[x.type,x.value]));const d=new Date(p.year+'-'+p.month+'-'+p.day+'T12:00:00Z');d.setUTCDate(d.getUTCDate()-(d.getUTCDay()+6)%7);return d.toISOString().slice(0,10)}
 function weekLabel(start){

@@ -26,15 +26,23 @@ export default function StudentAssignments({ student, week, readOnlyMode = false
         <Chip tone="success">{readOnlyMode ? Object.values(student.weekly||{}).reduce((n,p)=>n+(Number(p)||0),0)+' total verified pts' : (student.weekly[week] || 0)+' verified pts this week'}</Chip>
       </div>
 
-      <div className="mini-stats assignment-kind-stats" aria-label="Lesson and challenge history totals">
-        <span>
-          <small>Lessons</small>
-          <strong>{summary.lessons.completed}</strong> completed · {summary.lessons.graded} graded · {summary.lessons.tracked} tracked
-        </span>
-        <span>
-          <small>Challenges</small>
-          <strong>{summary.challenges.completed}</strong> completed · {summary.challenges.graded} graded · {summary.challenges.tracked} tracked
-        </span>
+      <div className="assignment-kind-summary" aria-label="Lesson and challenge history totals">
+        <div className="assignment-kind-row">
+          <small className="assignment-kind-label">Lessons</small>
+          <div className="mini-stats">
+            <span><strong>{summary.lessons.completed}</strong> completed</span>
+            <span><strong>{summary.lessons.graded}</strong> graded</span>
+            <span><strong>{summary.lessons.tracked}</strong> tracked</span>
+          </div>
+        </div>
+        <div className="assignment-kind-row">
+          <small className="assignment-kind-label">Challenges</small>
+          <div className="mini-stats">
+            <span><strong>{summary.challenges.completed}</strong> completed</span>
+            <span><strong>{summary.challenges.graded}</strong> graded</span>
+            <span><strong>{summary.challenges.tracked}</strong> tracked</span>
+          </div>
+        </div>
       </div>
 
       {(readOnlyMode ? sortedWeeks : ['all']).map(key => <details key={key} open={!readOnlyMode ? true : undefined} className={readOnlyMode?'panel':'assignment-history-all'} style={readOnlyMode?{marginTop:12,padding:12}:{}}><summary style={readOnlyMode?{cursor:'pointer',fontWeight:600}:{display:'none'}}>{dateLabel(key)} · {(()=>{const x=summarizeAssignments(weeklyGroups[key]||[]);return x.lessons.completed+' lessons · '+x.challenges.completed+' challenges';})()} · {key==='undated'?'No weekly points':weekPoints(key)+' verified pts'}</summary><div className="overflow"><table className="data-table assignment-table">

@@ -1,4 +1,4 @@
-import {useEffect,useState} from 'react';
+import {useState} from 'react';
 import {connectGoogleSheet,GOOGLE_CLIENT_KEY,GOOGLE_SHEET_LINK_KEY,parseSheetLink} from '../../lib/googleSheetRoster.js';
 
 const read=(key)=>{try{return localStorage.getItem(key)||''}catch{return ''}};
@@ -9,8 +9,6 @@ export default function GoogleSheetRosterPanel({onRows=()=>{}}){
  const [clientId,setClientId]=useState(()=>read(GOOGLE_CLIENT_KEY));
  const [status,setStatus]=useState(url?'Saved Sheet link restored from this browser. Reconnect Google to refresh names and periods.':'');
  const [busy,setBusy]=useState(false);
-
- useEffect(()=>()=>onRows([]),[onRows]);
 
  async function connect(){
   try{parseSheetLink(url)}catch(error){setStatus(error.message);return}

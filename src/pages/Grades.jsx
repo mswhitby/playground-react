@@ -18,7 +18,7 @@ export default function Grades({ grades=[], assignments=[], completedLessons=[],
   const overall=gradeTotals(filtered);
   const weeks=readOnlyMode ? (filter==='all'||filter==='computer-science-1'?weeklyPoints:[]) : weeklyGrades(filtered);
   const current=weeks[0];
-  const courseBreakdown=courses.map(course=>({
+  const courseBreakdown=courses.filter(course=>!readOnlyMode||course.id==='computer-science-1').map(course=>({
     ...course, ...gradeTotals(grades.filter(g=>g.courseId===course.id))
   }));
   const pending=assignments.filter(a=>filter==='all'||a.courseId===filter)
@@ -31,7 +31,7 @@ export default function Grades({ grades=[], assignments=[], completedLessons=[],
       <div>
         <div className="eyebrow">Your progress</div>
         <h1>Grades</h1>
-        <p>See your earned points, weekly scores, and work still due.</p>
+        <p>{readOnlyMode ? 'Verified Computer Science I scores and weekly improvements. Assignments are not yet connected here.' : 'See your earned points, weekly scores, and work still due.'}</p>
       </div>
       <label className="grades-filter">Course
         <select value={filter} onChange={event=>setFilter(event.target.value)}>
@@ -91,7 +91,7 @@ export default function Grades({ grades=[], assignments=[], completedLessons=[],
     </section>
     <section className="grades-panel surface-card">
       <h2>Still to complete</h2>
-      {pending.length?<div className="grades-entries">{pending.map(a=>
+      {readOnlyMode ? <p>Assignment and due-date data will be connected in the next integration stage.</p> : pending.length?<div className="grades-entries">{pending.map(a=>
         <div className="grades-entry" key={a.id}>
           <div><strong>{titleFor(a.id,a.courseId)}</strong><small>{getCourse(a.courseId)?.label||a.courseId}</small></div>
           <div className="grades-due-meta"><span className={`assignment-status ${a.status.state}`}>{a.status.state==='overdue'?'Overdue':'Assigned'}</span><small>Due {dueLabel(a.dueDate)}</small></div>

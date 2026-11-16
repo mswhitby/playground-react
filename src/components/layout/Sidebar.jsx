@@ -19,7 +19,7 @@ export default function Sidebar({ open, page, courseId, lessonId, setPage, openC
   return (
     <aside className={cn('main-sidebar', !open && 'collapsed')} aria-label="Playground navigation">
       <div className="side-title">EXPLORE</div>
-      {MENU.filter(([id])=>!readOnlyMode||['home','grades'].includes(id)).map(([id, label, Icon]) => (
+      {MENU.filter(([id])=>!readOnlyMode||['home','grades','teacher'].includes(id)).map(([id, label, Icon]) => (
         <button key={id} className={cn('nav-item', (page === id || (id === 'challenges' && page === 'challenge')) && 'active')}
           onClick={() => setPage(id)} title={label}>
           <Icon size={19} /><span>{label}</span>

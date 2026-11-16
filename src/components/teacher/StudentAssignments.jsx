@@ -13,7 +13,7 @@ export default function StudentAssignments({ student, week, readOnlyMode = false
     (x) => x.status === "Completed" || x.status === "Practice completed",
   ).length;
   const graded = entries.filter((x) => x.score !== null).length;
-  const weeklyGroups = Object.groupBy(entries, a => a.week || 'undated');
+  const weeklyGroups = entries.reduce((groups,a)=>{const key=a.week||'undated';(groups[key] ||= []).push(a);return groups;},{});
   const sortedWeeks = Object.keys(weeklyGroups).sort((a,b)=>b.localeCompare(a));
   const weekPoints = (key) => Number(student.weekly?.[key]) || 0;
   const dateLabel = key => {if(key==='undated')return 'Earlier / undated activity'; const start=new Date(key+'T12:00:00Z'); const end=new Date(start);end.setUTCDate(end.getUTCDate()+6);const fmt=d=>d.toLocaleDateString('en-US',{month:'short',day:'numeric',timeZone:'UTC'});return fmt(start)+' – '+fmt(end)+', '+end.getUTCFullYear();};
@@ -25,7 +25,7 @@ export default function StudentAssignments({ student, week, readOnlyMode = false
           <h3>Assignment history</h3>
           <p className="muted">{readOnlyMode ? `Verified submission history for ${niceName(student)}. Practice checks are not grades.` : `Sample records for ${niceName(student)}. No student data is loaded.`}</p>
         </div>
-        <Chip tone="success">{student.weekly[week] || 0} verified pts this week</Chip>
+        <Chip tone="success">{readOnlyMode ? Object.values(student.weekly||{}).reduce((n,p)=>n+(Number(p)||0),0)+' total verified pts' : (student.weekly[week] || 0)+' verified pts this week'}</Chip>
       </div>
 
       <div className="mini-stats">

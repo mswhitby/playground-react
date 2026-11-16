@@ -2,7 +2,7 @@ import { Menu, PanelLeftClose } from "lucide-react";
 import Chip from "../ui/Chip.jsx";
 import ThemeControls from "./ThemeControls.jsx";
 
-export default function Topbar({ sidebarOpen, onToggleSidebar, onHome, theme, setTheme }) {
+export default function Topbar({ sidebarOpen, onToggleSidebar, onHome, theme, setTheme, readOnlyMode = false, accountLabel = null }) {
   return (
     <header className="topbar">
       <div className="topbar-inner">
@@ -15,9 +15,9 @@ export default function Topbar({ sidebarOpen, onToggleSidebar, onHome, theme, se
           <span className="brand-compact">React Lab</span>
         </button>
         <div className="topbar-spacer" />
-        <Chip>LOCAL DESIGN LAB</Chip>
+        <Chip>{readOnlyMode ? 'CS1 READ-ONLY TEST' : 'LOCAL DESIGN LAB'}</Chip>
         <ThemeControls theme={theme} setTheme={setTheme} />
-        <span className="user-circle">W</span>
+        <span className="user-circle" title={accountLabel||"Read-only preview"}>{accountLabel?.[0]?.toUpperCase()||"W"}</span>
       </div>
     </header>
   );

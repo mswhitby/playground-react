@@ -6,10 +6,21 @@ import TeacherToolbar from '../components/teacher/TeacherToolbar.jsx';
 import TeacherTabs from '../components/teacher/TeacherTabs.jsx';
 import TeacherCurriculum from '../components/teacher/TeacherCurriculum.jsx';
 import RosterPanel from '../components/teacher/RosterPanel.jsx';
+import WeeklyPointsPanel from '../components/teacher/WeeklyPointsPanel.jsx';
+import {getCourse} from '../data/courses.js';
+import {getCourseLesson} from '../lib/courseContent.js';
 import {sortStudent} from '../lib/students.js';
 import SectionBanner from '../components/teacher/SectionBanner.jsx';
 
 const bridge='/playground/integration/teacher-bridge.js';
+function titleFor(id){
+ const course=getCourse('computer-science-1');
+ const raw=String(id||'');
+ const variants=[raw,raw.replace(/^lesson:/,''),raw.split('/').at(-1)];
+ for(const key of variants){const lesson=getCourseLesson(course,key);if(lesson?.title)return lesson.title;}
+ return raw.replace(/^(lesson|challenge|project):/,'').split('/').at(-1).replace(/^\\d+-/,'').replace(/[-_]/g,' ').replace(/\\b\\w/g,c=>c.toUpperCase());
+}
+function weekOf(value){if(!value||Number.isNaN(Date.parse(value)))return null;const p=Object.fromEntries(new Intl.DateTimeFormat('en-US',{timeZone:'America/Chicago',year:'numeric',month:'2-digit',day:'2-digit'}).formatToParts(new Date(value)).filter(x=>x.type!=='literal').map(x=>[x.type,x.value]));const d=new Date(p.year+'-'+p.month+'-'+p.day+'T12:00:00Z');d.setUTCDate(d.getUTCDate()-(d.getUTCDay()+6)%7);return d.toISOString().slice(0,10)}
 function weekLabel(start){
  const date=new Date(start+'T12:00:00Z');
  if(Number.isNaN(date.getTime()))return start;
@@ -51,7 +62,8 @@ export default function TeacherReadOnly(){
  const checks=new Map((snapshot?.checks||[]).map(r=>[r.user_id,r]));
  const students=approved.map(r=>({
   id:r.user_id,studentName:r.display_name||r.github_account||'Student',github:r.github_account||'',sections:[sectionId],
-  status:'Not connected',current:'—',weekly:{[week]:Number(points.get(r.user_id)?.points)||0},
+  status:'Not connected',current:'—',weekly:Object.fromEntries((weekly?.weeks||[]).filter(w=>w.user_id===r.user_id).map(w=>[w.week_start,Number(w.points)||0])),
+  weeklyAssignments:Object.fromEntries((weekly?.weeks||[]).filter(w=>w.user_id===r.user_id).map(w=>[w.week_start,Number(w.assignments)||0])),
   assignments:expanded===r.user_id&&history&&!history.error?toAssignments(history):[],
   practiceCount:Number(checks.get(r.user_id)?.checks)||0,
   handinCount:expanded===r.user_id&&history&&!history.error?(history.submissions||[]).length:null
@@ -76,11 +88,7 @@ export default function TeacherReadOnly(){
        <div className="stat-card"><strong>{pending.length}</strong><span>Pending enrollment requests</span></div>
        <div className="stat-card"><strong>{approved.reduce((n,r)=>n+(Number(points.get(r.user_id)?.points)||0),0)}</strong><span>Verified weekly points</span></div>
       </div>
-      <section className="panel"><div className="section-heading"><div><h2>Weekly points</h2><p>Server-verified improvements · Monday–Sunday in Central Time</p></div>
-       <label>Week <select value={week} onChange={e=>setWeek(e.target.value)}>{weeks.map(w=><option key={w} value={w}>{weekLabel(w)}</option>)}</select></label></div>
-       <div className="overflow"><table className="data-table"><thead><tr><th>Student</th><th>Weekly points</th><th>Improved assignments</th></tr></thead>
-        <tbody>{approved.map(r=><tr key={r.user_id}><th>{r.display_name||r.github_account||'Student'}</th><td><strong>{Number(points.get(r.user_id)?.points)||0}</strong></td><td>{Number(points.get(r.user_id)?.assignments)||0}</td></tr>)}</tbody></table></div>
-      </section>
+      <WeeklyPointsPanel students={students} week={week} setWeek={setWeek} readOnlyMode availableWeeks={weeks.map(w=>({key:w,label:weekLabel(w)}))} />
       <RosterPanel students={students} week={week} sort={sort} setSort={setSort} expanded={expanded} setExpanded={setExpanded} readOnlyMode historyLoading={Boolean(expanded&&!history)} />
      </>}
      {tab==='curriculum'&&<><SectionBanner section={selectedSection} />
@@ -95,14 +103,14 @@ function toAssignments(history){
  const groups=new Map();
  for(const item of history.practice||[]){
   const id=item.activity_id;if(!id)continue;
-  const row=groups.get(id)||{id,name:id,type:item.activity_kind||'Lesson',status:'Started',score:null,possible:null,submitted:'—'};
+  const row=groups.get(id)||{id,name:titleFor(id),type:item.activity_kind||'Lesson',status:'Started',score:null,possible:null,submitted:'—'};
   if(item.status==='completed')row.status='Practice completed';
   else if(item.status==='needs_revision'&&row.status==='Started')row.status='Needs revision';
   row.submitted=item.updated_at||row.submitted;groups.set(id,row);
  }
  for(const sub of history.submissions||[]){
   const id=sub.activity_id;if(!id)continue;
-  const row=groups.get(id)||{id,name:id,type:sub.activity_kind||'Lesson',status:'Submitted',score:null,possible:null,submitted:'—'};
+  const row=groups.get(id)||{id,name:titleFor(id),type:sub.activity_kind||'Lesson',status:'Submitted',score:null,possible:null,submitted:'—'};
   if(sub.grade_status==='graded'&&Number.isFinite(Number(sub.points))&&Number.isFinite(Number(sub.possible))){
    if(row.score===null||Number(sub.points)>row.score){row.score=Number(sub.points);row.possible=Number(sub.possible);}
    row.status='Completed';
@@ -112,7 +120,7 @@ function toAssignments(history){
  }
  for(const item of history.checks||[]){
   const id=item.activity_id;if(!id)continue;
-  if(!groups.has(id))groups.set(id,{id,name:id,type:'Practice',status:'Started',score:null,possible:null,submitted:item.last_check||'—'});
+  if(!groups.has(id))groups.set(id,{id,name:titleFor(id),type:'Practice',status:'Started',score:null,possible:null,submitted:item.last_check||'—'});
  }
- return [...groups.values()].sort((a,b)=>Date.parse(b.submitted||0)-Date.parse(a.submitted||0)).map(r=>({...r,submitted:r.submitted==='—'?'—':new Date(r.submitted).toLocaleDateString('en-US')}));
+ return [...groups.values()].sort((a,b)=>Date.parse(b.submitted||0)-Date.parse(a.submitted||0)).map(r=>({...r,week:weekOf(r.submitted),submitted:r.submitted==='—'?'—':new Date(r.submitted).toLocaleDateString('en-US')}));
 }

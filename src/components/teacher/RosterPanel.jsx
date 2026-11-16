@@ -6,7 +6,7 @@ import SortSelect from "./SortSelect.jsx";
 import StudentAssignments from "./StudentAssignments.jsx";
 
 /** Section roster; clicking a name expands that student's assignments inline. */
-export default function RosterPanel({ students, week, sort, setSort, expanded, setExpanded }) {
+export default function RosterPanel({ students, week, sort, setSort, expanded, setExpanded, readOnlyMode = false, historyLoading = false, onExpand }) {
   return (
     <section className="panel">
       <div className="section-heading">
@@ -37,13 +37,13 @@ export default function RosterPanel({ students, week, sort, setSort, expanded, s
                       <button
                         className="student-name-button"
                         aria-expanded={isOpen}
-                        onClick={() => setExpanded(isOpen ? null : s.id)}
+                        onClick={() => {setExpanded(isOpen ? null : s.id); if (!isOpen) onExpand?.(s.id);}}
                       >
                         {isOpen ? <ChevronDown size={16} /> : <ChevronRight size={16} />} {niceName(s)}
                       </button>
                       <small>
                         @{s.github}
-                        {s.sections.length > 1 ? " · Sheet periods 1, 3" : ""}
+                        {!readOnlyMode && s.sections.length > 1 ? " · Sheet periods 1, 3" : ""}
                       </small>
                     </th>
                     <td>
@@ -56,7 +56,7 @@ export default function RosterPanel({ students, week, sort, setSort, expanded, s
                   {isOpen && (
                     <tr className="expansion-row">
                       <td colSpan="5">
-                        <StudentAssignments student={s} week={week} />
+                        {historyLoading ? <p role="status">Loading assignment history…</p> : <StudentAssignments student={s} week={week} readOnlyMode={readOnlyMode} />}
                       </td>
                     </tr>
                   )}

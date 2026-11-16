@@ -13,6 +13,10 @@ export default function StudentAssignments({ student, week, readOnlyMode = false
     (x) => x.status === "Completed" || x.status === "Practice completed",
   ).length;
   const graded = entries.filter((x) => x.score !== null).length;
+  const weeklyGroups = Object.groupBy(entries, a => a.week || 'undated');
+  const sortedWeeks = Object.keys(weeklyGroups).sort((a,b)=>b.localeCompare(a));
+  const weekPoints = (key) => Number(student.weekly?.[key]) || 0;
+  const dateLabel = key => {if(key==='undated')return 'Earlier / undated activity'; const start=new Date(key+'T12:00:00Z'); const end=new Date(start);end.setUTCDate(end.getUTCDate()+6);const fmt=d=>d.toLocaleDateString('en-US',{month:'short',day:'numeric',timeZone:'UTC'});return fmt(start)+' – '+fmt(end)+', '+end.getUTCFullYear();};
 
   return (
     <div className="expanded-student">
@@ -36,8 +40,7 @@ export default function StudentAssignments({ student, week, readOnlyMode = false
         </span>
       </div>
 
-      <div className="overflow">
-        <table className="data-table assignment-table">
+      {(readOnlyMode ? sortedWeeks : ['all']).map(key => <details key={key} open={!readOnlyMode ? true : undefined} className={readOnlyMode?'panel':'assignment-history-all'} style={readOnlyMode?{marginTop:12,padding:12}:{}}><summary style={readOnlyMode?{cursor:'pointer',fontWeight:600}:{display:'none'}}>{dateLabel(key)} · {(weeklyGroups[key]||[]).filter(a=>a.status==='Completed'||a.status==='Practice completed').length} completed · {key==='undated'?'No weekly points':weekPoints(key)+' verified pts'}</summary><div className="overflow"><table className="data-table assignment-table">
           <thead>
             <tr>
               <th>Assignment</th>
@@ -48,7 +51,7 @@ export default function StudentAssignments({ student, week, readOnlyMode = false
             </tr>
           </thead>
           <tbody>
-            {entries.map((a) => {
+            {(readOnlyMode ? weeklyGroups[key] : entries).map((a) => {
               const isOpen = openReceipt === a.id;
               return (
                 <Fragment key={a.id}>
@@ -82,8 +85,7 @@ export default function StudentAssignments({ student, week, readOnlyMode = false
               );
             })}
           </tbody>
-        </table>
-      </div>
+        </table></div></details>)}
     </div>
   );
 }

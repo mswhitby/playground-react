@@ -50,8 +50,8 @@ export default function RosterPanel({ students, week, sort, setSort, expanded, s
                       <Chip tone={s.status === "Active now" ? "success" : ""}>{s.status}</Chip>
                     </td>
                     <td>{s.current}</td>
-                    <td>{s.assignments.filter((a) => a.status.includes("Completed")).length} complete</td>
-                    <td>{s.assignments.filter((a) => a.score !== null).length}</td>
+                    <td>{readOnlyMode ? s.practiceCount+' checks' : s.assignments.filter((a) => a.status.includes('Completed')).length+' complete'}</td>
+                    <td>{readOnlyMode ? (s.handinCount === null ? 'Expand to view' : s.handinCount) : s.assignments.filter((a) => a.score !== null).length}</td>
                   </tr>
                   {isOpen && (
                     <tr className="expansion-row">

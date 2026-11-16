@@ -8,7 +8,7 @@ import TeacherCurriculum from '../components/teacher/TeacherCurriculum.jsx';
 import RosterPanel from '../components/teacher/RosterPanel.jsx';
 import WeeklyPointsPanel from '../components/teacher/WeeklyPointsPanel.jsx';
 import {getCourse} from '../data/courses.js';
-import {getCourseLesson,normalizeImportedOutline} from '../lib/courseContent.js';
+import {normalizeImportedOutline} from '../lib/courseContent.js';
 import {sortStudent} from '../lib/students.js';
 import {useTeacherIdentity,identityForStudent} from '../lib/teacherIdentity.js';
 import SectionBanner from '../components/teacher/SectionBanner.jsx';
@@ -47,7 +47,7 @@ export default function TeacherReadOnly(){
  const [sectionId,setSectionId]=useState(''),[tab,setTab]=useState('overview');
  const [snapshot,setSnapshot]=useState(null),[weekly,setWeekly]=useState(null),[catalog,setCatalog]=useState(null);
  const [week,setWeek]=useState(currentWeek),[sort,setSort]=useState('last'),[expanded,setExpanded]=useState(null),[history,setHistory]=useState(null),[error,setError]=useState('');
- useEffect(()=>{let active=true;fetch('/playground/data/computer-science-1/course.json',{cache:'no-store'}).then(r=>{if(!r.ok)throw Error('catalog');return r.json()}).then(data=>{if(active)setCatalog(normalizeImportedOutline(data))}).catch(()=>{});return()=>{active=false}},[]);
+ useEffect(()=>{let active=true;fetch('/playground/integration/data/computer-science-1/course.json',{cache:'no-store'}).then(r=>{if(!r.ok)throw Error('catalog');return r.json()}).then(data=>{if(active)setCatalog(normalizeImportedOutline(data))}).catch(()=>{if(active)setCatalog(null)});return()=>{active=false}},[]);
  useEffect(()=>{let active=true;import(/* @vite-ignore */bridge).then(m=>m.teacherReadOnlyClient()).then(s=>{
   if(!active)return;setService(s);setState(s.status);if(s.status==='ready')setSectionId(s.classes[0]?.id||'');
  }).catch(()=>{if(active)setState('unavailable')});return()=>{active=false}},[]);

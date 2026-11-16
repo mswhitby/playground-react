@@ -202,6 +202,25 @@
   gap: 10px;
   margin: 10px 0 16px;
 }
+.assignment-kind-summary {
+  margin: 10px 0 16px;
+  display: grid;
+  gap: 10px;
+}
+.assignment-kind-row {
+  display: grid;
+  grid-template-columns: 74px minmax(0, 1fr);
+  gap: 10px;
+  align-items: center;
+}
+.assignment-kind-row .mini-stats {
+  margin: 0;
+}
+.assignment-kind-label {
+  color: var(--muted);
+  font-size: 11px;
+  font-weight: 700;
+}
 .mini-stats span {
   display: flex;
   gap: 5px;

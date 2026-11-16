@@ -43,7 +43,7 @@ export default function Journals({ submissions, setSubmissions }) {
       aiUse: draft.aiUse, aiDetails: draft.aiDetails.trim(), submittedAt: new Date().toISOString(),
     };
     setSubmissions(prev => [...prev, newSubmission]);
-    setStatus('Demo submission saved locally. Check the Teacher dashboard → Journals tab to review it.');
+    setStatus('Demo submission saved locally. Check the Teacher Dashboard → Journals tab to review it.');
   }
   return (
     <div className="main-content journal-screen">

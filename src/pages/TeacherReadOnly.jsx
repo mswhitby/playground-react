@@ -58,7 +58,7 @@ export default function TeacherReadOnly(){
    state==='signed-out'?<p>Sign in through the <a href="/playground/">current Playground</a>, then return here.</p>:
    state==='forbidden'?<p role="alert">This account does not have teacher access.</p>:
    state!=='ready'?<p role="alert">Teacher data is unavailable.</p>:<>
-    <TeacherToolbar sectionId={sectionId} sections={service.classes.map(s=>({id:s.id,name:s.name,course:s.course_id}))}
+    <TeacherToolbar sectionId={sectionId} sections={service.classes.map(s=>({id:s.id,name:s.name,course:s.course_id,join_code:s.join_code}))}
      onSectionChange={id=>{setSectionId(id);setExpanded(null)}} readOnlyMode />
     <TeacherTabs tab={tab} onChange={next=>{setTab(next);setExpanded(null)}} />
     {error?<p role="alert">{error}</p>:!snapshot||!weekly?<p role="status">Loading section information…</p>:<>

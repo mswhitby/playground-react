@@ -205,18 +205,23 @@
 .assignment-kind-summary {
   margin: 10px 0 16px;
   display: grid;
-  gap: 10px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
 }
 .assignment-kind-row {
-  display: grid;
-  grid-template-columns: 74px minmax(0, 1fr);
-  gap: 10px;
-  align-items: center;
+  min-width: 0;
 }
 .assignment-kind-row .mini-stats {
-  margin: 0;
+  margin: 5px 0 0;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+.assignment-kind-row .mini-stats span {
+  justify-content: center;
+  min-width: 0;
 }
 .assignment-kind-label {
+  display: block;
   color: var(--muted);
   font-size: 11px;
   font-weight: 700;
@@ -453,6 +458,9 @@
 .admin-screen .page-subtitle {display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
 .admin-actions {display:flex;align-items:center;gap:12px;margin-bottom:16px;}
 .admin-actions small {color:var(--soft);}
+@media (max-width:850px) {
+  .assignment-kind-summary {grid-template-columns:1fr;}
+}
 @media (max-width:600px) {
   .curriculum-assignment-fields {grid-template-columns:minmax(0,1fr) 110px;}
   .section-setup-toggle {width:100%;justify-content:center;}

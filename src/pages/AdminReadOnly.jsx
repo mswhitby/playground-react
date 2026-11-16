@@ -32,7 +32,7 @@ export default function AdminReadOnly(){
   };
  });
  return <div className="main-content teacher-screen admin-screen">
-  <SectionTitle eyebrow="Global management · Connected integration" actions={<Chip>Teacher/Admin · Read only</Chip>}>Admin dashboard</SectionTitle>
+  <SectionTitle eyebrow="Global management · Connected integration" actions={<Chip>Teacher/Admin · Read only</Chip>}>Admin Dashboard</SectionTitle>
   <p className="page-subtitle">Connected account management for the current sole teacher/admin account. This integration remains read only; no account records can be changed here.</p>
   {state==='loading'?<p role="status">Checking access…</p>:state!=='ready'?<p role="alert">{state==='signed-out'?'Sign in through the current Playground first.':'Account directory is unavailable or access was denied.'}</p>:identity.loading?<p role="status">Loading account directory…</p>:identity.error?<p role="alert">{identity.error}</p>:<>
    <GoogleSheetRosterPanel onRows={setSheetRows}/>

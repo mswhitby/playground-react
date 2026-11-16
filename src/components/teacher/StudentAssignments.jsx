@@ -6,7 +6,7 @@ const statusTone = (status) =>
   status.includes("Completed") ? "success" : status === "Needs revision" ? "warning" : "";
 
 /** Expanded roster row: one student's assignment history. */
-export default function StudentAssignments({ student, week }) {
+export default function StudentAssignments({ student, week, readOnlyMode = false }) {
   const [openReceipt, setOpenReceipt] = useState(null);
   const entries = student.assignments;
   const completed = entries.filter(
@@ -19,7 +19,7 @@ export default function StudentAssignments({ student, week }) {
       <div className="expanded-header">
         <div>
           <h3>Assignment history</h3>
-          <p className="muted">Sample records for {niceName(student)}. No student data is loaded.</p>
+          <p className="muted">{readOnlyMode ? `Verified submission history for ${niceName(student)}. Practice checks are not grades.` : `Sample records for ${niceName(student)}. No student data is loaded.`}</p>
         </div>
         <Chip tone="success">{student.weekly[week] || 0} verified pts this week</Chip>
       </div>
@@ -71,10 +71,9 @@ export default function StudentAssignments({ student, week }) {
                   {isOpen && (
                     <tr className="receipt-preview">
                       <td colSpan="5">
-                        <strong>Sample assignment detail</strong>
+                        <strong>{readOnlyMode ? 'Submission details' : 'Sample assignment detail'}</strong>
                         <p>
-                          This is a mock submitted-copy preview for layout testing, not the student's actual
-                          code.
+                          {readOnlyMode ? 'Submitted code and protected receipts are not loaded in this read-only integration.' : "This is a mock submitted-copy preview for layout testing, not the student's actual code."}
                         </p>
                       </td>
                     </tr>

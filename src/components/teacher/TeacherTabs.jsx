@@ -1,7 +1,7 @@
 import { BookOpen, ClipboardPenLine, LayoutDashboard } from "lucide-react";
 
 export const TEACHER_TABS = [
-  ["overview", "Class overview", LayoutDashboard],
+  ["overview", "Class Overview", LayoutDashboard],
   ["curriculum", "Curriculum", BookOpen],
   ["journals", "Journals", ClipboardPenLine],
 ];

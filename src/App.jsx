@@ -7,7 +7,7 @@ import { useSaved } from './hooks/useSaved.js';
 import { toggleLessonComplete } from './lib/completion.js';
 import { completionIds } from './lib/gradebook.js';
 import { loadPublishedCourse } from './lib/publishedCourseLoader.js';
-import {cs1IntegrationMode,loadCs1ReadOnlyAccount} from './lib/cs1Integration.js';
+import {applyCs1PublishedMetadata,cs1IntegrationMode,loadCs1PublishedCatalog,loadCs1ReadOnlyAccount} from './lib/cs1Integration.js';
 import { cn } from './lib/cn.js';
 import { homePath, journalsPath, gradesPath, playgroundPath, challengesPath, challengePath, resolveRoute, teacherPath, adminPath, projectPath } from './lib/routes.js';
 import Topbar from './components/layout/Topbar.jsx';
@@ -44,7 +44,10 @@ export default function App() {
   const [contentErrors,setContentErrors] = useState({});
   const [contentLoading,setContentLoading] = useState(true);
   const availableCourses = useMemo(() => (cs1IntegrationMode?courses.filter(c=>c.id==='computer-science-1'):courses).map(course => {
-    if (course.id === 'computer-science-1' || course.id === 'test-prep') return course;
+    if (course.id === 'computer-science-1') return cs1IntegrationMode
+      ? applyCs1PublishedMetadata(course,publishedContent[course.id])
+      : course;
+    if (course.id === 'test-prep') return course;
     if (course.id === 'capstone') return {...course,units:[],lessons:[],lessonRecords:{},
       publishedContent:false,projects:[]};
     const imported = publishedContent[course.id];
@@ -66,8 +69,11 @@ export default function App() {
   useEffect(() => {
     const controller = new AbortController();
     let active = true;
-    Promise.all((cs1IntegrationMode?[]:['game-programming','mobile-app-dev','uil','tsi-math']).map(async courseId => {
-      try {return {courseId, data:await loadPublishedCourse(courseId,{signal:controller.signal})};}
+    const courseIds=cs1IntegrationMode?['computer-science-1']:['game-programming','mobile-app-dev','uil','tsi-math'];
+    Promise.all(courseIds.map(async courseId => {
+      try {return {courseId, data:courseId==='computer-science-1'
+        ? await loadCs1PublishedCatalog({signal:controller.signal})
+        : await loadPublishedCourse(courseId,{signal:controller.signal})};}
       catch(error){return {courseId,error:String(error?.message||error)};}
     })).then(results => {
       if (!active) return;

@@ -18,6 +18,7 @@ import CoursePage from './pages/CoursePage.jsx';
 import TeacherDashboard from './pages/TeacherDashboard.jsx';
 import TeacherReadOnly from './pages/TeacherReadOnly.jsx';
 import AdminDashboard from './pages/AdminDashboard.jsx';
+import AdminReadOnly from './pages/AdminReadOnly.jsx';
 import Journals from './pages/Journals.jsx';
 import Grades from './pages/Grades.jsx';
 import ChallengeBank from './pages/ChallengeBank.jsx';
@@ -194,7 +195,7 @@ export default function App() {
               :readOnlyAccount.message||'Could not verify your existing session.'}</span>
             <a href="/playground/">Open current Playground</a>
           </section>}
-          {cs1IntegrationMode && !['home','course','grades','teacher'].includes(page) ? (
+          {cs1IntegrationMode && !['home','course','grades','teacher','admin'].includes(page) ? (
             <div className="main-content"><h1>Not enabled in this test build</h1>
               <p>Teacher tools, journals, challenges, and submissions remain in the current Playground until their permissions and data are integrated.</p>
               <a href="/playground/">Return to current Playground</a>

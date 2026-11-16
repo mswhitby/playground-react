@@ -126,8 +126,10 @@ test('TSI migrates current 20-day plan with explicit unpublished sessions and fo
     'tsi-math/content/20-day-program.json':{days:[{day:1,id:'tsi-20d-d01',title:'Diagnostic',strand:'diagnostic'},
       {day:2,id:'tsi-20d-d02',title:'Rational numbers',strand:'quantitative'}]},
     'tsi-math/content/strand-lessons-v1.json':{lessons:[{id:'tsi-geometry-right-triangles-and-area-v1',
-      title:'Right triangles and area',student_lesson:'lessons/strands/geometry/right-triangles-and-area.md',minutes:30}]},
+      title:'Right triangles and area',student_lesson:'lessons/strands/geometry/right-triangles-and-area.md',
+      teacher_key:'teachers/strands/geometry/right-triangles-and-area.json',minutes:30}]},
     'tsi-math/lessons/strands/geometry/right-triangles-and-area.md':'# Right triangles and area',
+    'tsi-math/teachers/strands/geometry/right-triangles-and-area.json':{items:[{question:1,correct:'B',explanation:'5² + 12² = 169.'}]},
     'tsi-math/content/diagnostic-24-mc-v2.json':{items:[{id:'geometry-1',strand:'geometry',answer:4,correct_index:2}]},
     'tsi-math/content/math-locator-profiles.json':{profiles:[{code:'MATH01',levels:{geometry:'Basic'}}]},
   };
@@ -135,6 +137,8 @@ test('TSI migrates current 20-day plan with explicit unpublished sessions and fo
   assert.deepEqual(content.lessons,['tsi-20d-d01','tsi-20d-d02','tsi-geometry-right-triangles-and-area-v1']);
   assert.equal(getCourseLesson(content,'tsi-20d-d02').ready,false);
   assert.equal(getCourseLesson(content,'tsi-geometry-right-triangles-and-area-v1').ready,true);
+  assert.equal(getCourseLesson(content,'tsi-geometry-right-triangles-and-area-v1').tsiStrandDraft,true);
+  assert.equal(getCourseLesson(content,'tsi-geometry-right-triangles-and-area-v1').tsiKey.items[0].correct,'B');
   assert.equal(content.tsiDraft,true);
   assert.equal(content.diagnosticItems[0].id,'geometry-1');
   assert.equal(content.locatorProfiles[0].code,'MATH01');

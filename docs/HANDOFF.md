@@ -18,6 +18,14 @@
 - **Review link:** `https://www.mswhitby.com/playground/integration/`. Test signed-in real-account data manually before enabling writes. Do not merge preview feature branches into production or replace `/playground/`.
 - **Next:** Validate identity and saved scores against actual student test account and build explicit, confirmed Submit/grade linkage using existing production services. Keep the current preview at `/playground/preview/` for design review.
 
+## November 16, 2026 — First canonical CS1 account integration (read-only test build)
+
+- React branch: feature/cs1-readonly-production-bridge-20261116, stacked on the TSI question-style preview work. This remains **unmerged**.
+- React App has an opt-in VITE_READONLY_INTEGRATION flag: restrict test navigation to Computer Science I and Grades, hide manual complete and teacher/admin/demo views, and display production-verified score/completion via existing-account read-only bridge. All Run/Check remain local; Submit stays disabled.
+- The production-owned bridge lives in mswhitby/playground/public/integration/account-bridge.js on feature/react-cs1-readonly-integration-20261116. This reads the current user's production session and verified history with GET only and never synchronizes or writes data.
+- Test release target: /playground/integration/, preserving the existing all-course /playground/preview/ and live /playground/. For details see mswhitby/playground/docs/REACT-CS1-INTEGRATION.md.
+- Pending: CI on both repo branches; pin/test isolated publisher; signed-in authorized-account browser smoke test and grade comparison. This is NOT a ready production replacement or a grading/submission integration.
+
 ## November 16, 2026 — TSI diagnostic question-card visual parity (preview only)
 
 - **Owning branch:** `feature/tsi-diagnostic-practice-card-style-20261116`, draft [React PR #13](https://github.com/mswhitby/playground-react/pull/13) stacked on preview PR #12.

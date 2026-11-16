@@ -12,7 +12,7 @@ const sourceUrl = '/playground/data/computer-science-1/course.json';
 const previewCourse = getCourse('computer-science-1');
 
 /** Read-only public catalog + draft assignment UI. Never bundles or fetches solutions. */
-export default function TeacherCurriculum({ section, students = [], assignments = [], setAssignments }) {
+export default function TeacherCurriculum({ section, students = [], assignments = [], setAssignments, readOnlyMode = false }) {
   const [live, setLive] = useState(null);
   const [loadStatus, setLoadStatus] = useState('loading');
   const [selected, setSelected] = useState(previewCourse.lessons[0]);
@@ -68,12 +68,14 @@ export default function TeacherCurriculum({ section, students = [], assignments 
         sectionId:section?.id, sectionCourseId:section?.course, lessonId:chosenId,
         scope, studentIds:selectedStudents, dueDate, points
       },sectionStudents);
+      if (readOnlyMode) throw Error('Assignment changes are disabled in this integration test.');
       setAssignments?.(previous => upsertPreviewAssignment(previous,record));
       setFeedback('Preview assignment saved in this browser. No students were notified.');
     } catch(error) { setFeedback(error.message); }
   }
 
   function removeAssignment() {
+    if (readOnlyMode) { setFeedback('Assignment changes are disabled in this integration test.'); return; }
     setAssignments?.(previous => (previous||[]).filter(record => record.id !== existing?.id));
     setFeedback('Preview assignment cleared. Live student records were not changed.');
   }

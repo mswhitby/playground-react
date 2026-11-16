@@ -20,14 +20,24 @@ function titleFor(id,course=getCourse('computer-science-1')){
  const cleaned=raw.replace(/^(lesson|challenge|project):/,'');
  const resolved=createLessonIdentityResolver(course).title(cleaned);
  if(resolved)return resolved;
- const records=course?.lessonRecords||{};
+ const lessonRecords=course?.lessonRecords||{};
+ const challengeRecords=course?.challengeRecords||{};
  const variants=[raw,cleaned,cleaned.split('/').at(-1)];
+ if(raw.startsWith('challenge:') || challengeRecords[cleaned]){
+  for(const key of variants){
+   const exact=challengeRecords[key];
+   if(exact?.title)return exact.title;
+  }
+  for(const row of Object.values(challengeRecords)){
+   if(row?.stableId===cleaned || (row?.legacyIds||[]).includes(cleaned)) return row.title||cleaned;
+  }
+ }
  for(const key of variants){
-  const exact=records[key];
+  const exact=lessonRecords[key];
   if(exact?.title)return exact.title;
  }
  const tail=cleaned.split('/').at(-1);
- const matching=Object.entries(records).filter(([key])=>key.split('/').at(-1)===tail);
+ const matching=Object.entries(lessonRecords).filter(([key])=>key.split('/').at(-1)===tail);
  if(matching.length===1&&matching[0][1]?.title)return matching[0][1].title;
  return tail.replace(/^\\d+-/,'').replace(/[-_]/g,' ').replace(/\\b[a-z]/g,c=>c.toUpperCase())||'Untitled activity';
 }

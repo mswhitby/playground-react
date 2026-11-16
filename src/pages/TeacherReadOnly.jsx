@@ -10,6 +10,7 @@ import WeeklyPointsPanel from '../components/teacher/WeeklyPointsPanel.jsx';
 import {getCourse} from '../data/courses.js';
 import {getCourseLesson,normalizeImportedOutline} from '../lib/courseContent.js';
 import {sortStudent} from '../lib/students.js';
+import {useTeacherIdentity} from '../lib/teacherIdentity.js';
 import SectionBanner from '../components/teacher/SectionBanner.jsx';
 
 const bridge='/playground/integration/teacher-bridge.js';
@@ -54,6 +55,7 @@ export default function TeacherReadOnly(){
    .then(h=>{if(active)setHistory(h)}).catch(()=>{if(active)setHistory({error:'Student history unavailable'})});
   return()=>{active=false};
  },[expanded,sectionId,service]);
+ const identity=useTeacherIdentity(service);
  const section=service?.classes?.find(s=>s.id===sectionId);
  const approved=(snapshot?.roster||[]).filter(r=>r.status==='approved');
  const pending=(snapshot?.roster||[]).filter(r=>r.status==='pending');
@@ -61,7 +63,7 @@ export default function TeacherReadOnly(){
  const points=new Map((weekly?.weeks||[]).filter(w=>w.week_start===week).map(w=>[w.user_id,w]));
  const checks=new Map((snapshot?.checks||[]).map(r=>[r.user_id,r]));
  const students=approved.map(r=>({
-  id:r.user_id,studentName:r.display_name||r.github_account||'Student',github:r.github_account||'',sections:[sectionId],
+  id:r.user_id,teacherName:identity.teacher.get(r.user_id)||'',sheetName:identity.sheet.get(r.user_id)?.name||'',studentName:r.student_name||r.display_name||'',github:r.github_account||'',sections:[sectionId],
   status:'Not connected',current:'—',weekly:Object.fromEntries((weekly?.weeks||[]).filter(w=>w.user_id===r.user_id).map(w=>[w.week_start,Number(w.points)||0])),
   weeklyAssignments:Object.fromEntries((weekly?.weeks||[]).filter(w=>w.user_id===r.user_id).map(w=>[w.week_start,Number(w.assignments)||0])),
   assignments:expanded===r.user_id&&history&&!history.error?toAssignments(history,catalog):[],

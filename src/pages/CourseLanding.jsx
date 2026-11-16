@@ -6,7 +6,7 @@ import { selectedCourseColor } from '../lib/courseColors.js';
 import { statusFor,dueLabel } from '../lib/gradebook.js';
 import { challengesPath, playgroundPath, projectPath } from '../lib/routes.js';
 
-export default function CourseLanding({ course, openCourse, openProject, openChallenges, completedLessons = [], assignments = [], grades = [], courseColors = {}, onSetCourseColor, onResetCourseColor }) {
+export default function CourseLanding({ course, openCourse, openProject, openChallenges, completedLessons = [], assignments = [], grades = [], courseColors = {}, onSetCourseColor, onResetCourseColor, readOnlyMode = false }) {
   const progress = courseProgress(course, completedLessons);
   const [editingColor, setEditingColor] = useState(false);
   const color = selectedCourseColor(course, courseColors);
@@ -50,7 +50,7 @@ export default function CourseLanding({ course, openCourse, openProject, openCha
       {course.contentLoadingError && <p className="course-published-note" role="alert">Published course materials could not be loaded: {course.contentLoadingError}. Sample lessons are not substituted.</p>}
       {!course.publishedContent && !course.contentLoadingError && <p className="course-published-note">Course materials are not yet published here. This is a design preview, not a course to assign.</p>}
       {course.tsiDraft && <p className="course-published-note">The 20-day TSI schedule is an outline; four strand lessons are drafts. Unwritten sessions are not available for practice.</p>}
-      <p className="course-landing-progress">{progress.completed} of {progress.total} lessons {course.publishedContent ? 'marked complete in preview' : 'completed'} · {progress.percent}%</p>
+      <p className="course-landing-progress">{progress.completed} of {progress.total} lessons {readOnlyMode ? 'with verified grades' : course.publishedContent ? 'marked complete in preview' : 'completed'} · {progress.percent}%</p>
       <div className="course-landing-heading">
         <div><h2>Units &amp; lessons</h2><p>Choose a unit or jump directly into a lesson.</p></div>
 

@@ -12,13 +12,13 @@ function titleFor(id,courseId) {
   return kind==='lesson' ? lessonTitleOf(getCourse(courseId),name) : getChallenge(name)?.title||name;
 }
 
-export default function Grades({ grades=[], assignments=[], completedLessons=[] }) {
+export default function Grades({ grades=[], assignments=[], completedLessons=[], readOnlyMode = false, weeklyPoints = [], accountStatus = 'disabled' }) {
   const [filter,setFilter]=useState('all');
   const filtered=filter==='all'?grades:grades.filter(g=>g.courseId===filter);
   const overall=gradeTotals(filtered);
-  const weeks=weeklyGrades(filtered);
+  const weeks=readOnlyMode ? (filter==='all'||filter==='computer-science-1'?weeklyPoints:[]) : weeklyGrades(filtered);
   const current=weeks[0];
-  const courseBreakdown=courses.map(course=>({
+  const courseBreakdown=courses.filter(course=>!readOnlyMode||course.id==='computer-science-1').map(course=>({
     ...course, ...gradeTotals(grades.filter(g=>g.courseId===course.id))
   }));
   const pending=assignments.filter(a=>filter==='all'||a.courseId===filter)
@@ -31,7 +31,7 @@ export default function Grades({ grades=[], assignments=[], completedLessons=[] 
       <div>
         <div className="eyebrow">Your progress</div>
         <h1>Grades</h1>
-        <p>See your earned points, weekly scores, and work still due.</p>
+        <p>{readOnlyMode ? 'Verified Computer Science I scores and weekly improvements. Assignments are not yet connected here.' : 'See your earned points, weekly scores, and work still due.'}</p>
       </div>
       <label className="grades-filter">Course
         <select value={filter} onChange={event=>setFilter(event.target.value)}>
@@ -40,7 +40,11 @@ export default function Grades({ grades=[], assignments=[], completedLessons=[] 
         </select>
       </label>
     </header>
-    <p className="grades-preview-note">This preview does not display real student grades or assignments. Verified scores remain in the current Playground.</p>
+    <p className="grades-preview-note">{readOnlyMode
+      ? accountStatus==='signed-in'
+        ? 'Verified Computer Science I results from your existing Playground account. Submissions and grading remain in the current Playground.'
+        : 'Sign in on the current Playground to see your own verified results here. No changes are made from this test build.'
+      : 'This preview does not display real student grades or assignments. Verified scores remain in the current Playground.'}</p>
     <div className="grades-summary">
       <div className="grades-stat surface-card">
         <ChartNoAxesColumnIncreasing size={19}/><span>Points earned</span>
@@ -52,17 +56,17 @@ export default function Grades({ grades=[], assignments=[], completedLessons=[] 
       </div>
       <div className="grades-stat surface-card">
         <CalendarDays size={19}/><span>Most recent scored week</span>
-        <strong>{current ? `${current.earned} / ${current.possible}` : '—'}</strong>
+        <strong>{current ? readOnlyMode ? `+${current.earned}` : `${current.earned} / ${current.possible}` : '—'}</strong>
         <p>{current ? `Week of ${journalWeekLabel(current.week)}` : 'No scores yet'}</p>
       </div>
     </div>
     <section className="grades-panel surface-card">
-      <h2>Weekly scores</h2>
+      <h2>{readOnlyMode ? 'Weekly verified point increases' : 'Weekly scores'}</h2>
       {weeks.length ? <div className="grades-weeks">
         {weeks.map(w=><div className="grades-week" key={w.week}>
           <div><strong>Week of {journalWeekLabel(w.week)}</strong><small>{w.count} scored {w.count===1?'activity':'activities'}</small></div>
-          <div className="grades-week-score"><strong>{w.earned} / {w.possible} pts</strong>
-            <progress value={w.earned} max={Math.max(w.possible,1)} aria-label={`Week of ${journalWeekLabel(w.week)}: ${w.earned} of ${w.possible} points`}/>
+          <div className="grades-week-score"><strong>{readOnlyMode ? `+${w.earned} pts` : `${w.earned} / ${w.possible} pts`}</strong>
+            {!readOnlyMode && <progress value={w.earned} max={Math.max(w.possible,1)} aria-label={`Week of ${journalWeekLabel(w.week)}: ${w.earned} of ${w.possible} points`}/>}
           </div>
         </div>)}
       </div> : <p>No graded work in this selection.</p>}
@@ -87,7 +91,7 @@ export default function Grades({ grades=[], assignments=[], completedLessons=[] 
     </section>
     <section className="grades-panel surface-card">
       <h2>Still to complete</h2>
-      {pending.length?<div className="grades-entries">{pending.map(a=>
+      {readOnlyMode ? <p>Assignment and due-date data will be connected in the next integration stage.</p> : pending.length?<div className="grades-entries">{pending.map(a=>
         <div className="grades-entry" key={a.id}>
           <div><strong>{titleFor(a.id,a.courseId)}</strong><small>{getCourse(a.courseId)?.label||a.courseId}</small></div>
           <div className="grades-due-meta"><span className={`assignment-status ${a.status.state}`}>{a.status.state==='overdue'?'Overdue':'Assigned'}</span><small>Due {dueLabel(a.dueDate)}</small></div>

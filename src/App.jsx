@@ -7,6 +7,7 @@ import { useSaved } from './hooks/useSaved.js';
 import { toggleLessonComplete } from './lib/completion.js';
 import { completionIds } from './lib/gradebook.js';
 import { loadPublishedCourse } from './lib/publishedCourseLoader.js';
+import {cs1IntegrationMode,loadCs1ReadOnlyAccount} from './lib/cs1Integration.js';
 import { cn } from './lib/cn.js';
 import { homePath, journalsPath, gradesPath, playgroundPath, challengesPath, challengePath, resolveRoute, teacherPath, adminPath, projectPath } from './lib/routes.js';
 import Topbar from './components/layout/Topbar.jsx';
@@ -31,13 +32,16 @@ export default function App() {
   const [completedLessons, setCompletedLessons] = useSaved('designlab:completed-lessons', []);
   // All six courses now use published content or explicit unpublished placeholders.
   // Do not mix fictional grades or assignments into any migrated course.
-  const grades = [];
+  const [readOnlyAccount,setReadOnlyAccount] = useState({
+    status:cs1IntegrationMode?'loading':'disabled',grades:[],weeklyPoints:[]
+  });
+  const grades = cs1IntegrationMode ? readOnlyAccount.grades : [];
   const courseAssignments = [];
-  const completedWithGrades = completionIds(completedLessons,grades);
+  const completedWithGrades = completionIds(cs1IntegrationMode?[]:completedLessons,grades);
   const [publishedContent,setPublishedContent] = useState({});
   const [contentErrors,setContentErrors] = useState({});
   const [contentLoading,setContentLoading] = useState(true);
-  const availableCourses = useMemo(() => courses.map(course => {
+  const availableCourses = useMemo(() => (cs1IntegrationMode?courses.filter(c=>c.id==='computer-science-1'):courses).map(course => {
     if (course.id === 'computer-science-1' || course.id === 'test-prep') return course;
     if (course.id === 'capstone') return {...course,units:[],lessons:[],lessonRecords:{},
       publishedContent:false,projects:[]};
@@ -48,9 +52,19 @@ export default function App() {
   }),[publishedContent,contentErrors]);
 
   useEffect(() => {
+    if(!cs1IntegrationMode)return;
+    let active=true;
+    loadCs1ReadOnlyAccount().then(value=>{if(active)setReadOnlyAccount(value)}).catch(()=>{
+      if(active)setReadOnlyAccount({status:'unavailable',grades:[],weeklyPoints:[],
+        message:'Account lookup unavailable. No production records were changed.'});
+    });
+    return ()=>{active=false};
+  },[]);
+
+  useEffect(() => {
     const controller = new AbortController();
     let active = true;
-    Promise.all(['game-programming','mobile-app-dev','uil','tsi-math'].map(async courseId => {
+    Promise.all((cs1IntegrationMode?[]:['game-programming','mobile-app-dev','uil','tsi-math']).map(async courseId => {
       try {return {courseId, data:await loadPublishedCourse(courseId,{signal:controller.signal})};}
       catch(error){return {courseId,error:String(error?.message||error)};}
     })).then(results => {
@@ -152,6 +166,8 @@ export default function App() {
         onHome={() => navigate(homePath())}
         theme={theme}
         setTheme={setTheme}
+        readOnlyMode={cs1IntegrationMode}
+        accountLabel={readOnlyAccount.user?.handle}
       />
       <div className={cn('app-layout', !sidebarOpen && 'sidebar-closed')}>
         <Sidebar
@@ -165,11 +181,25 @@ export default function App() {
           assignments={courseAssignments}
           grades={grades}
           availableCourses={availableCourses}
+          readOnlyMode={cs1IntegrationMode}
           onOpenProject={openProject}
         />
         <main className="main-panel">
-          {page === 'home' ? (
-            <Home availableCourses={availableCourses} completedLessons={completedWithGrades} openCourse={openCourse} openTeacher={() => navigate(teacherPath())} openChallenges={() => navigate(challengesPath())} />
+          {cs1IntegrationMode && <section className="cs1-integration-notice" role="status">
+            <strong>Computer Science I · read-only integration test</strong>
+            <span>{readOnlyAccount.status==='loading'?'Checking your existing Playground session…'
+              :readOnlyAccount.status==='signed-in'?'Signed in as '+readOnlyAccount.user.handle+' · Your own verified grades are shown.'
+              :readOnlyAccount.status==='signed-out'?'Sign in on the current Playground to view your existing results.'
+              :readOnlyAccount.message||'Could not verify your existing session.'}</span>
+            <a href="/playground/">Open current Playground</a>
+          </section>}
+          {cs1IntegrationMode && !['home','course','grades'].includes(page) ? (
+            <div className="main-content"><h1>Not enabled in this test build</h1>
+              <p>Teacher tools, journals, challenges, and submissions remain in the current Playground until their permissions and data are integrated.</p>
+              <a href="/playground/">Return to current Playground</a>
+            </div>
+          ) : page === 'home' ? (
+            <Home availableCourses={availableCourses} completedLessons={completedWithGrades} openCourse={openCourse} openTeacher={() => navigate(teacherPath())} openChallenges={() => navigate(challengesPath())} readOnlyMode={cs1IntegrationMode} />
           ) : page === 'course' ? (
             <CoursePage
               key={route.courseId}
@@ -184,13 +214,14 @@ export default function App() {
               completedLessons={completedWithGrades}
               assignments={courseAssignments}
               grades={grades}
-              onToggleLessonComplete={(id) => setCompletedLessons(previous => toggleLessonComplete(previous, id))}
+              readOnlyMode={cs1IntegrationMode}
+              onToggleLessonComplete={cs1IntegrationMode?undefined:(id) => setCompletedLessons(previous => toggleLessonComplete(previous, id))}
               courseColors={courseColors}
               onSetCourseColor={setCourseColor}
               onResetCourseColor={resetCourseColor}
             />
           ) : page === 'grades' ? (
-            <Grades grades={grades} assignments={courseAssignments} completedLessons={completedWithGrades}/>
+            <Grades grades={grades} assignments={courseAssignments} completedLessons={completedWithGrades} readOnlyMode={cs1IntegrationMode} weeklyPoints={readOnlyAccount.weeklyPoints} accountStatus={readOnlyAccount.status}/>
           ) : page === 'challenges' ? (
             <ChallengeBank grades={grades} filterCourse={route.filterCourse} onSelect={(id) => navigate(challengePath(id))} onBrowseCourse={(id) => navigate(challengesPath(id))} />
           ) : page === 'challenge' ? (

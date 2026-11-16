@@ -242,3 +242,19 @@
 .main-panel { background: var(--bg); }
 .user-circle { background: var(--surface); }
 
+/* Isolated production-backed CS1 smoke build. Never imply writable grades. */
+.cs1-integration-notice {
+  display:flex;
+  flex-wrap:wrap;
+  align-items:center;
+  gap:8px 16px;
+  padding:13px clamp(18px,3vw,54px);
+  background:var(--surface);
+  color:var(--soft);
+  border-bottom:1px solid var(--border);
+  font-size:13px;
+  line-height:1.5;
+}
+.cs1-integration-notice strong {color:var(--text);font-weight:750}
+.cs1-integration-notice span {flex:1 1 250px}
+.cs1-integration-notice a {color:var(--course-color,var(--accent));font-weight:700}

@@ -6,7 +6,7 @@ import TestPrepCourse from './TestPrepCourse.jsx';
 import LessonWorkspace from '../components/course/LessonWorkspace.jsx';
 import ProjectWorkspace from '../components/course/ProjectWorkspace.jsx';
 
-export default function CoursePage({ courseId, lessonId, projectId, projectStepId, availableCourses = courses, openCourse, openProject, openChallenges, completedLessons = [], assignments = [], grades = [], onToggleLessonComplete, courseColors = {}, onSetCourseColor, onResetCourseColor }) {
+export default function CoursePage({ courseId, lessonId, projectId, projectStepId, availableCourses = courses, openCourse, openProject, openChallenges, completedLessons = [], assignments = [], grades = [], onToggleLessonComplete, courseColors = {}, onSetCourseColor, onResetCourseColor, readOnlyMode = false }) {
   const course = availableCourses.find(item=>item.id===courseId) || availableCourses[0];
   if (course.id === 'test-prep') return <TestPrepCourse lessonId={lessonId} openCourse={openCourse} completedLessons={completedLessons} onToggleLessonComplete={onToggleLessonComplete}/>;
   const project = (course.projects||[]).find(item=>item.id===projectId);
@@ -35,7 +35,7 @@ export default function CoursePage({ courseId, lessonId, projectId, projectStepI
                 ))}
               </select>
             </div>
-            <LessonWorkspace key={lessonId} lessonId={lessonId} course={course} unit={currentUnit} unitNumber={unitIndex + 1} isCompleted={completedLessons.includes(lessonId)} assignment={assignments.find(a=>a.id==='lesson:'+lessonId)} grade={grades.find(g=>g.id==='lesson:'+lessonId)} onToggleCompleted={() => onToggleLessonComplete?.(lessonId)}/>
+            <LessonWorkspace key={lessonId} lessonId={lessonId} course={course} unit={currentUnit} unitNumber={unitIndex + 1} isCompleted={completedLessons.includes(lessonId)} assignment={assignments.find(a=>a.id==='lesson:'+lessonId)} grade={grades.find(g=>g.id==='lesson:'+lessonId)} onToggleCompleted={() => onToggleLessonComplete?.(lessonId)} readOnlyMode={readOnlyMode}/>
             <nav className="lesson-next-bar" aria-label="Lesson sequence">
               {lessonIndex > 0 && <button type="button" className="lesson-nav-link previous"
                 onClick={() => openCourse(course.id, sequence[lessonIndex - 1])}>
@@ -49,7 +49,7 @@ export default function CoursePage({ courseId, lessonId, projectId, projectStepI
               </button>}
             </nav>
           </>
-        ) : <CourseLanding course={course} openCourse={openCourse} openProject={openProject} openChallenges={openChallenges} completedLessons={completedLessons} assignments={assignments} grades={grades} courseColors={courseColors} onSetCourseColor={onSetCourseColor} onResetCourseColor={onResetCourseColor} />}
+        ) : <CourseLanding course={course} openCourse={openCourse} openProject={openProject} openChallenges={openChallenges} completedLessons={completedLessons} assignments={assignments} grades={grades} courseColors={courseColors} onSetCourseColor={onSetCourseColor} onResetCourseColor={onResetCourseColor} readOnlyMode={readOnlyMode} />}
       </div>
     </div>
   );

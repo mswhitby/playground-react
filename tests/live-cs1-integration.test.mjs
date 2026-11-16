@@ -71,7 +71,7 @@ test('published public checker can distinguish printed scripts and return values
 test('migrated preview has no fictional graded scores or assigned due dates',()=>{
   const app=readFileSync(new URL('../src/App.jsx',import.meta.url),'utf8');
   const grades=readFileSync(new URL('../src/pages/Grades.jsx',import.meta.url),'utf8');
-  assert.match(app, /const grades = \[\];/);
+  assert.match(app, /const grades = cs1IntegrationMode \? readOnlyAccount.grades : \[\];/);
   assert.match(app, /const courseAssignments = \[\];/);
   assert.doesNotMatch(app, /sampleGrades|assignedWork/);
   assert.match(app,/assignments=\{courseAssignments\}/);

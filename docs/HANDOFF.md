@@ -9,6 +9,23 @@
 **Read first:** canonical `mswhitby/playground/AGENTS.md` and `mswhitby/playground/docs/HANDOFF.md`, then local `AGENTS.md`.  
 **Purpose:** A reliable start-of-chat snapshot. Re-check live GitHub state before acting; this document is not a substitute for current PR or build status.
 
+## November 16, 2026 — CS1 isolated production-backed read-only integration
+
+- **Branch and PR:** `feature/cs1-readonly-production-bridge-20261116` draft [React PR #14](https://github.com/mswhitby/playground-react/pull/14) stacked on #13; canonical production-owned read-only adapter is [playground PR #34](https://github.com/mswhitby/playground/pull/34) (`feature/react-cs1-readonly-integration-20261116`).
+- **Test mode:** Built only when `VITE_READONLY_INTEGRATION=true` and `VITE_HASH_ROUTING=true`, base `/playground/integration/`. `src/lib/cs1Integration.js` imports the static `/playground/integration/account-bridge.js` compiled from the central production repo, not the full production account module (which would sync student records). It reads existing session and real verified CS1 grades, preserves course IDs and highest scores, shows positive weekly gains, hides demo teacher/admin/journal/challenge pages and removes manual completion in test mode.
+- **Source and UX invariants:** Read-only CS1 40 lessons; published Python practice Run/Check remains local and Submit remains disabled. No real student writes or teacher operations. The normal React design preview remains unchanged when the feature flag is off.
+- **Tests:** [React run 43916464760](https://github.com/mswhitby/playground-react/actions/runs/43916464760) succeeded at pinned SHA `1b322d535f359bf77eb42d7db4873c114a68232a`. [Combined integration run 43916505313](https://github.com/mswhitby/playground/actions/runs/43916505313) passed at canonical SHA `23781e9ce389fee668eab6aeca674c3dbf42a374`, including guest browser smoke. [Publisher run 43916724375](https://github.com/mswhitby/classroom/actions/runs/43916724375) succeeded; Final Pages deployment [run 43916827472](https://github.com/mswhitby/classroom/actions/runs/43916827472) **succeeded**. The isolated HTML, read-only bridge and Python worker exist in the published classroom repository; authenticated browser session testing still requires a manual test account.
+- **Review link:** `https://www.mswhitby.com/playground/integration/`. Test signed-in real-account data manually before enabling writes. Do not merge preview feature branches into production or replace `/playground/`.
+- **Next:** Validate identity and saved scores against actual student test account and build explicit, confirmed Submit/grade linkage using existing production services. Keep the current preview at `/playground/preview/` for design review.
+
+## November 16, 2026 — First canonical CS1 account integration (read-only test build)
+
+- React branch: feature/cs1-readonly-production-bridge-20261116, stacked on the TSI question-style preview work. This remains **unmerged**.
+- React App has an opt-in VITE_READONLY_INTEGRATION flag: restrict test navigation to Computer Science I and Grades, hide manual complete and teacher/admin/demo views, and display production-verified score/completion via existing-account read-only bridge. All Run/Check remain local; Submit stays disabled.
+- The production-owned bridge lives in mswhitby/playground/public/integration/account-bridge.js on feature/react-cs1-readonly-integration-20261116. This reads the current user's production session and verified history with GET only and never synchronizes or writes data.
+- Test release target: /playground/integration/, preserving the existing all-course /playground/preview/ and live /playground/. For details see mswhitby/playground/docs/REACT-CS1-INTEGRATION.md.
+- Pending: CI on both repo branches; pin/test isolated publisher; signed-in authorized-account browser smoke test and grade comparison. This is NOT a ready production replacement or a grading/submission integration.
+
 ## November 16, 2026 — TSI diagnostic question-card visual parity (preview only)
 
 - **Owning branch:** `feature/tsi-diagnostic-practice-card-style-20261116`, draft [React PR #13](https://github.com/mswhitby/playground-react/pull/13) stacked on preview PR #12.

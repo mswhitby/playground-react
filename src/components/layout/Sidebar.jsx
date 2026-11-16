@@ -14,12 +14,12 @@ const MENU = [
 ];
 
 /** One shared sidebar: Explore → current course outline → all playgrounds. */
-export default function Sidebar({ open, page, courseId, lessonId, setPage, openCourse, onOpenProject, availableCourses = courses, completedLessons = [], assignments = [], grades = [] }) {
+export default function Sidebar({ open, page, courseId, lessonId, setPage, openCourse, onOpenProject, availableCourses = courses, completedLessons = [], assignments = [], grades = [], readOnlyMode = false }) {
   const course = page === 'course' ? availableCourses.find(item=>item.id===courseId) : null;
   return (
     <aside className={cn('main-sidebar', !open && 'collapsed')} aria-label="Playground navigation">
       <div className="side-title">EXPLORE</div>
-      {MENU.map(([id, label, Icon]) => (
+      {MENU.filter(([id])=>!readOnlyMode||['home','grades'].includes(id)).map(([id, label, Icon]) => (
         <button key={id} className={cn('nav-item', (page === id || (id === 'challenges' && page === 'challenge')) && 'active')}
           onClick={() => setPage(id)} title={label}>
           <Icon size={19} /><span>{label}</span>

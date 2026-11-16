@@ -133,13 +133,21 @@ async function tsiCourse(fetchImpl,signal) {
     kind:'Planned session',language:'text',starter:'',ready:false,
     status:'planned'
   }));
-  const strands=await Promise.all((draft.lessons||[]).map(async row=>({
-    id:row.id,title:row.title,kind:'Draft practice',status:'draft',language:'text',
-    markdown:row.student_lesson,
-    markdownUrl:publicResourceUrl(id,row.student_lesson),
-    markdownSource:await request(id,row.student_lesson,fetchImpl,signal),
-    starter:'',challenge:'Currently authored draft lesson · '+row.minutes+' minutes',
-  })));
+  // These four instructional keys are already published, public formative references.
+  // Do not apply this pattern to private/graded answer keys or hidden tests.
+  const strands=await Promise.all((draft.lessons||[]).map(async row=>{
+    const [markdownSource,tsiKey]=await Promise.all([
+      request(id,row.student_lesson,fetchImpl,signal),
+      request(id,row.teacher_key,fetchImpl,signal,true)
+    ]);
+    return {
+      id:row.id,title:row.title,kind:'Draft practice',status:'draft',language:'text',
+      markdown:row.student_lesson,
+      markdownUrl:publicResourceUrl(id,row.student_lesson),
+      markdownSource,tsiKey,tsiStrandDraft:true,
+      starter:'',challenge:'Currently authored draft lesson · '+row.minutes+' minutes',
+    };
+  }));
   return {...normalizeImportedOutline({units:[
     {id:'study-schedule',number:1,title:'20-day study schedule (in development)',lessons:schedule},
     {id:'authored-strands',number:2,title:'Available draft strand lessons',lessons:strands}

@@ -200,3 +200,55 @@
 
 /* Lesson number tiles always use the course accent. Completion, assigned, and
    overdue colors belong only to the status dot and tag beside the lesson name. */
+
+/* Authored TSIA2 four-strand lessons: questions left and Learn/feedback right. */
+.tsi-strand-workspace {
+  display:grid;
+  grid-template-columns:minmax(0,1.08fr) minmax(0,.92fr);
+  gap:18px;
+  align-items:start;
+  margin-top:20px;
+}
+.tsi-strand-workspace > .surface-card {
+  min-width:0;
+  padding:clamp(18px,2.4vw,28px);
+}
+.tsi-strand-panel-heading {padding-bottom:14px;border-bottom:1px solid var(--border)}
+.tsi-strand-panel-heading .eyebrow {color:var(--course-color);font-size:11px;font-weight:750}
+.tsi-strand-panel-heading h2 {display:flex;align-items:center;gap:8px;font-size:21px;margin:6px 0 10px;color:var(--text)}
+.tsi-strand-panel-heading p {font-size:13px;color:var(--muted);line-height:1.55;margin:0}
+.tsi-strand-question {
+  min-width:0;
+  margin:0;
+  padding:20px 0;
+  border:0;
+  border-bottom:1px solid var(--border);
+}
+.tsi-strand-question legend {padding:0;font-size:15px;line-height:1.65;font-weight:650;color:var(--text)}
+.tsi-strand-question-number {display:inline-grid;place-items:center;width:24px;height:24px;border-radius:7px;margin-right:7px;background:color-mix(in srgb,var(--course-color) 15%,var(--surface));color:var(--course-color)}
+.tsi-strand-options {display:grid;gap:8px;margin-top:14px}
+.tsi-strand-option {display:flex;align-items:center;gap:10px;min-width:0;line-height:1.55;background:var(--surface-2);border:1px solid var(--border);border-radius:10px;padding:10px 12px;cursor:pointer}
+.tsi-strand-option input {accent-color:var(--course-color);flex:none}
+.tsi-strand-option.selected {border-color:var(--course-color)}
+.tsi-strand-option.correct {border-color:var(--success,#20ae70)}
+.tsi-strand-letter {color:var(--muted);font-size:12px;font-weight:800}
+.tsi-strand-question-status {font-weight:650;color:var(--soft);font-size:12px;margin:10px 0 0}
+.tsi-strand-actions {display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-top:20px}
+.tsi-strand-progress {margin:12px 0 0;color:var(--muted);font-size:12px}
+.tsi-strand-explanations .markdown-preview {font-size:15px;line-height:1.75;padding-top:13px}
+.tsi-strand-review {margin-top:22px;padding-top:20px;border-top:1px solid var(--border)}
+.tsi-strand-review h3 {display:flex;align-items:center;gap:7px;font-size:17px;margin:0 0 12px}
+.tsi-strand-review > p {font-size:13px;color:var(--soft);line-height:1.65}
+.tsi-strand-answer {border-left:3px solid var(--course-color);background:var(--surface-2);border-radius:8px;padding:13px 15px;margin:12px 0;line-height:1.6}
+.tsi-strand-answer h4 {margin:0 0 6px;font-size:14px}
+.tsi-strand-answer p {margin:6px 0;font-size:13px}
+.tsi-strand-reflect {border-top:1px solid var(--border);margin-top:22px;padding-top:14px}
+.tsi-strand-disclaimer {grid-column:1/-1;margin:0;color:var(--muted);font-size:12px}
+.tsi-strand-error {padding:24px;margin-top:20px}
+@media(max-width:850px){
+  .tsi-strand-workspace {grid-template-columns:minmax(0,1fr)}
+}
+@media print {
+  .tsi-strand-workspace {grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
+  .tsi-strand-workspace > .surface-card {break-inside:avoid}
+}

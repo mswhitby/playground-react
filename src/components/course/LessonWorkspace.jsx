@@ -7,6 +7,7 @@ import InstructionsPane from './InstructionsPane.jsx';
 import CodePane from './CodePane.jsx';
 import WebFilesPane from './WebFilesPane.jsx';
 import TsiPractice from './TsiPractice.jsx';
+import TsiStrandWorkspace from './TsiStrandWorkspace.jsx';
 import TsiDiagnostic from './TsiDiagnostic.jsx';
 import { tsiQuestions } from '../../data/tsiQuestions.js';
 import { renderMarkdown } from '../../lib/markdown.js';
@@ -38,6 +39,14 @@ export default function LessonWorkspace({ lessonId, course, unit, unitNumber, is
       <h2>Lesson coming soon</h2>
       <p>This scheduled lesson has not been authored yet. No practice or scores are available.</p>
     </section>
+  </div>;
+  // The four authored TSI strand drafts use a real question-left/Learn-right
+  // layout rather than the generic static Markdown reading panel.
+  if (isTsi && task.tsiStrandDraft) return <div className="lesson-screen">
+    <LessonHeader task={task} unit={unit} unitNumber={unitNumber} isTsi
+      isCompleted={isCompleted} assignment={assignment} grade={grade}
+      onToggleCompleted={onToggleCompleted}/>
+    <TsiStrandWorkspace task={task}/>
   </div>;
   if (task.language === 'text' && !isTsi) return <div className="lesson-screen">
     <LessonHeader task={task} unit={unit} unitNumber={unitNumber} isTsi={false}

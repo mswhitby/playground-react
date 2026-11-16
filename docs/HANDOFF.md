@@ -9,6 +9,15 @@
 **Read first:** canonical `mswhitby/playground/AGENTS.md` and `mswhitby/playground/docs/HANDOFF.md`, then local `AGENTS.md`.  
 **Purpose:** A reliable start-of-chat snapshot. Re-check live GitHub state before acting; this document is not a substitute for current PR or build status.
 
+## November 16, 2026 — Four published TSI strands in question-left / explanation-right React preview
+
+- **Owning React branch:** `feature/tsi-four-strand-side-by-side-preview-20261116`, draft PR [#12](https://github.com/mswhitby/playground-react/pull/12), stacked on Test Prep draft PR #11; neither should be merged automatically.
+- **Purpose:** The previous UI rendered authored TSI draft Markdown as a single reading panel. The four canonical published strand lessons now display interactive practice questions on the left and `Learn` / checked answer explanations on the right, stacked vertically on narrow screens. Original TSI 20-day IDs and diagnostic navigation remain unchanged.
+- **Data:** `src/lib/publishedCourseLoader.js` loads existing published TSI student lesson Markdown and already-public formative explanation references from `/playground/data/tsi-math/`. `src/lib/tsiStrandPractice.js` parses the public Markdown; `src/components/course/TsiStrandWorkspace.jsx` provides the layout. This is intentionally browser-only practice; it does not implement server assessment, saved teacher records or official readiness scores. Do not use this approach for private keys.
+- **Tests:** React verification on `b565f788ae1f587f87f9926011792c97ead99697` passed GitHub Actions run `43898840028`, including parsing/published-course fixtures. Review PR #12 after later docs commits; the workflow pins a specific tested commit.
+- **Deployment:** **Published and verified**: `mswhitby/classroom/.github/workflows/publish-react-cs1-preview.yml` pins tested React SHA `b565f788ae1f587f87f9926011792c97ead99697`; isolated preview publisher run [43899069127](https://github.com/mswhitby/classroom/actions/runs/43899069127) passed and Pages deployment run [43899184506](https://github.com/mswhitby/classroom/actions/runs/43899184506) succeeded. Compiled preview CSS contains the new side-by-side style. Browser-level end-to-end live QA not independently performed. Production `/playground/` remains untouched. `mswhitby/playground` draft PR #33 holds a comparable main-app layout proposal, not merged/published.
+- **Next:** Verify the deployed preview at `https://www.mswhitby.com/playground/preview/#/playgrounds/tsi-math`, navigate to the authored strand lesson cards, and inspect desktop/mobile answer review before any main-app merge.
+
 ## Where we are right now
 
 - **Production** is separate: `mswhitby/playground`, published under `https://www.mswhitby.com/playground/`. Do **not** change production unless explicitly asked.

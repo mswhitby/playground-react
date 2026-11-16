@@ -9,6 +9,15 @@
 **Read first:** canonical `mswhitby/playground/AGENTS.md` and `mswhitby/playground/docs/HANDOFF.md`, then local `AGENTS.md`.  
 **Purpose:** A reliable start-of-chat snapshot. Re-check live GitHub state before acting; this document is not a substitute for current PR or build status.
 
+## November 16, 2026 — TSI diagnostic question-card visual parity (preview only)
+
+- **Owning branch:** `feature/tsi-diagnostic-practice-card-style-20261116`, draft [React PR #13](https://github.com/mswhitby/playground-react/pull/13) stacked on preview PR #12.
+- **Decision:** Reuse the four authored strand lesson's numbered question badges, option-card typography, spacing, selected borders and keyboard-focus treatment for the existing 24-item, four-strand TSI placement diagnostic. Group each strand in a distinct surface card; retain the **Not sure** radio option.
+- **No scoring changes:** `TsiDiagnostic.jsx` still uses the existing numeric distractor generation, 24-question validation, `diagnosticPlacement`, Pearson study-code handling and browser-local first/latest records. The diagnostic does not display answers mid-test or award verified grades.
+- **Files:** `src/components/course/TsiDiagnostic.jsx`, `src/styles/learning.css` and regression test `tests/tsi-diagnostic-style.test.mjs`.
+- **Validation:** React verification run [43905192758](https://github.com/mswhitby/playground-react/actions/runs/43905192758) passed at SHA `34f3e021b4d2624622afb1f893c5be4594a4de87`. The classroom preview publisher now pins that tested commit; run [43905305165](https://github.com/mswhitby/classroom/actions/runs/43905305165) succeeded. The published HTML references a CSS asset containing the diagnostic-specific selectors. Pages deployment verification is separate.
+- **Scope:** `https://www.mswhitby.com/playground/preview/` only. Production `/playground/` is unchanged. No feature PR has been merged.
+
 ## November 16, 2026 — Four published TSI strands in question-left / explanation-right React preview
 
 - **Owning React branch:** `feature/tsi-four-strand-side-by-side-preview-20261116`, draft PR [#12](https://github.com/mswhitby/playground-react/pull/12), stacked on Test Prep draft PR #11; neither should be merged automatically.

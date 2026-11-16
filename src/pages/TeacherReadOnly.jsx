@@ -5,6 +5,8 @@ import Chip from '../components/ui/Chip.jsx';
 import TeacherToolbar from '../components/teacher/TeacherToolbar.jsx';
 import TeacherTabs from '../components/teacher/TeacherTabs.jsx';
 import TeacherCurriculum from '../components/teacher/TeacherCurriculum.jsx';
+import RosterPanel from '../components/teacher/RosterPanel.jsx';
+import {sortStudent} from '../lib/students.js';
 import SectionBanner from '../components/teacher/SectionBanner.jsx';
 
 const bridge='/playground/integration/teacher-bridge.js';
@@ -25,7 +27,7 @@ export default function TeacherReadOnly(){
  const [service,setService]=useState(null),[state,setState]=useState('loading');
  const [sectionId,setSectionId]=useState(''),[tab,setTab]=useState('overview');
  const [snapshot,setSnapshot]=useState(null),[weekly,setWeekly]=useState(null);
- const [week,setWeek]=useState(currentWeek),[expanded,setExpanded]=useState(null),[history,setHistory]=useState(null),[error,setError]=useState('');
+ const [week,setWeek]=useState(currentWeek),[sort,setSort]=useState('last'),[expanded,setExpanded]=useState(null),[history,setHistory]=useState(null),[error,setError]=useState('');
  useEffect(()=>{let active=true;import(/* @vite-ignore */bridge).then(m=>m.teacherReadOnlyClient()).then(s=>{
   if(!active)return;setService(s);setState(s.status);if(s.status==='ready')setSectionId(s.classes[0]?.id||'');
  }).catch(()=>{if(active)setState('unavailable')});return()=>{active=false}},[]);
@@ -47,8 +49,13 @@ export default function TeacherReadOnly(){
  const weeks=[...new Set([week,...(weekly?.weeks||[]).map(w=>w.week_start)])].sort().reverse();
  const points=new Map((weekly?.weeks||[]).filter(w=>w.week_start===week).map(w=>[w.user_id,w]));
  const checks=new Map((snapshot?.checks||[]).map(r=>[r.user_id,r]));
- const students=approved.map(r=>({id:r.user_id,first:(r.display_name||r.github_account||'Student').split(' ')[0],
-  last:(r.display_name||'').split(' ').slice(1).join(' '),github:r.github_account||'',sections:[sectionId]}));
+ const students=approved.map(r=>({
+  id:r.user_id,studentName:r.display_name||r.github_account||'Student',github:r.github_account||'',sections:[sectionId],
+  status:'Not connected',current:'—',weekly:{[week]:Number(points.get(r.user_id)?.points)||0},
+  assignments:expanded===r.user_id&&history&&!history.error?toAssignments(history):[],
+  practiceCount:Number(checks.get(r.user_id)?.checks)||0,
+  handinCount:expanded===r.user_id&&history&&!history.error?(history.submissions||[]).length:null
+ })).sort((a,b)=>sortStudent(a,b,sort));
  const selectedSection=section?{id:section.id,name:section.name,course:section.course_id,join_code:section.join_code}:null;
  return <div className="main-content teacher-screen">
   <SectionTitle eyebrow="Your classroom · Connected integration"
@@ -74,11 +81,7 @@ export default function TeacherReadOnly(){
        <div className="overflow"><table className="data-table"><thead><tr><th>Student</th><th>Weekly points</th><th>Improved assignments</th></tr></thead>
         <tbody>{approved.map(r=><tr key={r.user_id}><th>{r.display_name||r.github_account||'Student'}</th><td><strong>{Number(points.get(r.user_id)?.points)||0}</strong></td><td>{Number(points.get(r.user_id)?.assignments)||0}</td></tr>)}</tbody></table></div>
       </section>
-      <section className="panel"><div className="section-heading"><div><h2>Section roster & activity</h2><p>Select a student to expand verified submission history.</p></div></div>
-       <div className="overflow"><table className="data-table roster-table"><thead><tr><th>Student</th><th>Activity signal</th><th>Current activity</th><th>Practice</th><th>Hand-ins</th></tr></thead><tbody>
-       {approved.map(r=><FragmentRow key={r.user_id} row={r} expanded={expanded} setExpanded={setExpanded} history={history} checks={checks}/>)}
-       </tbody></table></div>
-      </section>
+      <RosterPanel students={students} week={week} sort={sort} setSort={setSort} expanded={expanded} setExpanded={setExpanded} readOnlyMode historyLoading={Boolean(expanded&&!history)} />
      </>}
      {tab==='curriculum'&&<><SectionBanner section={selectedSection} />
        {selectedSection?.course==='computer-science-1'?<TeacherCurriculum section={selectedSection} students={students} assignments={[]} readOnlyMode />:<section className="panel"><h2><BookOpen size={18}/> Curriculum</h2><p>Course-specific assignments will be connected after authorization and content verification.</p></section>}
@@ -88,12 +91,28 @@ export default function TeacherReadOnly(){
    </>}
  </div>;
 }
-function FragmentRow({row,expanded,setExpanded,history,checks}){
- const open=expanded===row.user_id;
- return <><tr className={open?'selected-row':''}><th><button className="student-name-button" aria-expanded={open} onClick={()=>setExpanded(open?null:row.user_id)}>{open?'⌄':'›'} {row.display_name||row.github_account||'Student'}</button><small>@{row.github_account||'—'}</small></th>
- <td><Chip>Not connected</Chip></td><td>—</td><td>{Number(checks.get(row.user_id)?.checks)||0} checks</td><td>View history</td></tr>
- {open&&<tr className="expansion-row"><td colSpan="5">{!history?<p>Loading verified history…</p>:history.error?<p role="alert">{history.error}</p>:
- <div><strong>Submission history</strong><div className="overflow"><table className="data-table"><thead><tr><th>Activity</th><th>Submitted</th><th>Verified grade</th></tr></thead><tbody>
- {(history.submissions||[]).map(s=><tr key={s.id}><td>{s.activity_id}</td><td>{new Date(s.submitted_at).toLocaleString()}</td><td>{s.grade_status==='graded'?s.points+' / '+s.possible:'Not graded'}</td></tr>)}
- </tbody></table></div></div>}</td></tr>}</>;
+function toAssignments(history){
+ const groups=new Map();
+ for(const item of history.practice||[]){
+  const id=item.activity_id;if(!id)continue;
+  const row=groups.get(id)||{id,name:id,type:item.activity_kind||'Lesson',status:'Started',score:null,possible:null,submitted:'—'};
+  if(item.status==='completed')row.status='Practice completed';
+  else if(item.status==='needs_revision'&&row.status==='Started')row.status='Needs revision';
+  row.submitted=item.updated_at||row.submitted;groups.set(id,row);
+ }
+ for(const sub of history.submissions||[]){
+  const id=sub.activity_id;if(!id)continue;
+  const row=groups.get(id)||{id,name:id,type:sub.activity_kind||'Lesson',status:'Submitted',score:null,possible:null,submitted:'—'};
+  if(sub.grade_status==='graded'&&Number.isFinite(Number(sub.points))&&Number.isFinite(Number(sub.possible))){
+   if(row.score===null||Number(sub.points)>row.score){row.score=Number(sub.points);row.possible=Number(sub.possible);}
+   row.status='Completed';
+  }else if(row.score===null)row.status='Submitted';
+  if(!row.submitted||row.submitted==='—'||Date.parse(sub.submitted_at)>Date.parse(row.submitted))row.submitted=sub.submitted_at;
+  groups.set(id,row);
+ }
+ for(const item of history.checks||[]){
+  const id=item.activity_id;if(!id)continue;
+  if(!groups.has(id))groups.set(id,{id,name:id,type:'Practice',status:'Started',score:null,possible:null,submitted:item.last_check||'—'});
+ }
+ return [...groups.values()].sort((a,b)=>Date.parse(b.submitted||0)-Date.parse(a.submitted||0)).map(r=>({...r,submitted:r.submitted==='—'?'—':new Date(r.submitted).toLocaleDateString('en-US')}));
 }

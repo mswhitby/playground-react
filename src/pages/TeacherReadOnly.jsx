@@ -5,8 +5,16 @@ import Chip from '../components/ui/Chip.jsx';
 import TeacherToolbar from '../components/teacher/TeacherToolbar.jsx';
 import TeacherTabs from '../components/teacher/TeacherTabs.jsx';
 import TeacherCurriculum from '../components/teacher/TeacherCurriculum.jsx';
+import SectionBanner from '../components/teacher/SectionBanner.jsx';
 
 const bridge='/playground/integration/teacher-bridge.js';
+function weekLabel(start){
+ const date=new Date(start+'T12:00:00Z');
+ if(Number.isNaN(date.getTime()))return start;
+ const end=new Date(date);end.setUTCDate(end.getUTCDate()+6);
+ const fmt=new Intl.DateTimeFormat('en-US',{month:'short',day:'numeric',timeZone:'UTC'});
+ return fmt.format(date)+' – '+fmt.format(end)+', '+end.getUTCFullYear();
+}
 function currentWeek(){
  const parts=Object.fromEntries(new Intl.DateTimeFormat('en-US',{timeZone:'America/Chicago',year:'numeric',month:'2-digit',day:'2-digit'}).formatToParts(new Date()).filter(x=>x.type!=='literal').map(x=>[x.type,x.value]));
  const date=new Date(parts.year+'-'+parts.month+'-'+parts.day+'T12:00:00Z');
@@ -41,7 +49,7 @@ export default function TeacherReadOnly(){
  const checks=new Map((snapshot?.checks||[]).map(r=>[r.user_id,r]));
  const students=approved.map(r=>({id:r.user_id,first:(r.display_name||r.github_account||'Student').split(' ')[0],
   last:(r.display_name||'').split(' ').slice(1).join(' '),github:r.github_account||'',sections:[sectionId]}));
- const selectedSection=section?{id:section.id,name:section.name,course:section.course_id}:null;
+ const selectedSection=section?{id:section.id,name:section.name,course:section.course_id,join_code:section.join_code}:null;
  return <div className="main-content teacher-screen">
   <SectionTitle eyebrow="Your classroom · Connected integration"
    actions={<Chip>Authorized teacher · Read only</Chip>}>Teacher dashboard</SectionTitle>
@@ -55,14 +63,14 @@ export default function TeacherReadOnly(){
     <TeacherTabs tab={tab} onChange={next=>{setTab(next);setExpanded(null)}} />
     {error?<p role="alert">{error}</p>:!snapshot||!weekly?<p role="status">Loading section information…</p>:<>
      {tab==='overview'&&<>
-      <div className="section-banner"><div><div className="eyebrow">Selected section</div><h2>{section?.name} <span className="muted">· {section?.course_id}</span></h2></div><Chip>Verified data</Chip></div>
+      <SectionBanner section={selectedSection} />
       <div className="stat-grid">
        <div className="stat-card"><strong>{approved.length}</strong><span>Enrolled students</span></div>
        <div className="stat-card"><strong>{pending.length}</strong><span>Pending enrollment requests</span></div>
        <div className="stat-card"><strong>{approved.reduce((n,r)=>n+(Number(points.get(r.user_id)?.points)||0),0)}</strong><span>Verified weekly points</span></div>
       </div>
       <section className="panel"><div className="section-heading"><div><h2>Weekly points</h2><p>Server-verified improvements · Monday–Sunday in Central Time</p></div>
-       <label>Week <select value={week} onChange={e=>setWeek(e.target.value)}>{weeks.map(w=><option key={w} value={w}>{w}</option>)}</select></label></div>
+       <label>Week <select value={week} onChange={e=>setWeek(e.target.value)}>{weeks.map(w=><option key={w} value={w}>{weekLabel(w)}</option>)}</select></label></div>
        <div className="overflow"><table className="data-table"><thead><tr><th>Student</th><th>Weekly points</th><th>Improved assignments</th></tr></thead>
         <tbody>{approved.map(r=><tr key={r.user_id}><th>{r.display_name||r.github_account||'Student'}</th><td><strong>{Number(points.get(r.user_id)?.points)||0}</strong></td><td>{Number(points.get(r.user_id)?.assignments)||0}</td></tr>)}</tbody></table></div>
       </section>
@@ -72,7 +80,7 @@ export default function TeacherReadOnly(){
        </tbody></table></div>
       </section>
      </>}
-     {tab==='curriculum'&&<><div className="section-banner"><div><div className="eyebrow">Selected section</div><h2>{section?.name}</h2></div><Chip>Assignment changes disabled</Chip></div>
+     {tab==='curriculum'&&<><SectionBanner section={selectedSection} />
        {selectedSection?.course==='computer-science-1'?<TeacherCurriculum section={selectedSection} students={students} assignments={[]} readOnlyMode />:<section className="panel"><h2><BookOpen size={18}/> Curriculum</h2><p>Course-specific assignments will be connected after authorization and content verification.</p></section>}
      </>}
      {tab==='journals'&&<section className="panel"><div className="section-heading"><h2><ClipboardPenLine size={18}/> Weekly journal submissions</h2></div><p>Journal access will be connected to authorized section records. No fictional student submissions are shown.</p></section>}

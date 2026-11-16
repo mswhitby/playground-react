@@ -233,7 +233,7 @@ export default function App() {
           ) : page === 'teacher' ? (
             cs1IntegrationMode ? <TeacherReadOnly /> : <TeacherDashboard students={students} journalSubmissions={journalSubmissions} />
           ) : page === 'admin' ? (
-            <AdminDashboard students={students} setStudents={setStudents}/>
+            cs1IntegrationMode ? <AdminReadOnly /> : <AdminDashboard students={students} setStudents={setStudents}/>
           ) : contentLoading ? (
             <div className="main-content route-not-found" role="status">
               <h1>Loading published course materials…</h1>

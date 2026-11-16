@@ -1,8 +1,8 @@
-/** Display name precedence: Google Sheet name → student-entered name → GitHub username. */
+/** Display name precedence: teacher override → Google Sheet name → student-entered name → GitHub username. */
 export const niceName = (student) =>
-  student.sheetName?.trim() || student.studentName?.trim() || student.github;
+  student.teacherName?.trim() || student.sheetName?.trim() || student.studentName?.trim() || student.github;
 
-const nameParts = (s) => (s.sheetName || s.studentName || "").trim().split(/\s+/);
+const nameParts = (s) => (s.teacherName || s.sheetName || s.studentName || "").trim().split(/\s+/);
 
 /** Comparator for sorting students by "first", "last" or "github". */
 export const sortStudent = (a, b, sort) => {

@@ -9,7 +9,7 @@ import SortSelect from "./SortSelect.jsx";
 import AccountCard from "./AccountCard.jsx";
 
 /** "Accounts" tab: search, filter by period, sort, and edit sample names. */
-export default function AccountsTab({ students, sort, setSort, patchStudent }) {
+export default function AccountsTab({ students, sort, setSort, patchStudent, readOnlyMode = false }) {
   const [period, setPeriod] = useSaved("designlab:period-filter", "all");
   const [search, setSearch] = useState("");
   const [editing, setEditing] = useState(null);
@@ -30,7 +30,7 @@ export default function AccountsTab({ students, sort, setSort, patchStudent }) {
       <div className="section-heading">
         <div>
           <h2>Accounts</h2>
-          <p>Google Sheet name first, student-entered name second, then GitHub name.</p>
+          <p>Teacher name, then connected Sheet, signup name, and GitHub fallback.</p>
         </div>
         <Chip>{accounts.length} accounts</Chip>
       </div>
@@ -57,10 +57,7 @@ export default function AccountsTab({ students, sort, setSort, patchStudent }) {
         <SortSelect label="Sort" value={sort} onChange={setSort} />
       </div>
 
-      <p className="info-text">
-        Change a sample Sheet name to test precedence and fallback behavior. These edits are saved only in
-        browser storage.
-      </p>
+      <p className="info-text">{readOnlyMode ? 'Authorized account directory · read-only. Account edits remain in the current Playground.' : 'Sample account edits are saved only in browser storage.'}</p>
 
       <div className="account-grid">
         {accounts.map((s) => (
@@ -70,7 +67,8 @@ export default function AccountsTab({ students, sort, setSort, patchStudent }) {
             isEditing={editing === s.id}
             onToggleEdit={() => setEditing(editing === s.id ? null : s.id)}
             onDone={() => setEditing(null)}
-            onPatch={(patch) => patchStudent(s.id, patch)}
+            onPatch={(patch) => patchStudent?.(s.id, patch)}
+            readOnlyMode={readOnlyMode}
           />
         ))}
       </div>

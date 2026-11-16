@@ -16,6 +16,7 @@ import Footer from './components/layout/Footer.jsx';
 import Home from './pages/Home.jsx';
 import CoursePage from './pages/CoursePage.jsx';
 import TeacherDashboard from './pages/TeacherDashboard.jsx';
+import TeacherReadOnly from './pages/TeacherReadOnly.jsx';
 import AdminDashboard from './pages/AdminDashboard.jsx';
 import Journals from './pages/Journals.jsx';
 import Grades from './pages/Grades.jsx';
@@ -193,7 +194,7 @@ export default function App() {
               :readOnlyAccount.message||'Could not verify your existing session.'}</span>
             <a href="/playground/">Open current Playground</a>
           </section>}
-          {cs1IntegrationMode && !['home','course','grades'].includes(page) ? (
+          {cs1IntegrationMode && !['home','course','grades','teacher'].includes(page) ? (
             <div className="main-content"><h1>Not enabled in this test build</h1>
               <p>Teacher tools, journals, challenges, and submissions remain in the current Playground until their permissions and data are integrated.</p>
               <a href="/playground/">Return to current Playground</a>
@@ -229,7 +230,7 @@ export default function App() {
           ) : page === 'journals' ? (
             <Journals submissions={journalSubmissions} setSubmissions={setJournalSubmissions} />
           ) : page === 'teacher' ? (
-            <TeacherDashboard students={students} journalSubmissions={journalSubmissions} />
+            cs1IntegrationMode ? <TeacherReadOnly /> : <TeacherDashboard students={students} journalSubmissions={journalSubmissions} />
           ) : page === 'admin' ? (
             <AdminDashboard students={students} setStudents={setStudents}/>
           ) : contentLoading ? (

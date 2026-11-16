@@ -5,7 +5,7 @@ const normalizeGithub=value=>String(value||'').trim().replace(/^@/,'').toLowerCa
 
 export function buildTeacherIdentity(names=[],sheets=[],directory=[]){
  const teacher=new Map((Array.isArray(names)?names:[]).filter(n=>n.user_id&&n.display_name?.trim()).map(n=>[n.user_id,n.display_name.trim()]));
- const sheet=new Map((Array.isArray(sheets)?sheets:[]).filter(n=>n.user_id&&n.name?.trim()).map(n=>[n.user_id,n]));
+ const sheet=new Map((Array.isArray(sheets)?sheets:[]).filter(n=>n.user_id).map(n=>[n.user_id,n]));
  const people=Array.isArray(directory)?directory:[];
  const byId=new Map(people.filter(p=>p.user_id).map(p=>[p.user_id,p]));
  const byGithub=new Map(people.filter(p=>p.github_account).map(p=>[normalizeGithub(p.github_account),p]));

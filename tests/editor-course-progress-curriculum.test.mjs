@@ -22,7 +22,7 @@ test('marking a CS1 lesson completed changes overview, sidebar and progress from
   assert.match(sidebar,/activity\.completed \? 'completed'/);
   assert.match(cards,/a\.dueDate \|\| a\.completed/);
   assert.match(cards,/assignment-status/);
-  assert.match(app,/completedWithGrades = completionIds\(completedLessons,grades\)/);
+  assert.match(app,/completedWithGrades = completionIds\(cs1IntegrationMode\?\[\]:completedLessons,grades\)/);
   assert.match(app,/toggleLessonComplete\(previous, id\)/);
   assert.match(cards,/marked complete in preview/);
 });

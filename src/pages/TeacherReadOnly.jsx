@@ -10,7 +10,7 @@ import WeeklyPointsPanel from '../components/teacher/WeeklyPointsPanel.jsx';
 import {getCourse} from '../data/courses.js';
 import {getCourseLesson,normalizeImportedOutline} from '../lib/courseContent.js';
 import {sortStudent} from '../lib/students.js';
-import {useTeacherIdentity} from '../lib/teacherIdentity.js';
+import {useTeacherIdentity,identityForStudent} from '../lib/teacherIdentity.js';
 import SectionBanner from '../components/teacher/SectionBanner.jsx';
 
 const bridge='/playground/integration/teacher-bridge.js';
@@ -63,7 +63,7 @@ export default function TeacherReadOnly(){
  const points=new Map((weekly?.weeks||[]).filter(w=>w.week_start===week).map(w=>[w.user_id,w]));
  const checks=new Map((snapshot?.checks||[]).map(r=>[r.user_id,r]));
  const students=approved.map(r=>({
-  id:r.user_id,teacherName:identity.teacher.get(r.user_id)||'',sheetName:identity.sheet.get(r.user_id)?.name||'',studentName:r.student_name||r.display_name||'',github:r.github_account||'',sections:[sectionId],
+  id:r.user_id,...identityForStudent(identity,r),sections:[sectionId],
   status:'Not connected',current:'—',weekly:Object.fromEntries((weekly?.weeks||[]).filter(w=>w.user_id===r.user_id).map(w=>[w.week_start,Number(w.points)||0])),
   weeklyAssignments:Object.fromEntries((weekly?.weeks||[]).filter(w=>w.user_id===r.user_id).map(w=>[w.week_start,Number(w.assignments)||0])),
   assignments:expanded===r.user_id&&history&&!history.error?toAssignments(history,catalog):[],
@@ -82,7 +82,7 @@ export default function TeacherReadOnly(){
     <TeacherToolbar sectionId={sectionId} sections={service.classes.map(s=>({id:s.id,name:s.name,course:s.course_id,join_code:s.join_code}))}
      onSectionChange={id=>{setSectionId(id);setExpanded(null)}} readOnlyMode />
     <TeacherTabs tab={tab} onChange={next=>{setTab(next);setExpanded(null)}} />
-    {error?<p role="alert">{error}</p>:!snapshot||!weekly?<p role="status">Loading section information…</p>:<>
+    {error||identity.error?<p role="alert">{error||identity.error}</p>:!snapshot||!weekly||identity.loading?<p role="status">Loading section information and verified names…</p>:<>
      {tab==='overview'&&<>
       <SectionBanner section={selectedSection} />
       <div className="stat-grid">

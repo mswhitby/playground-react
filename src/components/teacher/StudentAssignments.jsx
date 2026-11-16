@@ -1,6 +1,7 @@
 import { Fragment, useState } from "react";
 import { niceName } from "../../lib/students.js";
 import Chip from "../ui/Chip.jsx";
+import { summarizeAssignments } from "../../lib/assignmentSummary.js";
 
 const statusTone = (status) =>
   status.includes("Completed") ? "success" : status === "Needs revision" ? "warning" : "";
@@ -9,10 +10,7 @@ const statusTone = (status) =>
 export default function StudentAssignments({ student, week, readOnlyMode = false }) {
   const [openReceipt, setOpenReceipt] = useState(null);
   const entries = student.assignments;
-  const completed = entries.filter(
-    (x) => x.status === "Completed" || x.status === "Practice completed",
-  ).length;
-  const graded = entries.filter((x) => x.score !== null).length;
+  const summary = summarizeAssignments(entries);
   const weeklyGroups = entries.reduce((groups,a)=>{const key=a.week||'undated';(groups[key] ||= []).push(a);return groups;},{});
   const sortedWeeks = Object.keys(weeklyGroups).sort((a,b)=>b.localeCompare(a));
   const weekPoints = (key) => Number(student.weekly?.[key]) || 0;
@@ -28,19 +26,18 @@ export default function StudentAssignments({ student, week, readOnlyMode = false
         <Chip tone="success">{readOnlyMode ? Object.values(student.weekly||{}).reduce((n,p)=>n+(Number(p)||0),0)+' total verified pts' : (student.weekly[week] || 0)+' verified pts this week'}</Chip>
       </div>
 
-      <div className="mini-stats">
+      <div className="mini-stats assignment-kind-stats" aria-label="Lesson and challenge history totals">
         <span>
-          <strong>{completed}</strong> completed
+          <small>Lessons</small>
+          <strong>{summary.lessons.completed}</strong> completed · {summary.lessons.graded} graded · {summary.lessons.tracked} tracked
         </span>
         <span>
-          <strong>{graded}</strong> graded
-        </span>
-        <span>
-          <strong>{entries.length}</strong> tracked
+          <small>Challenges</small>
+          <strong>{summary.challenges.completed}</strong> completed · {summary.challenges.graded} graded · {summary.challenges.tracked} tracked
         </span>
       </div>
 
-      {(readOnlyMode ? sortedWeeks : ['all']).map(key => <details key={key} open={!readOnlyMode ? true : undefined} className={readOnlyMode?'panel':'assignment-history-all'} style={readOnlyMode?{marginTop:12,padding:12}:{}}><summary style={readOnlyMode?{cursor:'pointer',fontWeight:600}:{display:'none'}}>{dateLabel(key)} · {(weeklyGroups[key]||[]).filter(a=>a.status==='Completed'||a.status==='Practice completed').length} completed · {key==='undated'?'No weekly points':weekPoints(key)+' verified pts'}</summary><div className="overflow"><table className="data-table assignment-table">
+      {(readOnlyMode ? sortedWeeks : ['all']).map(key => <details key={key} open={!readOnlyMode ? true : undefined} className={readOnlyMode?'panel':'assignment-history-all'} style={readOnlyMode?{marginTop:12,padding:12}:{}}><summary style={readOnlyMode?{cursor:'pointer',fontWeight:600}:{display:'none'}}>{dateLabel(key)} · {(()=>{const x=summarizeAssignments(weeklyGroups[key]||[]);return x.lessons.completed+' lessons · '+x.challenges.completed+' challenges';})()} · {key==='undated'?'No weekly points':weekPoints(key)+' verified pts'}</summary><div className="overflow"><table className="data-table assignment-table">
           <thead>
             <tr>
               <th>Assignment</th>

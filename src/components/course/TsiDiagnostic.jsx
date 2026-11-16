@@ -73,20 +73,26 @@ export default function TsiDiagnostic({items=[],profiles=[]}) {
       <h3>Take the diagnostic</h3>
       <p>Choose one answer or Not sure for all {items.length} questions. This open practice records
         your first and latest attempts in this browser, not the live gradebook.</p>
-      {grouped.map(group=><section key={group.id} className="tsi-diagnostic-strand">
-        <h3>{group.title}</h3>
-        {group.items.map(question=><fieldset key={question.id} className="tsi-question">
-          <legend>{question.prompt}</legend>
-          <div className="tsi-answers">
-            {diagnosticOptions(question).map((option,index)=><label className="tsi-choice" key={index}>
+      {grouped.map((group, groupIndex)=><section key={group.id} className="tsi-diagnostic-strand surface-card">
+        <div className="tsi-strand-panel-heading">
+          <span className="eyebrow">Strand {groupIndex + 1} of {grouped.length}</span>
+          <h3>{group.title}</h3>
+          <p>{group.items.length} questions · Choose an answer or Not sure for each question.</p>
+        </div>
+        {group.items.map((question, questionIndex)=><fieldset key={question.id} className="tsi-strand-question">
+          <legend><span className="tsi-strand-question-number">{questionIndex + 1}</span> {question.prompt}</legend>
+          <div className="tsi-strand-options">
+            {diagnosticOptions(question).map((option,index)=><label
+              className={'tsi-strand-option ' + (responses[question.id]===String(option) ? 'selected' : '')}
+              key={index}>
               <input type="radio" name={question.id} value={option} checked={responses[question.id]===String(option)}
                 onChange={()=>setResponses(old=>({...old,[question.id]:String(option)}))}/>
-              <span className="tsi-letter">{String.fromCharCode(65+index)}</span><span>{option}</span>
+              <span className="tsi-strand-letter">{String.fromCharCode(65+index)}</span><span>{option}</span>
             </label>)}
-            <label className="tsi-choice">
+            <label className={'tsi-strand-option tsi-diagnostic-unsure ' + (responses[question.id]==='skip' ? 'selected' : '')}>
               <input type="radio" name={question.id} value="skip" checked={responses[question.id]==='skip'}
                 onChange={()=>setResponses(old=>({...old,[question.id]:'skip'}))}/>
-              <span>Not sure</span>
+              <span className="tsi-strand-letter">?</span><span>Not sure</span>
             </label>
           </div>
         </fieldset>)}

@@ -9,6 +9,7 @@ import RosterPanel from '../components/teacher/RosterPanel.jsx';
 import WeeklyPointsPanel from '../components/teacher/WeeklyPointsPanel.jsx';
 import {getCourse} from '../data/courses.js';
 import {normalizeImportedOutline} from '../lib/courseContent.js';
+import {createLessonIdentityResolver} from '../lib/lessonIdentity.js';
 import {sortStudent} from '../lib/students.js';
 import {useTeacherIdentity,identityForStudent} from '../lib/teacherIdentity.js';
 import SectionBanner from '../components/teacher/SectionBanner.jsx';
@@ -17,6 +18,8 @@ const bridge='/playground/integration/teacher-bridge.js';
 function titleFor(id,course=getCourse('computer-science-1')){
  const raw=String(id||'').trim();
  const cleaned=raw.replace(/^(lesson|challenge|project):/,'');
+ const resolved=createLessonIdentityResolver(course).title(cleaned);
+ if(resolved)return resolved;
  const records=course?.lessonRecords||{};
  const variants=[raw,cleaned,cleaned.split('/').at(-1)];
  for(const key of variants){

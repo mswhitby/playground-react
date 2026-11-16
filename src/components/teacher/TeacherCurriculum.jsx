@@ -149,12 +149,12 @@ export default function TeacherCurriculum({ section, students = [], assignments 
             {section?.name || 'This section'} uses a different course. Choose a Computer Science I section to assign CS1 lessons.
           </p> : <>
             <p className="curriculum-assignment-warning">
-              Preview only. Assignments are saved in this browser, not sent to students or the live gradebook.
+              {readOnlyMode ? 'Read-only integration: assignments cannot be saved or changed.' : 'Preview only. Assignments are saved in this browser, not sent to students or the live gradebook.'}
             </p>
-            <form onSubmit={saveAssignment} className="curriculum-assignment-form">
+            <form onSubmit={saveAssignment} className="curriculum-assignment-form"><fieldset disabled={readOnlyMode} style={{border:0,padding:0,margin:0,minWidth:0}}> 
               <label>Assign to
                 <select value={scope} onChange={event => setScope(event.target.value)}>
-                  <option value="section">Whole class · {sectionStudents.length} sample students</option>
+                  <option value="section">Whole class · {sectionStudents.length} students</option>
                   <option value="selected">Selected students</option>
                 </select>
               </label>
@@ -165,7 +165,7 @@ export default function TeacherCurriculum({ section, students = [], assignments 
                     onChange={event => setSelectedStudents(current => event.target.checked
                       ? [...current,student.id] : current.filter(id => id!==student.id))}/>
                   <span>{niceName(student)}</span>
-                </label>) : <p>No sample students are enrolled in this section.</p>}
+                </label>) : <p>No students are enrolled in this section.</p>}
               </fieldset>}
               <div className="curriculum-assignment-fields">
                 <label>Due date
@@ -180,7 +180,7 @@ export default function TeacherCurriculum({ section, students = [], assignments 
                 <button type="submit" className="btn primary">{existing ? 'Update preview assignment' : 'Save preview assignment'}</button>
                 {existing && <button type="button" className="btn" onClick={removeAssignment}>Remove assignment</button>}
               </div>
-            </form>
+            </fieldset></form>
             {existing && <p className="curriculum-current-assignment">
               Saved for {existing.scope === 'section' ? 'whole class' : existing.studentIds.length+' selected students'}
               {' · '}Due {existing.dueDate} · {existing.points} points

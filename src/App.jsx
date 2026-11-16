@@ -64,7 +64,7 @@ export default function App() {
   useEffect(() => {
     const controller = new AbortController();
     let active = true;
-    Promise.all(['game-programming','mobile-app-dev','uil','tsi-math'].map(async courseId => {
+    Promise.all((cs1IntegrationMode?[]:['game-programming','mobile-app-dev','uil','tsi-math']).map(async courseId => {
       try {return {courseId, data:await loadPublishedCourse(courseId,{signal:controller.signal})};}
       catch(error){return {courseId,error:String(error?.message||error)};}
     })).then(results => {

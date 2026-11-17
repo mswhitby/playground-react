@@ -17,7 +17,8 @@ test('CS1 integration only reads data through canonical production bridge',()=>{
   assert.match(app,/cs1IntegrationMode\?\[\]:completedLessons/);
   assert.match(app,/readOnlyMode=\{cs1IntegrationMode\}/);
   assert.match(app,/onToggleLessonComplete=\{cs1IntegrationMode\?undefined/);
-  assert.match(app,/!\['home','course','grades','teacher','admin'\]\.includes\(page\)/);
+  assert.match(app,/!\['home','course','grades','teacher','admin','challenges','challenge'\]\.includes\(page\)/);
+  assert.match(app,/publishedCs1Challenges/);
   assert.match(app,/cs1IntegrationMode \? <TeacherReadOnly \/>/);
   assert.match(app,/cs1IntegrationMode \? <AdminReadOnly \/>/);
   const admin=read('../src/pages/AdminReadOnly.jsx');

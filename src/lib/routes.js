@@ -30,7 +30,7 @@ export function playgroundPath(courseOrId, lessonId) {
   return withBase(lessonId ? `${base}/lessons/${encodeURIComponent(lessonId)}` : base);
 }
 
-export function resolveRoute(pathname, availableCourses = courses) {
+export function resolveRoute(pathname, availableCourses = courses, availableChallengeIds = challengeIds) {
   const routeInput = hashRouting
     ? (typeof window !== 'undefined' ? window.location.hash.slice(1) || '/' : '/')
     : pathname;
@@ -48,7 +48,7 @@ export function resolveRoute(pathname, availableCourses = courses) {
     const parts = relative.split('/').filter(Boolean);
     try {
       if (parts.length === 3 && parts[1] === 'course') {const courseId=decodeURIComponent(parts[2]);return getCourse(courseId)?{page:'challenges',filterCourse:courseId}:{page:'not-found'};}
-      if (parts.length === 2) {const challengeId=decodeURIComponent(parts[1]);return challengeIds.includes(challengeId)?{page:'challenge',challengeId}:{page:'not-found'};}
+      if (parts.length === 2) {const challengeId=decodeURIComponent(parts[1]);return availableChallengeIds.includes(challengeId)?{page:'challenge',challengeId}:{page:'not-found'};}
     } catch{return {page:'not-found'}}
     return {page:'not-found'};
   }

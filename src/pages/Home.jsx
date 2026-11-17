@@ -18,11 +18,11 @@ export default function Home({ openCourse, openTeacher, openChallenges, availabl
           <CourseCard key={c.id} course={c} completedLessons={completedLessons} onOpen={() => openCourse(c.id)} />
         ))}
       </div>
-      {!readOnlyMode && <button type="button" className="wide-shortcut challenge-bank-shortcut" onClick={openChallenges}>
+      <button type="button" className="wide-shortcut challenge-bank-shortcut" onClick={openChallenges}>
         <LibraryBig size={23}/><span><strong>Shared Challenge Bank</strong>
-        <small>Practice one problem in Python, Java, JavaScript, or C#.</small></span>
+        <small>{readOnlyMode ? 'Practice published Python challenges. More languages are coming later.' : 'Practice one problem in Python, Java, JavaScript, or C#.'}</small></span>
         <span aria-hidden="true">→</span>
-      </button>}
+      </button>
       {!readOnlyMode && <TeacherShortcut onClick={openTeacher} />}
     </div>
   );

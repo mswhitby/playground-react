@@ -8,6 +8,7 @@ import { toggleLessonComplete } from './lib/completion.js';
 import { completionIds } from './lib/gradebook.js';
 import { loadPublishedCourse } from './lib/publishedCourseLoader.js';
 import {applyCs1PublishedMetadata,cs1IntegrationMode,loadCs1PublishedCatalog,loadCs1ReadOnlyAccount} from './lib/cs1Integration.js';
+import {publishedCs1Challenges} from './lib/cs1ChallengeBank.js';
 import { cn } from './lib/cn.js';
 import { homePath, journalsPath, gradesPath, playgroundPath, challengesPath, challengePath, resolveRoute, teacherPath, adminPath, projectPath } from './lib/routes.js';
 import Topbar from './components/layout/Topbar.jsx';
@@ -56,6 +57,9 @@ export default function App() {
         contentLoadingError:contentErrors[course.id] || null};
   }),[publishedContent,contentErrors]);
 
+  const integrationChallenges = useMemo(() => cs1IntegrationMode
+    ? publishedCs1Challenges(publishedContent['computer-science-1']) : null, [publishedContent]);
+
   useEffect(() => {
     if(!cs1IntegrationMode)return;
     let active=true;
@@ -89,8 +93,8 @@ export default function App() {
 
   // Re-resolve published lesson and project deep links once their catalogs load.
   useEffect(() => {
-    setRoute(resolveRoute(window.location.pathname,availableCourses));
-  },[availableCourses]);
+    setRoute(resolveRoute(window.location.pathname,availableCourses,integrationChallenges?.map(item=>item.id)));
+  },[availableCourses,integrationChallenges]);
   const [students, setStudents] = useSaved('designlab:students', seedStudents);
   const [journalSubmissions, setJournalSubmissions] = useSaved('designlab:journal-submissions', seedJournalSubmissions);
 
@@ -128,20 +132,20 @@ export default function App() {
   }, [route.page, route.courseId, setLastCourse]);
 
   useEffect(() => {
-    const handlePopState = () => setRoute(resolveRoute(window.location.pathname,availableCourses));
+    const handlePopState = () => setRoute(resolveRoute(window.location.pathname,availableCourses,integrationChallenges?.map(item=>item.id)));
     window.addEventListener('popstate', handlePopState);
     window.addEventListener('hashchange',handlePopState);
     return () => {
       window.removeEventListener('popstate', handlePopState);
       window.removeEventListener('hashchange',handlePopState);
     };
-  }, [availableCourses]);
+  }, [availableCourses,integrationChallenges]);
 
   const navigate = useCallback((path) => {
     if (window.location.pathname !== path) window.history.pushState({}, '', path);
-    setRoute(resolveRoute(window.location.pathname,availableCourses));
+    setRoute(resolveRoute(window.location.pathname,availableCourses,integrationChallenges?.map(item=>item.id)));
     window.scrollTo({ top: 0, behavior: 'auto' });
-  }, [availableCourses]);
+  }, [availableCourses,integrationChallenges]);
 
   function openCourse(id, lessonId) {
     if (!id) return navigate(homePath());
@@ -201,7 +205,7 @@ export default function App() {
               :readOnlyAccount.message||'Could not verify your existing session.'}</span>
             <a href="/playground/">Open current Playground</a>
           </section>}
-          {cs1IntegrationMode && !['home','course','grades','teacher','admin'].includes(page) ? (
+          {cs1IntegrationMode && !['home','course','grades','teacher','admin','challenges','challenge'].includes(page) ? (
             <div className="main-content"><h1>Not enabled in this test build</h1>
               <p>Teacher tools, journals, challenges, and submissions remain in the current Playground until their permissions and data are integrated.</p>
               <a href="/playground/">Return to current Playground</a>
@@ -231,9 +235,11 @@ export default function App() {
           ) : page === 'grades' ? (
             <Grades grades={grades} assignments={courseAssignments} completedLessons={completedWithGrades} readOnlyMode={cs1IntegrationMode} weeklyPoints={readOnlyAccount.weeklyPoints} accountStatus={readOnlyAccount.status}/>
           ) : page === 'challenges' ? (
-            <ChallengeBank grades={grades} filterCourse={route.filterCourse} onSelect={(id) => navigate(challengePath(id))} onBrowseCourse={(id) => navigate(challengesPath(id))} />
+            <ChallengeBank grades={grades} filterCourse={route.filterCourse} onSelect={(id) => navigate(challengePath(id))} onBrowseCourse={(id) => navigate(challengesPath(id))}
+              catalog={integrationChallenges} pythonOnly={cs1IntegrationMode} loading={cs1IntegrationMode&&contentLoading} error={contentErrors['computer-science-1']} />
           ) : page === 'challenge' ? (
-            <ChallengeDetail key={route.challengeId} challengeId={route.challengeId} grades={grades} onBack={() => navigate(challengesPath())} />
+            <ChallengeDetail key={route.challengeId} challengeId={route.challengeId} grades={grades} onBack={() => navigate(challengesPath())}
+              publishedChallenge={integrationChallenges?.find(item=>item.id===route.challengeId)} pythonOnly={cs1IntegrationMode} />
           ) : page === 'journals' ? (
             <Journals submissions={journalSubmissions} setSubmissions={setJournalSubmissions} />
           ) : page === 'teacher' ? (

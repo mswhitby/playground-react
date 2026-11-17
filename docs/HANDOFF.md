@@ -4,10 +4,20 @@
 
 
 
-**Last updated:** November 6, 2026 (America/Chicago).  
+**Last updated:** November 17, 2026 (America/Chicago).  
 **Primary repo:** `mswhitby/playground-react`  
 **Read first:** canonical `mswhitby/playground/AGENTS.md` and `mswhitby/playground/docs/HANDOFF.md`, then local `AGENTS.md`.  
 **Purpose:** A reliable start-of-chat snapshot. Re-check live GitHub state before acting; this document is not a substitute for current PR or build status.
+
+## November 17, 2026 — real CS1 Python challenges in the universal integration bank
+
+- **Student continuity first:** Teacher-only solutions are deferred. Students need access to the existing, tested Computer Science I challenge practice during the React integration.
+- **Review:** Draft [React PR #16](https://github.com/mswhitby/playground-react/pull/16), branch `feature/cs1-python-challenge-bank-20261117`, stacked on teacher read-only PR #15. Do not merge into the regular React main or production Playground without approval.
+- **Source of truth:** `mswhitby/computer-science-1/challenges/` and its published `docs/challenges/data-*.js`; canonical `playground/scripts/package-python.mjs` already publishes the **24 stable Python challenge IDs**, authored text, starters, 255 possible points and visible examples into `/playground/integration/data/computer-science-1/course.json`. Do **not** substitute the private `mswhitby/challenges` bank or its ten React demo snapshots.
+- **Integration behavior:** Only when `VITE_READONLY_INTEGRATION=true`, enable Challenge Bank navigation and deep links. Adapt the published public challenge contracts through `src/lib/cs1ChallengeBank.js` using an explicit safe-field allowlist, and display the message “Python challenges are available now. More languages are coming later.” Keep topic/difficulty/search/course filters and alphabetical order. Preserve `challenge:<id>` grade keys and `cs1:challenges:2026-10-26:draft:<id>` local draft keys.
+- **Practice:** Published Python function examples use the existing Pyodide worker and `buildPublicChecks` / `buildPythonFunctionPreview` for local Run/Check. Submit remains disabled; no student writes, fake grades or private tests/solutions are shipped. The ordinary `/playground/preview/` still showcases the unrelated multi-language design snapshots.
+- **Validation:** [React run 44165538956](https://github.com/mswhitby/playground-react/actions/runs/44165538956) succeeded at commit `351a91fa40dba069906caa1a99f72ace082b0e89` (98 tests + build). The isolated classroom publisher now pins that commit and validates all 24 CS1 contracts; [publisher run 44165774089](https://github.com/mswhitby/classroom/actions/runs/44165774089) succeeded. GitHub Pages deployment run `44165863348` requires final status verification.
+- **Next:** Test the deployed `https://www.mswhitby.com/playground/integration/#/challenges` on a student/school device: 24 cards, deep links, topic filtering, original local drafts, sample Run/Check, verified-score consistency, no network writes. Only then continue with submissions/grading and teacher assignment workflows. Solutions last.
 
 ## November 16, 2026 — CS1 isolated production-backed read-only integration
 

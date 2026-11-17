@@ -109,7 +109,12 @@ export default function CodePane({lessonId,task}) {
     if(type==='python'){
       let source=code;
       if(isChallenge){
-        source=buildChallengePython(code,{...task,starter:task.starter},check);
+        if(task.publicPythonCases){
+          if(!task.challengeExamples?.length)throw Error('This challenge has no published Python examples.');
+          source=check
+            ? buildPublicChecks({cases:task.challengeExamples,mode:'function'},code)
+            : buildPythonFunctionPreview(code,task.challengeExamples[0].call);
+        }else source=buildChallengePython(code,{...task,starter:task.starter},check);
       } else if(check) {
         if(!task.cases?.length)throw Error('This lesson has no published examples.');
         source=buildPublicChecks(task,code);
@@ -118,17 +123,25 @@ export default function CodePane({lessonId,task}) {
       }
       const result=await active.instance.run(source);
       if(check) {
-        const rows=isChallenge?task.challengeExamples.map(row=>({
-          call:(challengeFunctionName(code,'python') || 'Function')+'('+row.input.map(v=>JSON.stringify(v)).join(', ')+')',
-          expected:JSON.stringify(row.expected)
-        })):task.cases;
+        const rows=isChallenge
+          ? task.publicPythonCases ? task.challengeExamples : task.challengeExamples.map(row=>({
+            call:(challengeFunctionName(code,'python') || 'Function')+'('+row.input.map(v=>JSON.stringify(v)).join(', ')+')',
+            expected:JSON.stringify(row.expected)
+          })) : task.cases;
         setCheckRows(practiceRowsFromPython(result.output,rows));
         setConsoleText('Python completed the public checks. Review individual results in Checks.');
       }else if(isChallenge){
-        const rows=practiceRowsFromPython(result.output,[{
-          call:'First published example',expected:JSON.stringify(task.challengeExamples[0].expected)
-        }]);
-        setConsoleText(rows[0].error || 'First example returned '+rows[0].received+'. Expected '+rows[0].expected+'.');
+        if(task.publicPythonCases){
+          const marker=String(result.output||'').split('\n').find(line=>line.startsWith('PLAYGROUND_PREVIEW='));
+          if(!marker)throw Error('The Python example did not return a result. Review your code and retry.');
+          const details=JSON.parse(marker.slice('PLAYGROUND_PREVIEW='.length));
+          setConsoleText(details.call+'\nReturned: '+details.returned+(details.printed?'\nPrinted: '+details.printed:''));
+        }else{
+          const rows=practiceRowsFromPython(result.output,[{
+            call:'First published example',expected:JSON.stringify(task.challengeExamples[0].expected)
+          }]);
+          setConsoleText(rows[0].error || 'First example returned '+rows[0].received+'. Expected '+rows[0].expected+'.');
+        }
       }else if(task.mode==='function' && task.cases?.[0]?.call) {
         const marker=String(result.output||'').split('\n').find(line=>line.startsWith('PLAYGROUND_PREVIEW='));
         if(marker) {

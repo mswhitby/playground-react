@@ -8,11 +8,13 @@ import {
   matchingPreviewAssignment, previewAssignment, upsertPreviewAssignment
 } from '../../lib/previewAssignments.js';
 
-const sourceUrl = '/playground/data/computer-science-1/course.json';
 const previewCourse = getCourse('computer-science-1');
 
 /** Read-only public catalog + draft assignment UI. Never bundles or fetches solutions. */
 export default function TeacherCurriculum({ section, students = [], assignments = [], setAssignments, readOnlyMode = false }) {
+  const sourceUrl = readOnlyMode
+    ? '/playground/integration/data/computer-science-1/course.json'
+    : '/playground/data/computer-science-1/course.json';
   const [live, setLive] = useState(null);
   const [loadStatus, setLoadStatus] = useState('loading');
   const [selected, setSelected] = useState(previewCourse.lessons[0]);

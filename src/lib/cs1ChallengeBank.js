@@ -8,11 +8,21 @@ export function publishedCs1Challenges(course) {
     .filter(row => row && typeof row.id === 'string' && typeof row.starter === 'string' &&
       Array.isArray(row.examples) && row.examples.length > 0 &&
       row.examples.every(sample => typeof sample.call === 'string' && typeof sample.expected === 'string'))
+    // Explicit student-safe allowlist, never spread arbitrary curriculum fields.
     .map(row => ({
-      ...row,
+      id: row.id,
+      title: String(row.title || row.id),
+      difficulty: String(row.difficulty || 'Easy'),
+      points: Number(row.points) || 0,
+      scenario: String(row.scenario || ''),
+      parameters: String(row.parameters || ''),
+      behavior: String(row.behavior || ''),
+      starter: row.starter,
+      examples: row.examples.map(sample => ({call:sample.call,expected:sample.expected})),
+      skills: typeof row.skills === 'string' ? row.skills : null,
       source: 'published-cs1',
-      summary: row.scenario || '',
-      tags: Array.isArray(row.topics) ? row.topics : [],
+      summary: String(row.scenario || ''),
+      tags: Array.isArray(row.topics) ? row.topics.filter(tag=>typeof tag==='string') : [],
       suggestedCourses: ['computer-science-1'],
       languages: ['python'],
       prerequisites: [],

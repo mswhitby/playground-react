@@ -3,7 +3,7 @@ import { weeks } from "../../data/weeks.js";
 import { niceName } from "../../lib/students.js";
 
 /** Students ranked by verified points for the selected week. */
-export default function WeeklyPointsPanel({ students, week, setWeek }) {
+export default function WeeklyPointsPanel({ students, week, setWeek, availableWeeks = weeks, readOnlyMode = false }) {
   const ranked = useMemo(
     () => [...students].sort((a, b) => (b.weekly[week] || 0) - (a.weekly[week] || 0)),
     [students, week],
@@ -14,12 +14,12 @@ export default function WeeklyPointsPanel({ students, week, setWeek }) {
       <div className="section-heading">
         <div>
           <h2>Weekly points</h2>
-          <p>Mock verified points · Monday–Sunday in Central Time</p>
+          <p>{readOnlyMode ? 'Server-verified score improvements · Monday–Sunday in Central Time' : 'Mock verified points · Monday–Sunday in Central Time'}</p>
         </div>
         <label>
           Week
           <select value={week} onChange={(e) => setWeek(e.target.value)}>
-            {weeks.map((w) => (
+            {availableWeeks.map((w) => (
               <option key={w.key} value={w.key}>
                 {w.label}
               </option>
@@ -33,7 +33,7 @@ export default function WeeklyPointsPanel({ students, week, setWeek }) {
             <tr>
               <th>Student</th>
               <th>Weekly points</th>
-              <th>Sample assignments</th>
+              <th>{readOnlyMode ? 'Improved assignments' : 'Sample assignments'}</th>
             </tr>
           </thead>
           <tbody>
@@ -46,7 +46,7 @@ export default function WeeklyPointsPanel({ students, week, setWeek }) {
                 <td>
                   <strong>{s.weekly[week] || 0}</strong>
                 </td>
-                <td>{s.assignments.filter((a) => a.score !== null).length}</td>
+                <td>{readOnlyMode ? (s.weeklyAssignments?.[week] || 0) : s.assignments.filter((a) => a.score !== null).length}</td>
               </tr>
             ))}
           </tbody>

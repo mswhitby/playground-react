@@ -63,7 +63,7 @@ test('teacher dashboard is section-specific while account settings live on admin
   assert.match(toolbar,/section-setup-toggle/);
   assert.match(toolbar,/onToggleSetup/);
   assert.match(admin,/<AccountsTab/);
-  assert.match(sidebar,/\['admin', 'Admin dashboard'/);
+  assert.match(sidebar,/\['admin', 'Admin Dashboard'/);
   assert.match(app,/<AdminDashboard students=\{students\}/);
   assert.equal(resolveRoute(adminPath()).page,'admin');
 });

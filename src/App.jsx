@@ -7,7 +7,7 @@ import { useSaved } from './hooks/useSaved.js';
 import { toggleLessonComplete } from './lib/completion.js';
 import { completionIds } from './lib/gradebook.js';
 import { loadPublishedCourse } from './lib/publishedCourseLoader.js';
-import {cs1IntegrationMode,loadCs1ReadOnlyAccount} from './lib/cs1Integration.js';
+import {applyCs1PublishedMetadata,cs1IntegrationMode,loadCs1PublishedCatalog,loadCs1ReadOnlyAccount} from './lib/cs1Integration.js';
 import { cn } from './lib/cn.js';
 import { homePath, journalsPath, gradesPath, playgroundPath, challengesPath, challengePath, resolveRoute, teacherPath, adminPath, projectPath } from './lib/routes.js';
 import Topbar from './components/layout/Topbar.jsx';
@@ -16,7 +16,9 @@ import Footer from './components/layout/Footer.jsx';
 import Home from './pages/Home.jsx';
 import CoursePage from './pages/CoursePage.jsx';
 import TeacherDashboard from './pages/TeacherDashboard.jsx';
+import TeacherReadOnly from './pages/TeacherReadOnly.jsx';
 import AdminDashboard from './pages/AdminDashboard.jsx';
+import AdminReadOnly from './pages/AdminReadOnly.jsx';
 import Journals from './pages/Journals.jsx';
 import Grades from './pages/Grades.jsx';
 import ChallengeBank from './pages/ChallengeBank.jsx';
@@ -42,7 +44,10 @@ export default function App() {
   const [contentErrors,setContentErrors] = useState({});
   const [contentLoading,setContentLoading] = useState(true);
   const availableCourses = useMemo(() => (cs1IntegrationMode?courses.filter(c=>c.id==='computer-science-1'):courses).map(course => {
-    if (course.id === 'computer-science-1' || course.id === 'test-prep') return course;
+    if (course.id === 'computer-science-1') return cs1IntegrationMode
+      ? applyCs1PublishedMetadata(course,publishedContent[course.id])
+      : course;
+    if (course.id === 'test-prep') return course;
     if (course.id === 'capstone') return {...course,units:[],lessons:[],lessonRecords:{},
       publishedContent:false,projects:[]};
     const imported = publishedContent[course.id];
@@ -64,8 +69,11 @@ export default function App() {
   useEffect(() => {
     const controller = new AbortController();
     let active = true;
-    Promise.all((cs1IntegrationMode?[]:['game-programming','mobile-app-dev','uil','tsi-math']).map(async courseId => {
-      try {return {courseId, data:await loadPublishedCourse(courseId,{signal:controller.signal})};}
+    const courseIds=cs1IntegrationMode?['computer-science-1']:['game-programming','mobile-app-dev','uil','tsi-math'];
+    Promise.all(courseIds.map(async courseId => {
+      try {return {courseId, data:courseId==='computer-science-1'
+        ? await loadCs1PublishedCatalog({signal:controller.signal})
+        : await loadPublishedCourse(courseId,{signal:controller.signal})};}
       catch(error){return {courseId,error:String(error?.message||error)};}
     })).then(results => {
       if (!active) return;
@@ -114,8 +122,8 @@ export default function App() {
     if (route.page === 'course') setLastCourse(route.courseId);
     const label = route.page === 'course'
       ? getCourse(route.courseId)?.label
-      : route.page === 'admin' ? 'Admin dashboard' : route.page === 'teacher' ? 'Teacher dashboard' : route.page === 'grades' ? 'Grades' : route.page === 'journals' ? 'Weekly journals'
-      : route.page === 'challenges' ? 'Challenge Bank' : route.page === 'challenge' ? 'Coding challenge' : 'Your playgrounds';
+      : route.page === 'admin' ? 'Admin Dashboard' : route.page === 'teacher' ? 'Teacher Dashboard' : route.page === 'grades' ? 'Grades' : route.page === 'journals' ? 'Weekly Journals'
+      : route.page === 'challenges' ? 'Challenge Bank' : route.page === 'challenge' ? 'Coding Challenge' : 'Your Playgrounds';
     document.title = `${label || 'Playground'} | Ms. Whitby's Playground — React Lab`;
   }, [route.page, route.courseId, setLastCourse]);
 
@@ -193,7 +201,7 @@ export default function App() {
               :readOnlyAccount.message||'Could not verify your existing session.'}</span>
             <a href="/playground/">Open current Playground</a>
           </section>}
-          {cs1IntegrationMode && !['home','course','grades'].includes(page) ? (
+          {cs1IntegrationMode && !['home','course','grades','teacher','admin'].includes(page) ? (
             <div className="main-content"><h1>Not enabled in this test build</h1>
               <p>Teacher tools, journals, challenges, and submissions remain in the current Playground until their permissions and data are integrated.</p>
               <a href="/playground/">Return to current Playground</a>
@@ -229,9 +237,9 @@ export default function App() {
           ) : page === 'journals' ? (
             <Journals submissions={journalSubmissions} setSubmissions={setJournalSubmissions} />
           ) : page === 'teacher' ? (
-            <TeacherDashboard students={students} journalSubmissions={journalSubmissions} />
+            cs1IntegrationMode ? <TeacherReadOnly /> : <TeacherDashboard students={students} journalSubmissions={journalSubmissions} />
           ) : page === 'admin' ? (
-            <AdminDashboard students={students} setStudents={setStudents}/>
+            cs1IntegrationMode ? <AdminReadOnly /> : <AdminDashboard students={students} setStudents={setStudents}/>
           ) : contentLoading ? (
             <div className="main-content route-not-found" role="status">
               <h1>Loading published course materials…</h1>

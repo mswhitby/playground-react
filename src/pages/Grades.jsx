@@ -4,6 +4,7 @@ import { courses, getCourse } from '../data/courses.js';
 import { lessonTitleOf } from '../lib/courseContent.js';
 import { getChallenge } from '../data/challenges.js';
 import { dueLabel, gradeTotals, gradeFor, statusFor, weeklyGrades } from '../lib/gradebook.js';
+import { splitActivityProgress } from '../lib/activityProgress.js';
 import { journalWeekLabel } from '../lib/journals.js';
 
 function titleFor(id,courseId) {
@@ -16,6 +17,7 @@ export default function Grades({ grades=[], assignments=[], completedLessons=[],
   const [filter,setFilter]=useState('all');
   const filtered=filter==='all'?grades:grades.filter(g=>g.courseId===filter);
   const overall=gradeTotals(filtered);
+  const activityProgress=splitActivityProgress({grades:filtered,completedLessons:filter==='all'||filter==='computer-science-1'?completedLessons:[]});
   const weeks=readOnlyMode ? (filter==='all'||filter==='computer-science-1'?weeklyPoints:[]) : weeklyGrades(filtered);
   const current=weeks[0];
   const courseBreakdown=courses.filter(course=>!readOnlyMode||course.id==='computer-science-1').map(course=>({
@@ -45,6 +47,12 @@ export default function Grades({ grades=[], assignments=[], completedLessons=[],
         ? 'Verified Computer Science I results from your existing Playground account. Submissions and grading remain in the current Playground.'
         : 'Sign in on the current Playground to see your own verified results here. No changes are made from this test build.'
       : 'This preview does not display real student grades or assignments. Verified scores remain in the current Playground.'}</p>
+    <div className="grades-summary" aria-label="Separate lesson and challenge progress">
+      {[['Lessons',activityProgress.lessons],['Challenges',activityProgress.challenges]].map(([label,values])=><div className="grades-stat surface-card" key={label}>
+        <BookOpen size={19}/><span>{label}</span><strong>{values.completed} completed</strong>
+        <p>{values.graded} graded · {values.earned} / {values.possible} graded points</p>
+      </div>)}
+    </div>
     <div className="grades-summary">
       <div className="grades-stat surface-card">
         <ChartNoAxesColumnIncreasing size={19}/><span>Points earned</span>
@@ -52,7 +60,7 @@ export default function Grades({ grades=[], assignments=[], completedLessons=[],
         <p>{overall.percent===null?'No graded work yet':`${overall.percent}% of graded points`}</p>
       </div>
       <div className="grades-stat surface-card">
-        <Trophy size={19}/><span>Graded activities</span><strong>{overall.count}</strong><p>Lessons and challenges</p>
+        <Trophy size={19}/><span>Graded activities</span><strong>{overall.count}</strong><p>Combined graded activity count</p>
       </div>
       <div className="grades-stat surface-card">
         <CalendarDays size={19}/><span>Most recent scored week</span>

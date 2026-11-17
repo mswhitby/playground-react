@@ -15,7 +15,7 @@ export default function AdminDashboard({ students, setStudents }) {
 
   return <div className="main-content teacher-screen admin-screen">
     <SectionTitle eyebrow="Global management · Frontend preview" actions={<Chip>Sample accounts only</Chip>}>
-      Admin dashboard
+      Admin Dashboard
     </SectionTitle>
     <p className="page-subtitle">
       <ShieldCheck size={16} aria-hidden="true"/> Account management is separate from class-specific teacher tools.

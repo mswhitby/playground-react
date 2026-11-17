@@ -8,7 +8,7 @@ export default function Home({ openCourse, openTeacher, openChallenges, availabl
     <div className="main-content">
       <div className="welcome">
         <div className="eyebrow">Your learning spaces</div>
-        <h1>Your playgrounds</h1>
+        <h1>Your Playgrounds</h1>
         <p>
           Choose a course to continue learning. {readOnlyMode ? 'Review Computer Science I lessons and your existing verified results. Practice is local to this test build.' : 'Complete lessons to fill your progress bars.'}
         </p>

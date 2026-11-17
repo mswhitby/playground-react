@@ -111,5 +111,16 @@ export function normalizeImportedOutline(source) {
     });
     // Keep the source's published order; it is often intentionally sequenced.
   }
-  return {units, lessonRecords: Object.fromEntries(records), lessons: units.flatMap(lessonIdsOf)};
+  const challengeRecords = Object.fromEntries(
+    (input.challenges || []).filter(Boolean)
+      .map(entry => [lessonIdOf(entry), {...entry}])
+      .filter(([id]) => id)
+  );
+  return {
+    units,
+    lessonRecords: Object.fromEntries(records),
+    lessons: units.flatMap(lessonIdsOf),
+    challengeRecords,
+    challenges: Object.keys(challengeRecords),
+  };
 }

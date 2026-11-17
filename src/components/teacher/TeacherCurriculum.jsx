@@ -8,11 +8,13 @@ import {
   matchingPreviewAssignment, previewAssignment, upsertPreviewAssignment
 } from '../../lib/previewAssignments.js';
 
-const sourceUrl = '/playground/data/computer-science-1/course.json';
 const previewCourse = getCourse('computer-science-1');
 
 /** Read-only public catalog + draft assignment UI. Never bundles or fetches solutions. */
-export default function TeacherCurriculum({ section, students = [], assignments = [], setAssignments }) {
+export default function TeacherCurriculum({ section, students = [], assignments = [], setAssignments, readOnlyMode = false }) {
+  const sourceUrl = readOnlyMode
+    ? '/playground/integration/data/computer-science-1/course.json'
+    : '/playground/data/computer-science-1/course.json';
   const [live, setLive] = useState(null);
   const [loadStatus, setLoadStatus] = useState('loading');
   const [selected, setSelected] = useState(previewCourse.lessons[0]);
@@ -68,12 +70,14 @@ export default function TeacherCurriculum({ section, students = [], assignments 
         sectionId:section?.id, sectionCourseId:section?.course, lessonId:chosenId,
         scope, studentIds:selectedStudents, dueDate, points
       },sectionStudents);
+      if (readOnlyMode) throw Error('Assignment changes are disabled in this integration test.');
       setAssignments?.(previous => upsertPreviewAssignment(previous,record));
       setFeedback('Preview assignment saved in this browser. No students were notified.');
     } catch(error) { setFeedback(error.message); }
   }
 
   function removeAssignment() {
+    if (readOnlyMode) { setFeedback('Assignment changes are disabled in this integration test.'); return; }
     setAssignments?.(previous => (previous||[]).filter(record => record.id !== existing?.id));
     setFeedback('Preview assignment cleared. Live student records were not changed.');
   }
@@ -147,12 +151,12 @@ export default function TeacherCurriculum({ section, students = [], assignments 
             {section?.name || 'This section'} uses a different course. Choose a Computer Science I section to assign CS1 lessons.
           </p> : <>
             <p className="curriculum-assignment-warning">
-              Preview only. Assignments are saved in this browser, not sent to students or the live gradebook.
+              {readOnlyMode ? 'Read-only integration: assignments cannot be saved or changed.' : 'Preview only. Assignments are saved in this browser, not sent to students or the live gradebook.'}
             </p>
-            <form onSubmit={saveAssignment} className="curriculum-assignment-form">
+            <form onSubmit={saveAssignment} className="curriculum-assignment-form"><fieldset disabled={readOnlyMode} style={{border:0,padding:0,margin:0,minWidth:0}}> 
               <label>Assign to
                 <select value={scope} onChange={event => setScope(event.target.value)}>
-                  <option value="section">Whole class · {sectionStudents.length} sample students</option>
+                  <option value="section">Whole class · {sectionStudents.length} students</option>
                   <option value="selected">Selected students</option>
                 </select>
               </label>
@@ -163,7 +167,7 @@ export default function TeacherCurriculum({ section, students = [], assignments 
                     onChange={event => setSelectedStudents(current => event.target.checked
                       ? [...current,student.id] : current.filter(id => id!==student.id))}/>
                   <span>{niceName(student)}</span>
-                </label>) : <p>No sample students are enrolled in this section.</p>}
+                </label>) : <p>No students are enrolled in this section.</p>}
               </fieldset>}
               <div className="curriculum-assignment-fields">
                 <label>Due date
@@ -178,7 +182,7 @@ export default function TeacherCurriculum({ section, students = [], assignments 
                 <button type="submit" className="btn primary">{existing ? 'Update preview assignment' : 'Save preview assignment'}</button>
                 {existing && <button type="button" className="btn" onClick={removeAssignment}>Remove assignment</button>}
               </div>
-            </form>
+            </fieldset></form>
             {existing && <p className="curriculum-current-assignment">
               Saved for {existing.scope === 'section' ? 'whole class' : existing.studentIds.length+' selected students'}
               {' · '}Due {existing.dueDate} · {existing.points} points

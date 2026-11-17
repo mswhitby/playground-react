@@ -7,10 +7,10 @@ import { statusFor } from '../../lib/gradebook.js';
 const MENU = [
   ['home', 'Home', House],
   ['challenges', 'Challenge Bank', LibraryBig],
-  ['journals', 'Weekly journals', ClipboardPenLine],
+  ['journals', 'Weekly Journals', ClipboardPenLine],
   ['grades', 'Grades', GraduationCap],
-  ['teacher', 'Teacher dashboard', LayoutDashboard],
-  ['admin', 'Admin dashboard', ShieldCheck],
+  ['teacher', 'Teacher Dashboard', LayoutDashboard],
+  ['admin', 'Admin Dashboard', ShieldCheck],
 ];
 
 /** One shared sidebar: Explore → current course outline → all playgrounds. */
@@ -19,7 +19,7 @@ export default function Sidebar({ open, page, courseId, lessonId, setPage, openC
   return (
     <aside className={cn('main-sidebar', !open && 'collapsed')} aria-label="Playground navigation">
       <div className="side-title">EXPLORE</div>
-      {MENU.filter(([id])=>!readOnlyMode||['home','grades'].includes(id)).map(([id, label, Icon]) => (
+      {MENU.filter(([id])=>!readOnlyMode||['home','grades','teacher','admin'].includes(id)).map(([id, label, Icon]) => (
         <button key={id} className={cn('nav-item', (page === id || (id === 'challenges' && page === 'challenge')) && 'active')}
           onClick={() => setPage(id)} title={label}>
           <Icon size={19} /><span>{label}</span>
@@ -31,7 +31,7 @@ export default function Sidebar({ open, page, courseId, lessonId, setPage, openC
           <div className="side-rule" />
           <div className="side-title">COURSE CONTENT</div>
           <button className={cn('outline-overview', !lessonId && 'active')} onClick={() => openCourse(course.id)}>
-            <BookOpen size={16} /><span>Course overview</span>
+            <BookOpen size={16} /><span>Course Overview</span>
           </button>
           {course.units.map((unit, index) => (
             <details key={`${course.id}-${unit.id}-${lessonId || 'overview'}`} className="outline-unit"

@@ -1,43 +1,51 @@
 import { Fragment, useState } from "react";
 import { niceName } from "../../lib/students.js";
 import Chip from "../ui/Chip.jsx";
+import { summarizeAssignments } from "../../lib/assignmentSummary.js";
 
 const statusTone = (status) =>
   status.includes("Completed") ? "success" : status === "Needs revision" ? "warning" : "";
 
 /** Expanded roster row: one student's assignment history. */
-export default function StudentAssignments({ student, week }) {
+export default function StudentAssignments({ student, week, readOnlyMode = false }) {
   const [openReceipt, setOpenReceipt] = useState(null);
   const entries = student.assignments;
-  const completed = entries.filter(
-    (x) => x.status === "Completed" || x.status === "Practice completed",
-  ).length;
-  const graded = entries.filter((x) => x.score !== null).length;
+  const summary = summarizeAssignments(entries);
+  const weeklyGroups = entries.reduce((groups,a)=>{const key=a.week||'undated';(groups[key] ||= []).push(a);return groups;},{});
+  const sortedWeeks = Object.keys(weeklyGroups).sort((a,b)=>b.localeCompare(a));
+  const weekPoints = (key) => Number(student.weekly?.[key]) || 0;
+  const dateLabel = key => {if(key==='undated')return 'Earlier / undated activity'; const start=new Date(key+'T12:00:00Z'); const end=new Date(start);end.setUTCDate(end.getUTCDate()+6);const fmt=d=>d.toLocaleDateString('en-US',{month:'short',day:'numeric',timeZone:'UTC'});return fmt(start)+' – '+fmt(end)+', '+end.getUTCFullYear();};
 
   return (
     <div className="expanded-student">
       <div className="expanded-header">
         <div>
           <h3>Assignment history</h3>
-          <p className="muted">Sample records for {niceName(student)}. No student data is loaded.</p>
+          <p className="muted">{readOnlyMode ? `Verified submission history for ${niceName(student)}. Practice checks are not grades.` : `Sample records for ${niceName(student)}. No student data is loaded.`}</p>
         </div>
-        <Chip tone="success">{student.weekly[week] || 0} verified pts this week</Chip>
+        <Chip tone="success">{readOnlyMode ? Object.values(student.weekly||{}).reduce((n,p)=>n+(Number(p)||0),0)+' total verified pts' : (student.weekly[week] || 0)+' verified pts this week'}</Chip>
       </div>
 
-      <div className="mini-stats">
-        <span>
-          <strong>{completed}</strong> completed
-        </span>
-        <span>
-          <strong>{graded}</strong> graded
-        </span>
-        <span>
-          <strong>{entries.length}</strong> tracked
-        </span>
+      <div className="assignment-kind-summary" aria-label="Lesson and challenge history totals">
+        <div className="assignment-kind-row">
+          <small className="assignment-kind-label">Lessons</small>
+          <div className="mini-stats">
+            <span><strong>{summary.lessons.completed}</strong> completed</span>
+            <span><strong>{summary.lessons.graded}</strong> graded</span>
+            <span><strong>{summary.lessons.tracked}</strong> tracked</span>
+          </div>
+        </div>
+        <div className="assignment-kind-row">
+          <small className="assignment-kind-label">Challenges</small>
+          <div className="mini-stats">
+            <span><strong>{summary.challenges.completed}</strong> completed</span>
+            <span><strong>{summary.challenges.graded}</strong> graded</span>
+            <span><strong>{summary.challenges.tracked}</strong> tracked</span>
+          </div>
+        </div>
       </div>
 
-      <div className="overflow">
-        <table className="data-table assignment-table">
+      {(readOnlyMode ? sortedWeeks : ['all']).map(key => <details key={key} open={!readOnlyMode ? true : undefined} className={readOnlyMode?'panel':'assignment-history-all'} style={readOnlyMode?{marginTop:12,padding:12}:{}}><summary style={readOnlyMode?{cursor:'pointer',fontWeight:600}:{display:'none'}}>{dateLabel(key)} · {(()=>{const x=summarizeAssignments(weeklyGroups[key]||[]);return x.lessons.completed+' lessons · '+x.challenges.completed+' challenges';})()} · {key==='undated'?'No weekly points':weekPoints(key)+' verified pts'}</summary><div className="overflow"><table className="data-table assignment-table">
           <thead>
             <tr>
               <th>Assignment</th>
@@ -48,7 +56,7 @@ export default function StudentAssignments({ student, week }) {
             </tr>
           </thead>
           <tbody>
-            {entries.map((a) => {
+            {(readOnlyMode ? weeklyGroups[key] : entries).map((a) => {
               const isOpen = openReceipt === a.id;
               return (
                 <Fragment key={a.id}>
@@ -71,10 +79,9 @@ export default function StudentAssignments({ student, week }) {
                   {isOpen && (
                     <tr className="receipt-preview">
                       <td colSpan="5">
-                        <strong>Sample assignment detail</strong>
+                        <strong>{readOnlyMode ? 'Submission details' : 'Sample assignment detail'}</strong>
                         <p>
-                          This is a mock submitted-copy preview for layout testing, not the student's actual
-                          code.
+                          {readOnlyMode ? 'Submitted code and protected receipts are not loaded in this read-only integration.' : "This is a mock submitted-copy preview for layout testing, not the student's actual code."}
                         </p>
                       </td>
                     </tr>
@@ -83,8 +90,7 @@ export default function StudentAssignments({ student, week }) {
               );
             })}
           </tbody>
-        </table>
-      </div>
+        </table></div></details>)}
     </div>
   );
 }

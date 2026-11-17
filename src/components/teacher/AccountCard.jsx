@@ -3,7 +3,7 @@ import { getSectionPeriod } from "../../data/sections.js";
 import { niceName } from "../../lib/students.js";
 import Chip from "../ui/Chip.jsx";
 
-export default function AccountCard({ student: s, isEditing, onToggleEdit, onDone, onPatch }) {
+export default function AccountCard({ student: s, isEditing, onToggleEdit, onDone, onPatch, readOnlyMode = false }) {
   const name = niceName(s);
   return (
     <article className="account-card">
@@ -13,18 +13,19 @@ export default function AccountCard({ student: s, isEditing, onToggleEdit, onDon
           <h3>{name}</h3>
           <small>@{s.github}</small>
         </div>
-        <button className="icon-button" aria-label={`Edit ${name}`} onClick={onToggleEdit}>
+        {!readOnlyMode && <button className="icon-button" aria-label={`Edit ${name}`} onClick={onToggleEdit}>
           {isEditing ? <X size={17} /> : <Settings2 size={17} />}
-        </button>
+        </button>}
       </div>
 
       <div className="account-footer">
-        <Chip tone={s.sheetName ? "success" : ""}>
-          {s.sheetName ? "Sheet matched" : "Student name fallback"}
+        <Chip tone={s.teacherName || s.sheetName ? "success" : ""}>
+          {s.teacherName ? 'Teacher name' : s.sheetName ? 'Sheet matched' : s.studentName ? 'Signup name' : 'GitHub fallback'}
         </Chip>
-        {s.sections.map((id) => (
-          <Chip key={id}>Period {getSectionPeriod(id)}</Chip>
+        {(readOnlyMode ? (s.periods||[]) : s.sections.map((id)=>getSectionPeriod(id)).filter(Boolean)).map((period) => (
+          <Chip key={period}>Period {period}</Chip>
         ))}
+        {readOnlyMode&&s.kind==='client'&&<Chip>Private client</Chip>}
       </div>
 
       {isEditing && (
